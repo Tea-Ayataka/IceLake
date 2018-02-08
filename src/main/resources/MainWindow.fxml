@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.StatusBar?>
+
+<AnchorPane fx:id="root" prefHeight="359.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ayataka.marinetooler.gui.MainWindow">
+   <children>
+      <TabPane prefHeight="329.0" prefWidth="596.0" style="-fx-tab-min-width: 70;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="メイン">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="276.0" prefWidth="164.0" text="ターゲット">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="162.0">
+                                 <children>
+                                    <CheckBox fx:id="targetSet" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="セット" />
+                                    <ImageView fx:id="targetPic" fitHeight="156.0" fitWidth="128.0" layoutX="17.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" layoutX="186.0" layoutY="14.0" prefHeight="132.0" prefWidth="398.0" text="ターゲット情報">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="396.0">
+                                 <children>
+                                    <Label fx:id="targetNick" layoutX="14.0" layoutY="14.0" text="ニックネーム  ：　" />
+                                    <Label fx:id="targetId" layoutX="14.0" layoutY="35.0" text="アメーバID    ：　" />
+                                    <Label fx:id="targetUsercode" layoutX="14.0" layoutY="56.0" text="ユーザーコード：　" />
+                                    <Button fx:id="targetDetails" layoutX="296.0" layoutY="68.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="詳細情報" />
+                                 </children></AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" layoutX="186.0" layoutY="157.0" prefHeight="132.0" prefWidth="398.0" text="エリア情報">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="396.0">
+                                 <children>
+                                    <Label fx:id="areaName" layoutX="14.0" layoutY="14.0" text="名前         ：　" />
+                                    <Label fx:id="areaCode" layoutX="14.0" layoutY="78.0" text="エリアコード ：　" />
+                                    <Label fx:id="areaSize" layoutX="14.0" layoutY="35.0" text="サイズ        ：　" />
+                                    <Label fx:id="areaPos" layoutX="14.0" layoutY="56.0" text="座標         ：　" />
+                                    <Button fx:id="areaDetails" layoutX="296.0" layoutY="69.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="詳細情報" />
+                                 </children></AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="ツール">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="275.0" prefWidth="173.0" text="移動">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="163.0">
+                                 <children>
+                                    <CheckBox fx:id="clickTPChk" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="クリック式瞬間移動" />
+                                    <CheckBox fx:id="skeetChk" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" text="スケート" />
+                                    <Spinner fx:id="tpX" editable="true" layoutX="34.0" layoutY="140.0" prefHeight="25.0" prefWidth="113.0" />
+                                    <Spinner fx:id="tpY" editable="true" layoutX="34.0" layoutY="176.0" prefHeight="25.0" prefWidth="113.0" />
+                                    <Spinner fx:id="tpZ" editable="true" layoutX="34.0" layoutY="210.0" prefHeight="25.0" prefWidth="113.0" />
+                                    <Label layoutX="16.0" layoutY="144.0" text="X" />
+                                    <Label layoutX="16.0" layoutY="180.0" text="Y" />
+                                    <Label layoutX="16.0" layoutY="214.0" text="Z" />
+                                    <CheckBox fx:id="moveGhost" layoutX="14.0" layoutY="66.0" mnemonicParsing="false" text="移動ゴースト" />
+                                 </children></AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" layoutX="204.0" layoutY="13.0" prefHeight="278.0" prefWidth="184.0" text="チャット">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="180.0">
+                                 <children>
+                                    <CheckBox fx:id="colorChat" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="カラーチャット" />
+                                    <Label layoutX="40.0" layoutY="60.0" />
+                                    <ColorPicker fx:id="colorChatColor" layoutX="126.0" layoutY="10.0" prefHeight="25.0" prefWidth="42.0" />
+                                    <CheckBox fx:id="chatGhost" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" text="チャットゴースト" />
+                                    <CheckBox fx:id="ngBypass" layoutX="14.0" layoutY="66.0" mnemonicParsing="false" selected="true" text="NG回避" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" layoutX="404.0" layoutY="14.0" prefHeight="278.0" prefWidth="178.0" text="その他">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="174.0">
+                                 <children>
+                                    <CheckBox fx:id="autoGoodPigg" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="自動グッピグ" />
+                                    <Button fx:id="skipTutorial" layoutX="14.0" layoutY="213.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="チュートリアルをスキップ" />
+                                    <Button layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="釣りP増殖" />
+                                    <CheckBox fx:id="actionGhost" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="アクションゴースト" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="マクロ">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="278.0" prefWidth="165.0" text="釣り">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="180.0">
+                                 <children>
+                                    <CheckBox fx:id="useMakie" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="まきえを使う" />
+                                    <ToggleButton fx:id="fishMacroButton" layoutX="20.0" layoutY="213.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="スタート" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" layoutX="190.0" layoutY="14.0" prefHeight="84.0" prefWidth="165.0" text="スロット">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="163.0">
+                                 <children>
+                                    <ToggleButton fx:id="slotMacro" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="スタート" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="アクション">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="actionList" layoutX="14.0" layoutY="14.0" prefHeight="273.0" prefWidth="567.0">
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="runAction" mnemonicParsing="false" text="実行" />
+                                    <MenuItem fx:id="copyAction" mnemonicParsing="false" text="コピー" />
+                                    <MenuItem fx:id="delAction" mnemonicParsing="false" text="削除" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                        </ListView>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="ショップ">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="エリアエディット">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="ログ">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="logBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="243.0" prefWidth="567.0" text="" />
+                        <TextField fx:id="command" layoutX="14.0" layoutY="261.0" prefHeight="25.0" prefWidth="567.0" promptText="Command..." />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <StatusBar fx:id="statusBar" layoutY="331.0" prefHeight="200.0" prefWidth="596.0" styleText="" text="  Waiting..." />
+   </children>
+</AnchorPane>
