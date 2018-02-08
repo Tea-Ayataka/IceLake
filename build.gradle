@@ -19,21 +19,21 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+    compile name: 'swfedit-1.0'
+    compile name: 'eventapi-1.0'
+
     compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.6'
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.4'
     compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.3.7'
-
-    // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
-
     compile 'org.controlsfx:controlsfx:8.40.14'
     compile 'com.github.kotlin-graphics:kotlin-unsigned:v2.1'
-
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
@@ -47,7 +47,7 @@ compileTestKotlin {
 
 jar {
     manifest {
-        attributes "Main-Class" : "net.ayataka.marinetooler.LaunchKt"
+        attributes "Main-Class": "net.ayataka.marinetooler.LaunchKt"
     }
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
