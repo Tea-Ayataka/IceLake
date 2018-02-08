@@ -1,0 +1,6 @@
+/**
+ * The linestyle package contains all the classes for encoding and decoding the
+ * data structures that represent the different types of line style that are
+ * found in a Flash file.
+ */
+package com.flagstone.transform.linestyle;
