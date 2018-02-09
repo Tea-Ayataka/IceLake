@@ -8,7 +8,6 @@ import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.dump
-import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
 import net.ayataka.marinetooler.utils.warn
 import java.nio.ByteBuffer
@@ -45,6 +44,7 @@ object Protocol {
         this.register(MoveEndPacket::class)
         this.register(GetUserProfilePacket::class)
         this.register(GetDiaryPacket::class)
+        this.register(ChangeWindowAquariumPacket::class)
 
         // RECV (Server bound)
         this.register(ActionResultPacket::class)

@@ -29,8 +29,6 @@ object Command : Module() {
 
     fun doCommand(string: String) {
         try {
-
-
             val spitted = string.split(" ")
 
             when (spitted[0].toLowerCase()) {
@@ -47,6 +45,9 @@ object Command : Module() {
                     val packet = GetShopPacket()
                     packet.shopCode = spitted[1]
                     Pigg.send(packet)
+                }
+                "addfish" -> {
+                    AquariumSpammer.addFish(spitted[1])
                 }
                 else -> {
                     info("無効なコマンドです")
