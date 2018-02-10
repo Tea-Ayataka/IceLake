@@ -26,6 +26,7 @@ object Protocol {
 
         // Register packets
         // SEND (Client bound)
+        this.register(TravelBundlePacket::class)
         this.register(GetShopPacket::class)
         this.register(ClickPiggShopItemPacket::class)
         this.register(ProceedTutorialPacket::class)

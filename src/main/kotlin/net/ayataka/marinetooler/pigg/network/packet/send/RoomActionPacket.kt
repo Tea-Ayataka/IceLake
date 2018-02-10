@@ -5,6 +5,7 @@ import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.utils.toHexString
 
 class RoomActionPacket : Packet() {
     override val server = ServerType.CHAT
@@ -26,6 +27,7 @@ class RoomActionPacket : Packet() {
         this.isAdminRequest = buffer.readBoolean()
 
         info(" ROOM ACTION ID IS ${this.actionCode}")
+        info(" AND DATA IS ${this.data.toHexString()}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

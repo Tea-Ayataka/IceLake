@@ -6,10 +6,7 @@ import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.CancelTypingPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.GetAreaPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.GetShopPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.info
 
 object Command : Module() {
@@ -39,6 +36,12 @@ object Command : Module() {
                     val packet = GetAreaPacket()
                     packet.category = spitted[1].split(".")[0]
                     packet.code = spitted[1].split(".")[1]
+                    Pigg.send(packet)
+                }
+                "travel" -> {
+                    val packet = TravelBundlePacket()
+                    packet.categoryCode = spitted[1]
+                    packet.areaCode = spitted[2]
                     Pigg.send(packet)
                 }
                 "shop" -> {
