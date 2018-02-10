@@ -13,7 +13,7 @@ object AquariumSpammer : Module() {
 
         val data = ByteBuilder()
                 .writeString("fishing_window_aquarium_special_river_001")
-                .writeBoolean(false)
+                .writeBoolean(true)
                 .writeString(fishName).build().array()
 
         packet.data = data

@@ -45,6 +45,8 @@ object Protocol {
         this.register(GetUserProfilePacket::class)
         this.register(GetDiaryPacket::class)
         this.register(ChangeWindowAquariumPacket::class)
+        this.register(NotifyUserRoomEnteredPacket::class)
+        this.register(GetNoticeBoardMessageOfAreaPacket::class)
 
         // RECV (Server bound)
         this.register(ActionResultPacket::class)
@@ -60,6 +62,7 @@ object Protocol {
         this.register(GetAreaResultPacket::class)
         this.register(AlertResultPacket::class)
         this.register(LoginChatResultPacket::class)
+        this.register(ListAreaTopResultPacket::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {

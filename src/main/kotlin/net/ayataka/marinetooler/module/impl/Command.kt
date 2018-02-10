@@ -49,6 +49,9 @@ object Command : Module() {
                 "addfish" -> {
                     AquariumSpammer.addFish(spitted[1])
                 }
+                "spam" ->{
+                    NoticeSpammer.spam(spitted[1])
+                }
                 else -> {
                     info("無効なコマンドです")
                 }
