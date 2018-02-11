@@ -52,7 +52,7 @@ object Command : Module() {
                 "addfish" -> {
                     AquariumSpammer.addFish(spitted[1])
                 }
-                "spam" ->{
+                "spam" -> {
                     NoticeSpammer.spam(spitted[1])
                 }
                 else -> {
