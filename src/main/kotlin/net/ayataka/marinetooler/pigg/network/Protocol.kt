@@ -48,6 +48,7 @@ object Protocol {
         this.register(ChangeWindowAquariumPacket::class)
         this.register(NotifyUserRoomEnteredPacket::class)
         this.register(GetNoticeBoardMessageOfAreaPacket::class)
+        this.register(AddFavoritePacket::class)
 
         // RECV (Server bound)
         this.register(ActionResultPacket::class)

@@ -53,9 +53,7 @@ object Command : Module() {
                     AquariumSpammer.addFish(spitted[1])
                 }
                 "spam" -> {
-                    val packet1 = NotifyUserRoomEnteredPacket()
-                    packet1.userCode = spitted[1]
-                    Pigg.send(packet1)
+                    NoticeSpammer.enabled = !NoticeSpammer.enabled
                 }
                 else -> {
                     info("無効なコマンドです")

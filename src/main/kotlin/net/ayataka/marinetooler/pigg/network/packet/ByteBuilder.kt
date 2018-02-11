@@ -53,6 +53,10 @@ open class ByteBuilder() {
         return this.buffer.get()
     }
 
+    fun readDouble() : Double{
+        return this.buffer.double
+    }
+
     fun readShort(): Short {
         return this.buffer.short
     }
