@@ -49,6 +49,7 @@ object Protocol {
         this.register(NotifyUserRoomEnteredPacket::class)
         this.register(GetNoticeBoardMessageOfAreaPacket::class)
         this.register(AddFavoritePacket::class)
+        this.register(ProgressPuzzlePacket::class)
 
         // RECV (Server bound)
         this.register(ActionResultPacket::class)
