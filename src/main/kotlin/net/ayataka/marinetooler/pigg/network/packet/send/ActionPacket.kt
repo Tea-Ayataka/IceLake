@@ -4,6 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
+import net.ayataka.marinetooler.utils.dump
 import net.ayataka.marinetooler.utils.info
 
 class ActionPacket : Packet() {
@@ -16,7 +17,7 @@ class ActionPacket : Packet() {
     override fun readFrom(buffer: ByteBuilder) {
         this.actionId = buffer.readString()
 
-        info(" ACTION ID IS ${this.actionId}")
+        dump(" ACTION ID IS ${this.actionId}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

@@ -87,6 +87,8 @@ class MainWindow : Initializable {
     @FXML
     lateinit var skipTutorial: Button
     @FXML
+    lateinit var freeGacha: Button
+    @FXML
     lateinit var actionList: ListView<String>
     @FXML
     lateinit var runAction: MenuItem
@@ -179,6 +181,10 @@ class MainWindow : Initializable {
 
         this.skeetChk.setOnAction {
             Skeet.enabled = (it.source as CheckBox).isSelected
+        }
+
+        this.freeGacha.setOnAction {
+            MuryouGatyaZenkaihou.enabled = true
         }
 
         // Instant teleport

@@ -104,7 +104,7 @@
                                  <children>
                                     <CheckBox fx:id="autoGoodPigg" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="自動グッピグ" />
                                     <Button fx:id="skipTutorial" layoutX="14.0" layoutY="213.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="チュートリアルをスキップ" />
-                                    <Button layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="釣りP増殖" />
+                                    <Button fx:id="freeGacha" layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="無料ガチャ" />
                                     <CheckBox fx:id="actionGhost" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="アクションゴースト" />
                                  </children>
                               </AnchorPane>
