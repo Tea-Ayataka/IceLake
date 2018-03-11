@@ -25,7 +25,6 @@ import net.ayataka.marinetooler.pigg.network.packet.recv.LoginChatResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.ClickPiggShopItemPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.MoveEndPacket
 import org.controlsfx.control.StatusBar
-import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -98,6 +97,8 @@ class MainWindow : Initializable {
     lateinit var delAction: MenuItem
     @FXML
     lateinit var command: TextField
+    @FXML
+    lateinit var instantDonate: CheckBox
 
     init {
         EventManager.register(this)
@@ -114,7 +115,7 @@ class MainWindow : Initializable {
 
         // TODO: Refactor
         this.command.setOnKeyPressed {
-            if(it.code != KeyCode.ENTER)
+            if (it.code != KeyCode.ENTER)
                 return@setOnKeyPressed
 
             val text = (it.source as TextField).text
@@ -187,6 +188,10 @@ class MainWindow : Initializable {
             MuryouGatyaZenkaihou.enabled = true
         }
 
+        this.instantDonate.setOnAction {
+            InstantDonator.enabled = (it.source as CheckBox).isSelected
+        }
+
         // Instant teleport
         this.tpX.valueFactory.valueProperty().addListener { _, _, new ->
             CurrentUser.teleport(new.toShort(), this.tpY.value.toShort(), this.tpZ.value.toShort(), 0)
@@ -211,14 +216,14 @@ class MainWindow : Initializable {
     }
 
     @EventTarget
-    fun onConnect(event: ConnectEvent){
+    fun onConnect(event: ConnectEvent) {
         Platform.runLater({
             this.statusBar.text = "  Connecting..."
         })
     }
 
     @EventTarget
-    fun onDisconnect(event: DisconnectEvent){
+    fun onDisconnect(event: DisconnectEvent) {
         Platform.runLater({
             this.statusBar.text = "  Disconnected."
         })
@@ -255,15 +260,15 @@ class MainWindow : Initializable {
             }
 
             // Collect action
-            if(packet is ActionResultPacket && !packet.actionCode.contains("\u0000")) {
-              /*  val file = File("action")
-                var actions = file.readText()
-                if (!actions.contains(packet.actionCode)) {
-                    actions += packet.actionCode + "\n"
-                }
-                file.writeText(actions)*/
+            if (packet is ActionResultPacket && !packet.actionCode.contains("\u0000")) {
+                /*  val file = File("action")
+                  var actions = file.readText()
+                  if (!actions.contains(packet.actionCode)) {
+                      actions += packet.actionCode + "\n"
+                  }
+                  file.writeText(actions)*/
 
-                if(!this.actionList.items.contains(packet.actionCode)) {
+                if (!this.actionList.items.contains(packet.actionCode)) {
                     this.actionList.items.add(packet.actionCode)
                 }
             }
@@ -279,8 +284,8 @@ class MainWindow : Initializable {
                 this.areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
             }
 
-            if(packet is ClickPiggShopItemPacket && packet.itemType == "action") {
-                if(!this.actionList.items.contains(packet.itemCode)) {
+            if (packet is ClickPiggShopItemPacket && packet.itemType == "action") {
+                if (!this.actionList.items.contains(packet.itemCode)) {
                     this.actionList.items.add(packet.itemCode)
                 }
             }

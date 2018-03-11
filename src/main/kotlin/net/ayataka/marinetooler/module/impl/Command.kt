@@ -55,9 +55,6 @@ object Command : Module() {
                 "spam" -> {
                     NoticeSpammer.enabled = !NoticeSpammer.enabled
                 }
-                "instgive" ->{
-                    InstantGiver.enabled = !InstantGiver.enabled
-                }
 
                 else -> {
                     info("無効なコマンドです")
