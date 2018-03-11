@@ -55,7 +55,12 @@ object Command : Module() {
                 "spam" -> {
                     NoticeSpammer.enabled = !NoticeSpammer.enabled
                 }
+                "roomact" -> {
+                    val packet = RoomActionPacket()
+                    packet.actionCode = spitted[1]
 
+                    Pigg.send(packet)
+                }
                 else -> {
                     info("無効なコマンドです")
                 }
