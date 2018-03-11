@@ -54,6 +54,7 @@ object Protocol {
         this.register(ProgressPuzzlePacket::class)
         this.register(CheckContributeClubFurniturePacket::class)
         this.register(ContributeClubFurniturePacket::class)
+        this.register(AddClubMessagePacket::class)
 
         // RECV (Server bound)
         this.register(GetPiggShopGachaResultPacket::class)
