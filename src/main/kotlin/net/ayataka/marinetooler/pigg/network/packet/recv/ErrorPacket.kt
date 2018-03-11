@@ -23,10 +23,11 @@ class ErrorPacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-       // buffer.writeString(this.code)
-       // buffer.writeString(this.message)
-       // buffer.writeString(this.exceptionClass)
-       // buffer.writeString(this.exceptionTrace)
-        return null
+       buffer.writeString(this.code)
+       buffer.writeString(this.message)
+       buffer.writeString(this.exceptionClass)
+       buffer.writeString(this.exceptionTrace)
+
+        return buffer
     }
 }

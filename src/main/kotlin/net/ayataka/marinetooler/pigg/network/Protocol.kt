@@ -66,6 +66,9 @@ object Protocol {
         this.register(AlertResultPacket::class)
         this.register(LoginChatResultPacket::class)
         this.register(ListAreaTopResultPacket::class)
+        this.register(TableGameResultPacket::class)
+        this.register(ListUserItemResultPacket::class)
+        //this.register(ListUserFurnitureResultPacket::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
