@@ -254,9 +254,9 @@ class MainWindow : Initializable {
             }
 
             if (packet is BaseAreaData) {
-                this.areaName.text = "名前         ：　${packet.areaName}"
-                this.areaSize.text = "サイズ        ：　${packet.sizeX} x ${packet.sizeY}"
-                this.areaCode.text = "エリアコード ：　${packet.categoryCode}/${packet.areaCode}"
+                this.areaName.text = "名前         ：　${packet.areaData.areaName}"
+                this.areaSize.text = "サイズ        ：　${packet.areaData.sizeX} x ${packet.areaData.sizeY}"
+                this.areaCode.text = "エリアコード ：　${packet.areaData.categoryCode}/${packet.areaData.areaCode}"
             }
 
             // Collect action

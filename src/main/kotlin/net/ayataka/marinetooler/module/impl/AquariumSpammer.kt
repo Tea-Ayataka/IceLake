@@ -20,4 +20,19 @@ object AquariumSpammer : Module() {
 
         Pigg.send(packet)
     }
+
+    fun delFish(fishName: String){
+        val packet = ChangeWindowAquariumPacket()
+
+        packet.method = "onUpdateWindowFish"
+
+        val data = ByteBuilder()
+                .writeString("fishing_window_aquarium_special_river_001")
+                .writeBoolean(false)
+                .writeString(fishName).build().array()
+
+        packet.data = data
+
+        Pigg.send(packet)
+    }
 }

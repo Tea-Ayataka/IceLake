@@ -2,6 +2,7 @@ package net.ayataka.marinetooler.module.impl
 
 import com.darkmagician6.eventapi.EventTarget
 import net.ayataka.marinetooler.module.Module
+import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ErrorPacket
@@ -43,6 +44,9 @@ object MuryouGatyaZenkaihou : Module() {
             timer(period = 1100) {
                 if (this@MuryouGatyaZenkaihou.queue.isEmpty()) {
                     this.cancel()
+                    info("Completed Gacha")
+                    CurrentUser.showAlert("Completed Gacha")
+
                     return@timer
                 }
 

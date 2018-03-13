@@ -5,35 +5,31 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.info
 
-class PartData(val param2: Boolean) : Packet() {
-    override val server = ServerType.INFO
-    override val packetId = InfoPacketID.NONE.id
-
+class PartData(val param2: Boolean) {
     var height: Int = 0
     var walkable = false
     var sittable = false
     var orgSittable = false
     var attachable = false
-    var attachDirection: Byte = -1
+    var attachDirection: Byte? = -1
     var rx: Byte = 0
     var ry: Byte = 0
     var index: Int = 0
     var facing: Facing = Facing.walls[0]
+    var rawfacing = 0.0
 
-    override fun readFrom(buffer: ByteBuilder) {
+    fun readFrom(buffer: ByteBuilder) {
         this.height = buffer.readInt()
         this.attachable = buffer.readBoolean()
         this.sittable = buffer.readBoolean()
         this.walkable = buffer.readBoolean()
 
-        val test = buffer.readByte().toInt()
-
-        dump(test.toString())
-
         val facing = buffer.readByte()
-        dump(facing.toString())
-        this.facing = Facing.walls[facing.toInt()]
+
+        this.rawfacing = facing.toDouble()
+        this.facing = Facing.walls[this.rawfacing.toInt()]
 
         if(param2){
             this.attachDirection = buffer.readByte()
@@ -41,14 +37,31 @@ class PartData(val param2: Boolean) : Packet() {
 
         this.rx = buffer.readByte()
         this.ry = buffer.readByte()
-        this.orgSittable = buffer.readBoolean()
+
+        //必要ある気がしない
+        this.orgSittable = this.sittable
     }
 
-    fun clone() : PartData{
+    fun writeTo(): ByteBuilder {
+        val packet = ByteBuilder()
+                .writeRawInt(this.height)
+                .writeBoolean(this.attachable)
+                .writeBoolean(this.sittable)
+                .writeBoolean(this.walkable)
+
+                .writeRawByte(this.rawfacing.toByte())
+                .writeBoolean(this.param2)
+
+        this.attachDirection?.let { packet.writeRawByte(it) }
+
+        packet
+                .writeRawByte(this.rx)
+                .writeRawByte(this.ry)
+
+        return packet
+    }
+
+    fun clone() : PartData {
         return this
-    }
-
-    override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        return null
     }
 }

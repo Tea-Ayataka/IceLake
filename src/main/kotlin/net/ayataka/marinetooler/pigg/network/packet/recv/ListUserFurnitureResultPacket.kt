@@ -46,7 +46,7 @@ open class ListUserFurnitureResultPacket : Packet() {
 
             for(i2 in 1..loc5){
                 val part = PartData(false)
-                part.read(buffer)
+                part.readFrom(buffer)
 
                 parts.add(part)
             }
@@ -81,28 +81,6 @@ open class ListUserFurnitureResultPacket : Packet() {
 
     //TODO: writeToを完成させる
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        /*
-        buffer.writeRawInt(this.max)
-
-        buffer.writeRawInt(this.loc2)
-
-        var count1 = 0
-        for (furniture in this.furnitures) {
-            buffer.writeRawInt(furniture.quantity)
-            buffer.writeString(furniture.characterId)
-            buffer.writeRawByte(furniture.type)
-            buffer.writeString(furniture.category)
-            buffer.writeString(furniture.name)
-            buffer.writeString(furniture.description)
-            buffer.writeString(furniture.actionCode)
-
-            buffer.writeRawShort(this.loc5[count1])
-
-            for (part in furniture.parts) {
-
-            }
-        }*/
-
         return null
     }
 }
