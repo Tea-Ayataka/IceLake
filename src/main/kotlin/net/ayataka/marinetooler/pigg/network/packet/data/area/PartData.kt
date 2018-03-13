@@ -1,11 +1,6 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
-import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
-import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
-import net.ayataka.marinetooler.utils.info
 
 class PartData(val param2: Boolean) {
     var height: Int = 0
