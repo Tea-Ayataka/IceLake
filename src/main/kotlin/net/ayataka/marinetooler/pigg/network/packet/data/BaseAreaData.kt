@@ -18,6 +18,9 @@ open class BaseAreaData : Packet() {
 
     lateinit var areaData: AreaData
 
+    var placeFurnitures = mutableListOf<PlaceFurniture>()
+    var defineFurnitures = mutableListOf<DefineFurniture>()
+
     override fun readFrom(buffer: ByteBuilder) {
         this.areaData = AreaData()
 
@@ -25,8 +28,6 @@ open class BaseAreaData : Packet() {
 
         // Get area users
         this.users = readUCodesFromAreaPacket(buffer)
-
-        val placeFurnitures = mutableListOf<PlaceFurniture>()
 
         for(i in 1..buffer.readInt()){
             val placeFurniture = PlaceFurniture()
@@ -43,8 +44,6 @@ open class BaseAreaData : Packet() {
 
             placeFurnitures.add(placeFurniture)
         }
-
-        val defineFurnitures = mutableListOf<DefineFurniture>()
 
         for(i in 1..buffer.readInt()){
             val loc13 = buffer.readShort()
