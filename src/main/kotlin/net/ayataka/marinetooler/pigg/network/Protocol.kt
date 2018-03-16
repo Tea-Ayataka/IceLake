@@ -55,6 +55,7 @@ object Protocol {
         this.register(CheckContributeClubFurniturePacket::class)
         this.register(ContributeClubFurniturePacket::class)
         this.register(AddClubMessagePacket::class)
+        this.register(GetSnapshotToken::class)
 
         // RECV (Server bound)
         this.register(GetPiggShopGachaResultPacket::class)
@@ -75,6 +76,7 @@ object Protocol {
         this.register(TableGameResultPacket::class)
         this.register(ListUserItemResultPacket::class)
         this.register(ListUserFurnitureResultPacket::class)
+        this.register(GetSnapshotTokenResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {

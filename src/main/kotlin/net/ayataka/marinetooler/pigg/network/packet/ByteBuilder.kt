@@ -81,6 +81,10 @@ open class ByteBuilder() {
         return result
     }
 
+    fun readFloat(): Float{
+        return this.buffer.float
+    }
+
     // Writers
     fun writeRawByte(byte: Byte): ByteBuilder {
         this.buffer.put(byte)
@@ -178,6 +182,11 @@ open class ByteBuilder() {
 
     fun writeBoolean(value: Boolean): ByteBuilder {
         this.buffer.put((if (value) 1 else 0).toByte())
+        return this
+    }
+
+    fun writeRawFloat(float: Float): ByteBuilder{
+        this.buffer.putFloat(float)
         return this
     }
 }

@@ -6,5 +6,5 @@ open class PlaceData {
     var y: Short = 0
     var z: Short = 0
     var direction: Byte = 0
-    var status = 0
+    var status: Byte = 0
 }
