@@ -45,6 +45,7 @@ open class BaseAreaData : Packet() {
     var placeActionItems = mutableListOf<PlaceActionItem>()
     var loc11 = mutableMapOf<String, String>()
 
+    //一応動作は確認してるけどもっとデバッグが必要
     override fun readFrom(buffer: ByteBuilder) {
         dump("[Def] ${buffer.array().toHexString()}")
         this.areaData = AreaData()
@@ -102,6 +103,7 @@ open class BaseAreaData : Packet() {
             val avatarData = AvatarData()
 
             avatarData.readFrom(buffer)
+
             defineAvatar.characterId = avatarData.userCode
 
             if(avatarData.amebaId != "") defineAvatar.name = avatarData.amebaId
@@ -158,7 +160,9 @@ open class BaseAreaData : Packet() {
             placeActionItem.itemCode = buffer.readString()
             placeActionItem.ownerCode = buffer.readString()
             placeActionItem.sequence = buffer.readInt()
+
             placeActionItem.actionItemType = buffer.readByte()
+
             placeActionItem.x = buffer.readShort()
             placeActionItem.y = buffer.readShort()
             placeActionItem.z = buffer.readShort()
@@ -175,6 +179,7 @@ open class BaseAreaData : Packet() {
             placeActionItem.itemType = buffer.readString()
             placeActionItem.sequence = buffer.readInt()
             placeActionItem.ownerCode = buffer.readString()
+
             placeActionItem.x = buffer.readShort()
             placeActionItem.y = buffer.readShort()
             placeActionItem.z = buffer.readShort()
@@ -296,6 +301,7 @@ open class BaseAreaData : Packet() {
                 bb.writeString(placeActionItem.itemType)
                 bb.writeRawInt(placeActionItem.sequence)
                 bb.writeString(placeActionItem.ownerCode)
+
                 bb.writeRawShort(placeActionItem.x)
                 bb.writeRawShort(placeActionItem.y)
                 bb.writeRawShort(placeActionItem.z)

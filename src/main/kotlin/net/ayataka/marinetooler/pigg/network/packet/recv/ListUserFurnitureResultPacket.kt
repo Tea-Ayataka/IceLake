@@ -72,14 +72,12 @@ open class ListUserFurnitureResultPacket : Packet() {
             for(i2 in 1..loc10){
                 val whatString2 = buffer.readString()
 
-                //this.whatStrings2[i - 1][i2 - 1] = whatString2
                 this.whatStrings2.add(mutableListOf(whatString2))
                 this.placedFurnitures.add(buffer.readString())
             }
         }
     }
 
-    //TODO: writeToを完成させる
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         return null
     }
