@@ -16,8 +16,8 @@ class DefineAvatar : DefineData() {
         this.friend = false
     }
 
-    fun writeData(): ByteBuilder{
-        return this.data.writeTo()
+    fun writeData(buffer: ByteBuilder): ByteBuilder{
+        return this.data.writeTo(buffer)
     }
 
     fun clone(): DefineAvatar{

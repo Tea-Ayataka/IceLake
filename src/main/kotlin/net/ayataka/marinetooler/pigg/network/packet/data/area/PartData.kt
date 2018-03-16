@@ -37,8 +37,8 @@ class PartData(val param2: Boolean) {
         this.orgSittable = this.sittable
     }
 
-    fun writeTo(): ByteBuilder {
-        val packet = ByteBuilder()
+    fun writeTo(buffer: ByteBuilder): ByteBuilder {
+        val packet = buffer
                 .writeRawInt(this.height)
                 .writeBoolean(this.attachable)
                 .writeBoolean(this.sittable)

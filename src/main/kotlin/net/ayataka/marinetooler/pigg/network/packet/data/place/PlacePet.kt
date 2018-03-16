@@ -18,4 +18,14 @@ class PlacePet {
         this.direction = buffer.readByte()
         this.sleeping = buffer.readBoolean()
     }
+
+    fun writeTo(buffer: ByteBuilder): ByteBuilder{
+        return buffer
+                .writeRawInt(this.petId)
+                .writeRawShort(this.x)
+                .writeRawShort(this.y)
+                .writeRawShort(this.z)
+                .writeRawByte(this.direction)
+                .writeBoolean(this.sleeping)
+    }
 }

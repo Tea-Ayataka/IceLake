@@ -44,4 +44,18 @@ class PetData {
         this.category = buffer.readString()
     }
 
+    fun writeTo(buffer: ByteBuilder): ByteBuilder{
+        return buffer
+                .writeRawInt(this.petId)
+                .writeString(this.type)
+                .writeString(this.name)
+                .writeString(this.owner)
+                .writeRawInt(this.treasuresID)
+                .writeString(this.treasuresCode)
+                .writeRawByte(this.colorId)
+                .writeRawByte(this.gender)
+                .writeRawByte(this.levelFeel)
+                .writeRawByte(this.levelFriendly)
+                .writeString(this.category)
+    }
 }

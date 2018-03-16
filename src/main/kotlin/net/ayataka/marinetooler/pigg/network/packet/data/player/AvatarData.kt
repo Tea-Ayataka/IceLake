@@ -50,8 +50,8 @@ class AvatarData {
         }
     }
 
-    fun writeTo(): ByteBuilder{
-        var bb = ByteBuilder()
+    fun writeTo(buffer: ByteBuilder): ByteBuilder{
+        var bb = buffer
 
         bb.writeString(this.userCode)
         .writeString(this.amebaId)

@@ -29,17 +29,17 @@ class AreaData {
         this.sizeY = buffer.readShort()
     }
 
-    fun writeTo() : ByteBuilder{
-        return ByteBuilder()
-                .writeRawString(this.categoryCode)
-                .writeRawString(this.categoryName)
-                .writeRawString(this.areaCode)
-                .writeRawString(this.areaName)
+    fun writeTo(buffer: ByteBuilder) : ByteBuilder{
+        return buffer
+                .writeString(this.categoryCode)
+                .writeString(this.categoryName)
+                .writeString(this.areaCode)
+                .writeString(this.areaName)
 
-                .writeRawString(this.frontCode)
-                .writeRawString(this.wallCode)
-                .writeRawString(this.floorCode)
-                .writeRawString(this.windowCode)
+                .writeString(this.frontCode)
+                .writeString(this.wallCode)
+                .writeString(this.floorCode)
+                .writeString(this.windowCode)
 
                 .writeRawShort(this.sizeX)
                 .writeRawShort(this.sizeY)

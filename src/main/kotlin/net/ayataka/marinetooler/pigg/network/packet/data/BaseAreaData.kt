@@ -16,6 +16,8 @@ import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceActionItem
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
 import net.ayataka.marinetooler.pigg.network.packet.readUCodesFromAreaPacket
+import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.toHexString
 
 open class BaseAreaData : Packet() {
     override val server = ServerType.CHAT
@@ -27,10 +29,12 @@ open class BaseAreaData : Packet() {
 
     var isAdmin = false
     var isPatrol = false
-    var c = false
+    var isChannelActor = false
     var serverTime: Double = 0.0
     var isRefleshedCosmeItem = false
     var isAllowRoomChange = false
+
+    var loc9 = 0
 
     var placeFurnitures = mutableListOf<PlaceFurniture>()
     var defineFurnitures = mutableListOf<DefineFurniture>()
@@ -39,8 +43,10 @@ open class BaseAreaData : Packet() {
     var placePets = mutableListOf<PlacePet>()
     var definePets = mutableListOf<DefinePet>()
     var placeActionItems = mutableListOf<PlaceActionItem>()
+    var loc11 = mutableMapOf<String, String>()
 
     override fun readFrom(buffer: ByteBuilder) {
+        dump("[Def] ${buffer.array().toHexString()}")
         this.areaData = AreaData()
 
         this.areaData.readFrom(buffer)
@@ -79,6 +85,8 @@ open class BaseAreaData : Packet() {
                 val partData = PartData(true)
 
                 partData.readFrom(buffer)
+
+                partData.index = i2
 
                 defineFurniture.parts.add(partData)
             }
@@ -146,6 +154,23 @@ open class BaseAreaData : Packet() {
         for(i in 1..buffer.readInt()){
             val placeActionItem = PlaceActionItem()
 
+            placeActionItem.itemType = buffer.readString()
+            placeActionItem.itemCode = buffer.readString()
+            placeActionItem.ownerCode = buffer.readString()
+            placeActionItem.sequence = buffer.readInt()
+            placeActionItem.actionItemType = buffer.readByte()
+            placeActionItem.x = buffer.readShort()
+            placeActionItem.y = buffer.readShort()
+            placeActionItem.z = buffer.readShort()
+
+            placeActionItem.mode = 0
+
+            this.placeActionItems.add(placeActionItem)
+        }
+
+        for(i in 1..buffer.readInt()){
+            val placeActionItem = PlaceActionItem()
+
             placeActionItem.itemCode = buffer.readString()
             placeActionItem.itemType = buffer.readString()
             placeActionItem.sequence = buffer.readInt()
@@ -153,31 +178,145 @@ open class BaseAreaData : Packet() {
             placeActionItem.x = buffer.readShort()
             placeActionItem.y = buffer.readShort()
             placeActionItem.z = buffer.readShort()
+
             placeActionItem.actionItemType = 2
 
+            placeActionItem.mode = 1
             this.placeActionItems.add(placeActionItem)
         }
 
-        val loc9 = buffer.readInt()
+        this.loc9 = buffer.readInt()
 
-        this.isAdmin = (loc9 and 1) > 0
-        this.isPatrol = (loc9 and 2) > 0
-        this.c = buffer.readBoolean()
+        this.isAdmin = (this.loc9 and 1) > 0
+        this.isPatrol = (this.loc9 and 2) > 0
+        this.isChannelActor = buffer.readBoolean()
         this.serverTime = buffer.readDouble()
         this.isRefleshedCosmeItem = buffer.readBoolean()
         this.isAllowRoomChange = buffer.readBoolean()
 
-        val loc11 = mutableMapOf<String, String>()
         for(i in 1..buffer.readByte()){
             val loc10 = buffer.readString()
 
-            loc11[loc10] = loc10
+            this.loc11[loc10] = loc10
         }
 
-        this.defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
+        this.defineAvatars.filter { this.loc11[it.characterId] != null }.forEach { it.friend = true }
     }
 
+    //TODO: 未完成だから仕上げる
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
+        var bb = this.areaData.writeTo(buffer)
+
+        bb.writeRawInt(this.placeFurnitures.size)
+
+        for (placeFurniture in this.placeFurnitures) {
+            bb.writeString(placeFurniture.characterId)
+            bb.writeRawInt(placeFurniture.sequence)
+
+            bb.writeRawShort(placeFurniture.x)
+            bb.writeRawShort(placeFurniture.y)
+            bb.writeRawShort(placeFurniture.z)
+
+            bb.writeRawByte(placeFurniture.direction)
+            bb.writeString(placeFurniture.ownerId)
+        }
+
+        bb.writeRawInt(this.defineFurnitures.size)
+
+        for (defineFurniture in this.defineFurnitures) {
+            bb.writeRawShort(defineFurniture.parts.size.toShort())
+
+            bb.writeString(defineFurniture.characterId)
+
+            bb.writeRawByte(defineFurniture.type)
+
+            bb.writeString(defineFurniture.category)
+            bb.writeString(defineFurniture.name)
+            bb.writeString(defineFurniture.description)
+            bb.writeString(defineFurniture.actionCode)
+
+            for (part in defineFurniture.parts) {
+                bb = part.writeTo(bb)
+            }
+        }
+
+        bb.writeRawInt(this.placeAvatars.size)
+
+        for(i in 1..this.placeAvatars.size){
+            val placeAvatar = this.placeAvatars[i - 1]
+            val defineAvatar = this.defineAvatars[i - 1]
+            val avatarData = defineAvatar.data
+
+            bb = avatarData.writeTo(bb)
+
+            bb.writeRawShort(placeAvatar.x)
+            bb.writeRawShort(placeAvatar.y)
+            bb.writeRawShort(placeAvatar.z)
+
+            bb.writeRawByte(placeAvatar.direction)
+            bb.writeRawByte(placeAvatar.status)
+            bb.writeRawByte(placeAvatar.tired)
+            bb.writeRawByte(placeAvatar.mode)
+        }
+
+        bb.writeRawInt(this.definePets.size)
+
+        for (i in 1..this.definePets.size ) {
+            val definePet = this.definePets[i - 1]
+            val placePet = this.placePets[i - 1]
+
+            bb = definePet.data.writeTo(bb)
+
+            bb.writeRawShort(placePet.x)
+            bb.writeRawShort(placePet.y)
+            bb.writeRawShort(placePet.z)
+
+            bb.writeRawByte(placePet.direction)
+            bb.writeBoolean(placePet.sleeping)
+
+        }
+
+        bb.writeRawInt(this.placeActionItems.size)
+
+        for (placeActionItem in this.placeActionItems) {
+            if(placeActionItem.mode == 0){
+                bb.writeString(placeActionItem.itemType)
+                bb.writeString(placeActionItem.itemCode)
+                bb.writeString(placeActionItem.ownerCode)
+                bb.writeRawInt(placeActionItem.sequence)
+
+                bb.writeRawByte(placeActionItem.actionItemType)
+
+                bb.writeRawShort(placeActionItem.x)
+                bb.writeRawShort(placeActionItem.y)
+                bb.writeRawShort(placeActionItem.z)
+            }
+            else{
+                bb.writeString(placeActionItem.itemCode)
+                bb.writeString(placeActionItem.itemType)
+                bb.writeRawInt(placeActionItem.sequence)
+                bb.writeString(placeActionItem.ownerCode)
+                bb.writeRawShort(placeActionItem.x)
+                bb.writeRawShort(placeActionItem.y)
+                bb.writeRawShort(placeActionItem.z)
+            }
+        }
+
+        bb.writeRawInt(this.loc9)
+
+        bb.writeBoolean(this.isChannelActor)
+        bb.writeRawDouble(this.serverTime)
+        bb.writeBoolean(this.isRefleshedCosmeItem)
+        bb.writeBoolean(this.isAllowRoomChange)
+
+        bb.writeRawByte(this.loc11.size.toByte())
+
+        for (mutableEntry in this.loc11) {
+            bb.writeString(mutableEntry.key)
+        }
+
+        dump("[Write] ${bb.build().array().toHexString()}")
+
         return null
     }
 }

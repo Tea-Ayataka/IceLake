@@ -18,7 +18,7 @@ class BodyItemData {
 
         bb.writeRawInt(this.size)
 
-        this.items.forEach { bb.writeRawString(it) }
+        this.items.forEach { bb.writeString(it) }
 
         return bb
     }

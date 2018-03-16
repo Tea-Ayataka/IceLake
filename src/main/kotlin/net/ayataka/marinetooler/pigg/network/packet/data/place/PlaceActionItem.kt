@@ -5,10 +5,12 @@ class PlaceActionItem {
     var itemCode = ""
     var itemType = ""
     var ownerCode = ""
-    var actionItemType = 2
+    var actionItemType: Byte = 2
     var x: Short = 0
     var y: Short = 0
     var z: Short = 0
+
+    var mode = 0
 
     fun clone() : PlaceActionItem{
         return this
