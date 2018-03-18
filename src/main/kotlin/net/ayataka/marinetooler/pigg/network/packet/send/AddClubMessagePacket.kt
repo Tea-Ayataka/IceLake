@@ -16,13 +16,13 @@ class AddClubMessagePacket : Packet() {
     var msg = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.areaCode = buffer.readString()
-        this.msg = buffer.readString()
+        areaCode = buffer.readString()
+        msg = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.areaCode)
-        buffer.writeString(this.msg)
+        buffer.writeString(areaCode)
+        buffer.writeString(msg)
 
         return buffer
     }

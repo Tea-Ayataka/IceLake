@@ -12,11 +12,11 @@ class NotifyUserRoomEnteredPacket : Packet() {
     var userCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.userCode = buffer.readString()
+        userCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.userCode)
+        buffer.writeString(userCode)
         return buffer
     }
 }

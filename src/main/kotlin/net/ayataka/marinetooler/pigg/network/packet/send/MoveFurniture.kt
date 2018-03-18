@@ -18,21 +18,21 @@ class MoveFurniture : Packet() {
     var direction: Byte = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.sequence = buffer.readInt()
-        this.direction = buffer.readByte()
-        this.x = buffer.readInt()
-        this.y = buffer.readInt()
-        this.z = buffer.readInt()
+        sequence = buffer.readInt()
+        direction = buffer.readByte()
+        x = buffer.readInt()
+        y = buffer.readInt()
+        z = buffer.readInt()
 
-        dump("Sequence: ${this.sequence}, Direction: ${this.direction}, Pos: ${this.x} ${this.y} ${this.z}")
+        dump("Sequence: ${sequence}, Direction: ${direction}, Pos: ${x} ${y} ${z}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.sequence)
-        buffer.writeRawByte(this.direction)
-        buffer.writeRawInt(this.x)
-        buffer.writeRawInt(this.y)
-        buffer.writeRawInt(this.z)
+        buffer.writeRawInt(sequence)
+        buffer.writeRawByte(direction)
+        buffer.writeRawInt(x)
+        buffer.writeRawInt(y)
+        buffer.writeRawInt(z)
         return buffer
     }
 }

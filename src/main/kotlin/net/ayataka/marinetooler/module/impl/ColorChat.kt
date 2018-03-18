@@ -13,7 +13,7 @@ object ColorChat : Module() {
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is TalkPacket) {
-            packet.color = this.getRGB(this.color)
+            packet.color = getRGB(color)
         }
     }
 

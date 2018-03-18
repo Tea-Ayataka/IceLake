@@ -18,7 +18,7 @@ object InstantDonator : Module() {
             val donatePacket = ContributeClubFurniturePacket()
             donatePacket.areaCode = packet.areaCode
             donatePacket.furnitureId = packet.furnitureId
-            donatePacket.message = this.message
+            donatePacket.message = message
 
             event.packet = donatePacket
             // Pigg.receive(CheckContributeClubFurnitureResult())
@@ -26,7 +26,7 @@ object InstantDonator : Module() {
         else if(packet is AddClubMessagePacket){
             packet.canceled = true
 
-            this.message = packet.msg
+            message = packet.msg
         }
     }
 }

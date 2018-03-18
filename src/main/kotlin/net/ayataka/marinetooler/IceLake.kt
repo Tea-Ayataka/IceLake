@@ -35,7 +35,7 @@ class IceLake : Application() {
         stage.isAlwaysOnTop = true
         stage.icons.add(Image("icon.png"))
         stage.setOnHidden {
-            this.browser?.shutdown()
+            browser?.shutdown()
             System.exit(0)
         }
         stage.show()
@@ -47,7 +47,7 @@ class IceLake : Application() {
         HttpProxy(8080, false).start()
 
         // Start chromium browser
-        this.browser = InternetExplorer()
+        browser = InternetExplorer()
     }
 
     fun showError(msg: String) {

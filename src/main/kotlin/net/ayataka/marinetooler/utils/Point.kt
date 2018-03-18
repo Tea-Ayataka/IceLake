@@ -2,8 +2,8 @@ package net.ayataka.marinetooler.utils
 
 class Point {
     constructor(x: Float, y: Float){
-        this.x = x
-        this.y = y
+        x = x
+        y = y
     }
 
     constructor()
@@ -12,6 +12,6 @@ class Point {
     var y: Float = 0F
 
     fun toArray(): Array<Float>{
-        return arrayOf(this.x, this. y)
+        return arrayOf(x,  y)
     }
 }

@@ -14,17 +14,17 @@ open class GachaItemData {
     var setItemData = mutableListOf<ShopSetItemData>()
 
     fun readFrom(buffer: ByteBuilder) {
-        this.code = buffer.readString()
-        this.type = buffer.readString()
-        this.name = buffer.readString()
-        this.rarity = buffer.readByte()
-        this.quantity = buffer.readInt()
-        this.setItemSize = buffer.readInt()
+        code = buffer.readString()
+        type = buffer.readString()
+        name = buffer.readString()
+        rarity = buffer.readByte()
+        quantity = buffer.readInt()
+        setItemSize = buffer.readInt()
 
-        (0 until this.setItemSize).forEach {
+        (0 until setItemSize).forEach {
             val data = ShopSetItemData()
             data.readFrom(buffer)
-            this.setItemData.add(data)
+            setItemData.add(data)
         }
     }
 }

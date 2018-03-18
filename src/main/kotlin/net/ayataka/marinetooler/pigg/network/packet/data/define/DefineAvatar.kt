@@ -10,14 +10,14 @@ class DefineAvatar : DefineData() {
     var friend = false
 
     fun readData(buffer: ByteBuilder){
-        this.data = AvatarData()
+        data = AvatarData()
 
-        this.data.readFrom(buffer)
-        this.friend = false
+        data.readFrom(buffer)
+        friend = false
     }
 
     fun writeData(buffer: ByteBuilder): ByteBuilder{
-        return this.data.writeTo(buffer)
+        return data.writeTo(buffer)
     }
 
     fun clone(): DefineAvatar{

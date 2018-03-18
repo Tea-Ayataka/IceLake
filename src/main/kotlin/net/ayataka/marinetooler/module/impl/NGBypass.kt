@@ -14,7 +14,7 @@ object NGBypass : Module() {
         val packet = event.packet
 
         if (packet is TalkPacket) {
-            for (line in this.ngWords) {
+            for (line in ngWords) {
                 packet.text = packet.text.replace(line, line.first() + "\n" + line.substring(1))
             }
         }

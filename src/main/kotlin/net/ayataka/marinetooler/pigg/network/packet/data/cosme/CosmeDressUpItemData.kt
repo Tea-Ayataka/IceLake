@@ -8,15 +8,15 @@ class CosmeDressUpItemData {
     var newParts = false
 
     fun readFrom(buffer: ByteBuilder) {
-        this.itemCode = buffer.readString()
-        this.type = buffer.readString()
-        this.newParts = buffer.readBoolean()
+        itemCode = buffer.readString()
+        type = buffer.readString()
+        newParts = buffer.readBoolean()
     }
 
     fun writeTo(): ByteBuilder {
         return ByteBuilder()
-                .writeString(this.itemCode)
-                .writeString(this.type)
-                .writeBoolean(this.newParts)
+                .writeString(itemCode)
+                .writeString(type)
+                .writeBoolean(newParts)
     }
 }

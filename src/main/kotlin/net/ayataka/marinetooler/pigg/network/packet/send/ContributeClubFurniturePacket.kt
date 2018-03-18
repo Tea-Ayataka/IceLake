@@ -14,15 +14,15 @@ class ContributeClubFurniturePacket : Packet() {
     var message = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.areaCode = buffer.readString()
-        this.furnitureId = buffer.readString()
-        this.message = buffer.readString()
+        areaCode = buffer.readString()
+        furnitureId = buffer.readString()
+        message = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.areaCode)
-        buffer.writeString(this.furnitureId)
-        buffer.writeString(this.message)
+        buffer.writeString(areaCode)
+        buffer.writeString(furnitureId)
+        buffer.writeString(message)
 
         return buffer
     }

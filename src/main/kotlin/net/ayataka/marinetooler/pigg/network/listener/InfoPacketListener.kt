@@ -19,7 +19,7 @@ class InfoPacketListener : IPacketListener {
     // Raw
     override fun send(buffer: ByteBuffer): ByteBuffer? {
         Protocol.convert(buffer, ServerType.INFO)?.let {
-            val packet = this.onSend(it)
+            val packet = onSend(it)
             return if (packet.canceled) null else packet.write() ?: buffer
         }
 
@@ -28,7 +28,7 @@ class InfoPacketListener : IPacketListener {
 
     override fun receive(buffer: ByteBuffer): ByteBuffer? {
         Protocol.convert(buffer, ServerType.INFO)?.let {
-            val packet = this.onReceive(it)
+            val packet = onReceive(it)
             return if (packet.canceled) null else packet.write() ?: buffer
         }
 

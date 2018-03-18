@@ -15,18 +15,18 @@ class WServer(private val ip: String, private val prt: Int, private val proxy: W
         println("[WS SERVER] New WebSocket connection with ${handshake!!.resourceDescriptor}")
 
         // Initialize and start client
-        this.proxy.client = WClient(this.proxy.remoteUri, this.proxy)
-        this.proxy.client!!.connect()
+        proxy.client = WClient(proxy.remoteUri, proxy)
+        proxy.client!!.connect()
     }
 
     override fun onClose(conn: WebSocket?, code: Int, reason: String?, remote: Boolean) {
         println("[WS SERVER] Disconnected.")
-        this.proxy.client!!.close()
+        proxy.client!!.close()
     }
 
     override fun onMessage(conn: WebSocket?, message: String?) {
         println("[WS SEND] : $message")
-        this.proxy.client!!.send(message)
+        proxy.client!!.send(message)
     }
 
     override fun onMessage(conn: WebSocket, message: ByteBuffer) {
@@ -35,15 +35,15 @@ class WServer(private val ip: String, private val prt: Int, private val proxy: W
         var data: ByteBuffer = message
 
         // Fire packet event
-        this.proxy.packetListener?.let {
+        proxy.packetListener?.let {
             data = it.send(data) ?: return // Canceled packet will be null.
         }
 
-        this.proxy.client!!.send(data)
+        proxy.client!!.send(data)
     }
 
     override fun onStart() {
-        info("[WS SERVER] Server started on ${this.ip}:${this.prt}")
+        info("[WS SERVER] Server started on ${ip}:${prt}")
     }
 
     override fun onError(conn: WebSocket?, ex: Exception?) {

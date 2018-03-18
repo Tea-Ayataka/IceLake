@@ -22,7 +22,7 @@ class ProxyHandler : HttpRequestHandler {
     private val httpParams = SyncBasicHttpParams()
 
     init {
-        this.httpParams
+        httpParams
                 .setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000)
                 .setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, 8 * 1024)
                 .setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false)
@@ -80,7 +80,7 @@ class ProxyHandler : HttpRequestHandler {
         val outSocket = Socket(host, port)
         val outConnection = DefaultHttpClientConnection()
 
-        outConnection.bind(outSocket, this.httpParams)
+        outConnection.bind(outSocket, httpParams)
 
         //info("Outgoing connection to ${outSocket.inetAddress}")
 
@@ -90,7 +90,7 @@ class ProxyHandler : HttpRequestHandler {
         val remoteRequest = BasicHttpRequest(request.requestLine.method, path, request.requestLine.protocolVersion)
         remoteRequest.setHeaders(request.allHeaders)
 
-        val remoteResponse = this.httpExecutor.execute(remoteRequest, outConnection, context)
+        val remoteResponse = httpExecutor.execute(remoteRequest, outConnection, context)
         val responseEntity = remoteResponse.entity
 
         // Grab data
@@ -115,7 +115,7 @@ class ProxyHandler : HttpRequestHandler {
 
         //responseData = "<h2> Intercepted!!!! FUCK DAMEGA PIGG!!! </h2>".toByteArray()
 
-        this.httpExecutor.postProcess(response, this.httpProcessor, context)
+        httpExecutor.postProcess(response, httpProcessor, context)
 
         remoteResponse.removeProxyHeaders()
 

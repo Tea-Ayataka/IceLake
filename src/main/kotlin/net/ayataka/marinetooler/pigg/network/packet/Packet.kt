@@ -20,19 +20,19 @@ abstract class Packet {
     protected abstract fun writeTo(buffer: ByteBuilder): ByteBuilder?
 
     fun read(buffer: ByteBuilder) {
-        if (this.encrypted) {
+        if (encrypted) {
             buffer.pos(10) // Move pos to get body length
-            val body = this.decrypt(buffer.readBytes())
+            val body = decrypt(buffer.readBytes())
             val decrypted = ByteBuilder().writeRawBytes(body)
-            this.readFrom(ByteBuilder(decrypted.build()))
+            readFrom(ByteBuilder(decrypted.build()))
         } else {
             buffer.skipHeader()
-            this.readFrom(buffer)
+            readFrom(buffer)
         }
     }
 
     fun write(): ByteBuffer? {
-        return this.format(this.writeTo(ByteBuilder()))
+        return format(writeTo(ByteBuilder()))
     }
 
     private fun format(buffer: ByteBuilder?): ByteBuffer? {
@@ -44,11 +44,11 @@ abstract class Packet {
         val formatted = ByteBuilder()
 
         // Write header
-        this.writeHeader(formatted)
+        writeHeader(formatted)
 
         // Write encrypted body with length
-        if (this.encrypted) {
-            body = this.encrypt(body)
+        if (encrypted) {
+            body = encrypt(body)
         }
         formatted.writeRawShort(body.size.toShort())
         formatted.writeRawBytes(body)
@@ -62,19 +62,19 @@ abstract class Packet {
 
     private fun writeHeader(buffer: ByteBuilder) {
         buffer.writeRawBytes("00 10 00 00 00 00".fromHexToBytes())
-        buffer.writeRawShort(this.packetId)
+        buffer.writeRawShort(packetId)
         buffer.writeRawBytes("00 00".fromHexToBytes())
     }
 
     private fun decrypt(source: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("DES/ECB/PKCS5Padding")
-        cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(Protocol.cipherKey[this.server], "DES"))
+        cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(Protocol.cipherKey[server], "DES"))
         return cipher.doFinal(source)
     }
 
     private fun encrypt(source: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("DES/ECB/PKCS5Padding")
-        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(Protocol.cipherKey[this.server], "DES"))
+        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(Protocol.cipherKey[server], "DES"))
         return cipher.doFinal(source)
     }
 }

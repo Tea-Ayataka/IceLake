@@ -14,25 +14,25 @@ class BodyPositionData {
     var mole2 = Point()
 
     fun readFrom(buffer: ByteBuilder){
-        this.eye = Point(buffer.readFloat(), buffer.readFloat())
-        this.eyebrow = Point(buffer.readFloat(), buffer.readFloat())
-        this.cheek = Point(buffer.readFloat(), buffer.readFloat())
-        this.nose = Point(buffer.readFloat(), buffer.readFloat())
-        this.mouth = Point(buffer.readFloat(), buffer.readFloat())
-        this.beard = Point(buffer.readFloat(), buffer.readFloat())
-        this.mole1 = Point(buffer.readFloat(), buffer.readFloat())
-        this.mole2 = Point(buffer.readFloat(), buffer.readFloat())
+        eye = Point(buffer.readFloat(), buffer.readFloat())
+        eyebrow = Point(buffer.readFloat(), buffer.readFloat())
+        cheek = Point(buffer.readFloat(), buffer.readFloat())
+        nose = Point(buffer.readFloat(), buffer.readFloat())
+        mouth = Point(buffer.readFloat(), buffer.readFloat())
+        beard = Point(buffer.readFloat(), buffer.readFloat())
+        mole1 = Point(buffer.readFloat(), buffer.readFloat())
+        mole2 = Point(buffer.readFloat(), buffer.readFloat())
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
-        this.eye.toArray().forEach { buffer.writeRawFloat(it) }
-        this.eyebrow.toArray().forEach { buffer.writeRawFloat(it) }
-        this.cheek.toArray().forEach { buffer.writeRawFloat(it) }
-        this.nose.toArray().forEach { buffer.writeRawFloat(it) }
-        this.mouth.toArray().forEach { buffer.writeRawFloat(it) }
-        this.beard.toArray().forEach { buffer.writeRawFloat(it) }
-        this.mole1.toArray().forEach { buffer.writeRawFloat(it) }
-        this.mole2.toArray().forEach { buffer.writeRawFloat(it) }
+        eye.toArray().forEach { buffer.writeRawFloat(it) }
+        eyebrow.toArray().forEach { buffer.writeRawFloat(it) }
+        cheek.toArray().forEach { buffer.writeRawFloat(it) }
+        nose.toArray().forEach { buffer.writeRawFloat(it) }
+        mouth.toArray().forEach { buffer.writeRawFloat(it) }
+        beard.toArray().forEach { buffer.writeRawFloat(it) }
+        mole1.toArray().forEach { buffer.writeRawFloat(it) }
+        mole2.toArray().forEach { buffer.writeRawFloat(it) }
 
         return buffer
     }

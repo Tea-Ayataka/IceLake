@@ -13,13 +13,13 @@ class GetDiaryPacket : Packet() {
     var isFeed = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
-        this.isFeed = buffer.readBoolean()
+        usercode = buffer.readString()
+        isFeed = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.usercode)
-        buffer.writeBoolean(this.isFeed)
+        buffer.writeString(usercode)
+        buffer.writeBoolean(isFeed)
         return buffer
     }
 }

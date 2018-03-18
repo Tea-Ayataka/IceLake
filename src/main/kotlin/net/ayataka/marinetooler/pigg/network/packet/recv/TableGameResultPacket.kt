@@ -21,27 +21,27 @@ class TableGameResultPacket : Packet() {
     var data: ByteArray? = null
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.method = buffer.readString()
-        this.serial = buffer.readBoolean()
+        method = buffer.readString()
+        serial = buffer.readBoolean()
 
         val hasData = buffer.readBoolean()
 
         if(hasData){
-            this.data = buffer.readAllBytes()
+            data = buffer.readAllBytes()
         }
 
-        info(" METHOD IS ${this.method} $hasData")
+        info(" METHOD IS ${method} $hasData")
 
-        info(this.serial.toString())
+        info(serial.toString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.method)
-        buffer.writeBoolean(this.serial)
+        buffer.writeString(method)
+        buffer.writeBoolean(serial)
 
-        buffer.writeBoolean(this.data != null)
+        buffer.writeBoolean(data != null)
 
-        this.data?.let { buffer.writeRawBytes(it) }
+        data?.let { buffer.writeRawBytes(it) }
 
         return buffer
     }

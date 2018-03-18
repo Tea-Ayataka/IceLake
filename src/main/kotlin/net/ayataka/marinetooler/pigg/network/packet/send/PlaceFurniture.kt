@@ -19,23 +19,23 @@ class PlaceFurniture : Packet() {
     var isFinishTutorial = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.code = buffer.readString()
-        this.direction = buffer.readByte()
-        this.x = buffer.readInt()
-        this.y = buffer.readInt()
-        this.z = buffer.readInt()
-        this.isFinishTutorial = buffer.readBoolean()
+        code = buffer.readString()
+        direction = buffer.readByte()
+        x = buffer.readInt()
+        y = buffer.readInt()
+        z = buffer.readInt()
+        isFinishTutorial = buffer.readBoolean()
 
-        dump("Code: ${this.code}, Direction: ${this.direction}, Pos: ${this.x} ${this.y} ${this.z}, isFinishTutorial: ${this.isFinishTutorial}")
+        dump("Code: ${code}, Direction: ${direction}, Pos: ${x} ${y} ${z}, isFinishTutorial: ${isFinishTutorial}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.code)
-        buffer.writeRawByte(this.direction)
-        buffer.writeRawInt(this.x)
-        buffer.writeRawInt(this.y)
-        buffer.writeRawInt(this.z)
-        buffer.writeBoolean(this.isFinishTutorial)
+        buffer.writeString(code)
+        buffer.writeRawByte(direction)
+        buffer.writeRawInt(x)
+        buffer.writeRawInt(y)
+        buffer.writeRawInt(z)
+        buffer.writeBoolean(isFinishTutorial)
         return buffer
     }
 }

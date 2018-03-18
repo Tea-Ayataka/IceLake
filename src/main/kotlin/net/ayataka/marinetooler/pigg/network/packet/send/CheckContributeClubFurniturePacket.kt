@@ -16,8 +16,8 @@ class CheckContributeClubFurniturePacket : Packet() {
     var furnitureId = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.areaCode = buffer.readString()
-        this.furnitureId = buffer.readString()
+        areaCode = buffer.readString()
+        furnitureId = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

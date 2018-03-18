@@ -13,13 +13,13 @@ class ListAreaTopResultPacket : Packet() {
     var url = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.text = buffer.readString()
-        this.url = buffer.readString()
+        text = buffer.readString()
+        url = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.text)
-        buffer.writeString(this.url)
+        buffer.writeString(text)
+        buffer.writeString(url)
 
         return buffer
     }

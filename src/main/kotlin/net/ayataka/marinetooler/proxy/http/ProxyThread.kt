@@ -26,18 +26,18 @@ class ProxyThread(
         // TODO: Refactor
         try {
             // Handle request
-            while (!Thread.interrupted() && this.connection.isOpen) {
+            while (!Thread.interrupted() && connection.isOpen) {
                 sslMode = context.getAttribute("ssl.mode") as SSLMode
 
                 if (sslMode != SSLMode.NONE) {
                     dump("Enabling $sslMode tunneling mode...")
                     break
                 } else {
-                    this.httpService.handleRequest(this.connection, context)
+                    httpService.handleRequest(connection, context)
                     sslMode = context.getAttribute("ssl.mode") as SSLMode
 
                     if (sslMode == SSLMode.NONE) {
-                        this.connection.close()
+                        connection.close()
                     }
                 }
             }
@@ -53,8 +53,8 @@ class ProxyThread(
                 val remoteSocket = if (sslMode == SSLMode.WEBSOCK_SECURE) Socket("localhost", 443) else Socket(host, port)
 
                 // Start TCP Relayer
-                val sender = TCPRelayer(this.socket, remoteSocket)
-                val reader = TCPRelayer(remoteSocket, this.socket)
+                val sender = TCPRelayer(socket, remoteSocket)
+                val reader = TCPRelayer(remoteSocket, socket)
 
                 sender.isDaemon = true
                 reader.isDaemon = true
@@ -66,7 +66,7 @@ class ProxyThread(
             //ex.printStackTrace()
         } finally {
             if (sslMode == SSLMode.NONE) {
-                this.connection.shutdown()
+                connection.shutdown()
             }
         }
     }

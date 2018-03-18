@@ -15,15 +15,15 @@ class TalkPacket : Packet() {
     var balloonColor = 0xFFFFFF
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.text = buffer.readString()
-        this.color = buffer.readInt()
-        this.balloonColor = buffer.readInt()
+        text = buffer.readString()
+        color = buffer.readInt()
+        balloonColor = buffer.readInt()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.text)
-        buffer.writeRawInt(this.color)
-        buffer.writeRawInt(this.balloonColor)
+        buffer.writeString(text)
+        buffer.writeRawInt(color)
+        buffer.writeRawInt(balloonColor)
         return buffer
     }
 }

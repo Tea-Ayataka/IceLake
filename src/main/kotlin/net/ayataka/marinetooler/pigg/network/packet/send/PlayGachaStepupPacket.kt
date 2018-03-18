@@ -19,23 +19,23 @@ class PlayGachaStepupPacket : Packet() {
     var categoryType = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.gachaCode = buffer.readString()
-        this.useCoupon = buffer.readBoolean()
-        this.useFreeAccount = buffer.readBoolean()
-        this.spendType = buffer.readByte()
-        this.categoryType = buffer.readInt()
-        this.playType = buffer.readByte()
+        gachaCode = buffer.readString()
+        useCoupon = buffer.readBoolean()
+        useFreeAccount = buffer.readBoolean()
+        spendType = buffer.readByte()
+        categoryType = buffer.readInt()
+        playType = buffer.readByte()
 
-        dump("GachaOpen Code: ${this.gachaCode} useCoupon: ${this.useCoupon} useFreeAcc: ${this.useFreeAccount} playType: ${this.playType} spendTime: ${this.spendType} categoryType: ${this.categoryType}")
+        dump("GachaOpen Code: ${gachaCode} useCoupon: ${useCoupon} useFreeAcc: ${useFreeAccount} playType: ${playType} spendTime: ${spendType} categoryType: ${categoryType}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.gachaCode)
-        buffer.writeBoolean(this.useCoupon)
-        buffer.writeBoolean(this.useFreeAccount)
-        buffer.writeRawByte(this.spendType)
-        buffer.writeRawInt(this.categoryType)
-        buffer.writeRawByte(this.playType)
+        buffer.writeString(gachaCode)
+        buffer.writeBoolean(useCoupon)
+        buffer.writeBoolean(useFreeAccount)
+        buffer.writeRawByte(spendType)
+        buffer.writeRawInt(categoryType)
+        buffer.writeRawByte(playType)
         return buffer
     }
 }

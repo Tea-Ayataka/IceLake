@@ -18,7 +18,7 @@ object Command : Module() {
 
             if (text.startsWith(".")) {
                 event.packet = CancelTypingPacket()
-                this.doCommand(text.substring(1))
+                doCommand(text.substring(1))
             }
         }
     }

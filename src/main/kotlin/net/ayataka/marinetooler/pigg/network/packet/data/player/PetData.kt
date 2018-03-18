@@ -26,36 +26,36 @@ class PetData {
     var actions = null
 
     fun isSelf(): Boolean{
-        return this.owner == CurrentUser.usercode
+        return owner == CurrentUser.usercode
     }
 
     fun readFrom(buffer: ByteBuilder)
     {
-        this.petId = buffer.readInt()
-        this.type = buffer.readString()
-        this.name = buffer.readString()
-        this.owner = buffer.readString()
-        this.treasuresID = buffer.readInt()
-        this.treasuresCode = buffer.readString()
-        this.colorId = buffer.readByte()
-        this.gender = buffer.readByte()
-        this.levelFeel = buffer.readByte()
-        this.levelFriendly = buffer.readByte()
-        this.category = buffer.readString()
+        petId = buffer.readInt()
+        type = buffer.readString()
+        name = buffer.readString()
+        owner = buffer.readString()
+        treasuresID = buffer.readInt()
+        treasuresCode = buffer.readString()
+        colorId = buffer.readByte()
+        gender = buffer.readByte()
+        levelFeel = buffer.readByte()
+        levelFriendly = buffer.readByte()
+        category = buffer.readString()
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawInt(this.petId)
-                .writeString(this.type)
-                .writeString(this.name)
-                .writeString(this.owner)
-                .writeRawInt(this.treasuresID)
-                .writeString(this.treasuresCode)
-                .writeRawByte(this.colorId)
-                .writeRawByte(this.gender)
-                .writeRawByte(this.levelFeel)
-                .writeRawByte(this.levelFriendly)
-                .writeString(this.category)
+                .writeRawInt(petId)
+                .writeString(type)
+                .writeString(name)
+                .writeString(owner)
+                .writeRawInt(treasuresID)
+                .writeString(treasuresCode)
+                .writeRawByte(colorId)
+                .writeRawByte(gender)
+                .writeRawByte(levelFeel)
+                .writeRawByte(levelFriendly)
+                .writeString(category)
     }
 }

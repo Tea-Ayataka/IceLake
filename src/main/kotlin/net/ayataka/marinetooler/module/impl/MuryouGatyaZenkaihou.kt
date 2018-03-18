@@ -16,7 +16,7 @@ object MuryouGatyaZenkaihou : Module() {
     private val queue = mutableListOf<String>()
 
     override fun onEnable() {
-        this.queue.clear()
+        queue.clear()
         val packet = GetPiggShopCategory()
         packet.type = "gacha"
         packet.category = "all"
@@ -39,19 +39,19 @@ object MuryouGatyaZenkaihou : Module() {
             info("Amount ${packet.items.filter { it.remainingFreePlayCount < 1 }.size}")
             info("Amount ${packet.items.filter { it.remainingFreePlayCount > 0 }.size}")
 
-            this.queue.addAll(packet.items.filter { it.remainingFreePlayCount > 0 && it.freePlayCountLabelState == 1.toByte()}.map { it.code })
+            queue.addAll(packet.items.filter { it.remainingFreePlayCount > 0 && it.freePlayCountLabelState == 1.toByte()}.map { it.code })
 
             timer(period = 1100) {
-                if (this@MuryouGatyaZenkaihou.queue.isEmpty()) {
-                    this.cancel()
+                if (queue.isEmpty()) {
+                    cancel()
                     info("Completed Gacha")
                     CurrentUser.showAlert("Completed Gacha")
 
                     return@timer
                 }
 
-                this@MuryouGatyaZenkaihou.doGacha(this@MuryouGatyaZenkaihou.queue.first())
-                this@MuryouGatyaZenkaihou.queue.removeAt(0)
+                doGacha(queue.first())
+                queue.removeAt(0)
             }
         }
     }

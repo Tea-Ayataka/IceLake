@@ -13,13 +13,13 @@ class ChangeWindowAquariumPacket : Packet() {
     var data = ByteArray(0)
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.method = buffer.readString()
-        this.data = buffer.readAllBytes()
+        method = buffer.readString()
+        data = buffer.readAllBytes()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.method)
-        buffer.writeRawBytes(this.data)
+        buffer.writeString(method)
+        buffer.writeRawBytes(data)
 
         return buffer
     }

@@ -14,15 +14,15 @@ class TravelBundlePacket : Packet() {
     var flag = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.categoryCode = buffer.readString()
-        this.areaCode = buffer.readString()
-        this.flag = buffer.readBoolean()
+        categoryCode = buffer.readString()
+        areaCode = buffer.readString()
+        flag = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.categoryCode)
-        buffer.writeString(this.areaCode)
-        buffer.writeBoolean(this.flag)
+        buffer.writeString(categoryCode)
+        buffer.writeString(areaCode)
+        buffer.writeBoolean(flag)
 
         return buffer
     }

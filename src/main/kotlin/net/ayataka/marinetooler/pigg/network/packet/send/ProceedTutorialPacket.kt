@@ -14,13 +14,13 @@ class ProceedTutorialPacket : Packet() {
     var step = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.step = buffer.readInt()
+        step = buffer.readInt()
 
-        info(" STEP ID IS ${this.step}")
+        info(" STEP ID IS ${step}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.step)
+        buffer.writeRawInt(step)
         return buffer
     }
 }

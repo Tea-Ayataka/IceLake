@@ -107,100 +107,100 @@ class MainWindow : Initializable {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         Tooler.mainWindow = this
 
-        this.tpX.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
-        this.tpY.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
-        this.tpZ.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpX.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpY.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpZ.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
 
-        //this.actionList.items.addAll(File("action").readLines())
+        //actionList.items.addAll(File("action").readLines())
 
         // TODO: Refactor
-        this.command.setOnKeyPressed {
+        command.setOnKeyPressed {
             if (it.code != KeyCode.ENTER)
                 return@setOnKeyPressed
 
             val text = (it.source as TextField).text
             Command.doCommand(text)
-            this.logBox.appendText("> $text\n")
+            logBox.appendText("> $text\n")
             (it.source as TextField).text = ""
         }
 
-        this.runAction.setOnAction {
-            CurrentUser.playAction(this.actionList.selectionModel.selectedItems.first())
+        runAction.setOnAction {
+            CurrentUser.playAction(actionList.selectionModel.selectedItems.first())
         }
 
-        this.copyAction.setOnAction {
-            Clipboard.getSystemClipboard().setContent(mapOf(Pair(DataFormat.PLAIN_TEXT, this.actionList.selectionModel.selectedItems.first())))
+        copyAction.setOnAction {
+            Clipboard.getSystemClipboard().setContent(mapOf(Pair(DataFormat.PLAIN_TEXT, actionList.selectionModel.selectedItems.first())))
         }
 
-        this.delAction.setOnAction {
-            this.actionList.items.remove(this.actionList.selectionModel.selectedItems.first())
+        delAction.setOnAction {
+            actionList.items.remove(actionList.selectionModel.selectedItems.first())
         }
 
-        this.skipTutorial.setOnAction {
+        skipTutorial.setOnAction {
             SkipTutorial.skip()
         }
 
-        this.autoGoodPigg.setOnAction {
+        autoGoodPigg.setOnAction {
             AutoGoodPigg.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.slotMacro.setOnAction {
+        slotMacro.setOnAction {
             SlotMacro.enabled = (it.source as ToggleButton).isSelected
         }
 
-        this.ngBypass.setOnAction {
+        ngBypass.setOnAction {
             NGBypass.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.moveGhost.setOnAction {
+        moveGhost.setOnAction {
             MoveGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.chatGhost.setOnAction {
+        chatGhost.setOnAction {
             ChatGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.chatGhost.setOnAction {
+        chatGhost.setOnAction {
             ChatGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.actionGhost.setOnAction {
+        actionGhost.setOnAction {
             ActionGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.colorChat.setOnAction {
+        colorChat.setOnAction {
             ColorChat.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.colorChatColor.setOnAction {
+        colorChatColor.setOnAction {
             ColorChat.color = (it.source as ColorPicker).value
         }
 
-        this.clickTPChk.setOnAction {
+        clickTPChk.setOnAction {
             ClickTP.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.skeetChk.setOnAction {
+        skeetChk.setOnAction {
             Skeet.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.freeGacha.setOnAction {
+        freeGacha.setOnAction {
             MuryouGatyaZenkaihou.enabled = true
         }
 
-        this.instantDonate.setOnAction {
+        instantDonate.setOnAction {
             InstantDonator.enabled = (it.source as CheckBox).isSelected
         }
 
         // Instant teleport
-        this.tpX.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(new, this.tpY.value, this.tpZ.value, 0)
+        tpX.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(new, tpY.value, tpZ.value, 0)
         }
-        this.tpY.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value, new, this.tpZ.value, 0)
+        tpY.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(tpX.value, new, tpZ.value, 0)
         }
-        this.tpZ.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value, this.tpY.value, new, 0)
+        tpZ.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(tpX.value, tpY.value, new, 0)
         }
 
         // Enable default modules
@@ -211,21 +211,21 @@ class MainWindow : Initializable {
 
     fun log(msg: String) {
         Platform.runLater({
-            this.logBox.appendText(msg + "\n")
+            logBox.appendText(msg + "\n")
         })
     }
 
     @EventListener
     fun onConnect(event: ConnectEvent) {
         Platform.runLater({
-            this.statusBar.text = "  Connecting..."
+            statusBar.text = "  Connecting..."
         })
     }
 
     @EventListener
     fun onDisconnect(event: DisconnectEvent) {
         Platform.runLater({
-            this.statusBar.text = "  Disconnected."
+            statusBar.text = "  Disconnected."
         })
     }
 
@@ -235,28 +235,28 @@ class MainWindow : Initializable {
 
         Platform.runLater({
             if (packet is LoginChatResultPacket) {
-                this.statusBar.text = "  Connected."
+                statusBar.text = "  Connected."
             }
 
-            if (this.targetSet.isSelected && packet is GetUserProfileResultPacket) {
-                this.targetSet.isSelected = false
+            if (targetSet.isSelected && packet is GetUserProfileResultPacket) {
+                targetSet.isSelected = false
 
                 Tooler.targetUser = packet.usercode
-                this.targetNick.text = "ニックネーム  ：　${packet.nickName}"
-                this.targetUsercode.text = "ユーザーコード：　${packet.usercode}"
+                targetNick.text = "ニックネーム  ：　${packet.nickName}"
+                targetUsercode.text = "ユーザーコード：　${packet.usercode}"
                 if (packet.amebaId.isEmpty()) {
-                    this.targetId.text = "アメーバID    ：　<未設定>"
-                    this.targetPic.image = Image("default-pigg.png")
+                    targetId.text = "アメーバID    ：　<未設定>"
+                    targetPic.image = Image("default-pigg.png")
                 } else {
-                    this.targetId.text = "アメーバID    ：　${packet.amebaId}"
-                    this.targetPic.image = Image("http://origin.contents.pigg.ameba.jp/api/84/user/${packet.amebaId}/image?type=png")
+                    targetId.text = "アメーバID    ：　${packet.amebaId}"
+                    targetPic.image = Image("http://origin.contents.pigg.ameba.jp/api/84/user/${packet.amebaId}/image?type=png")
                 }
             }
 
             if (packet is BaseAreaData) {
-                this.areaName.text = "名前         ：　${packet.areaData.areaName}"
-                this.areaSize.text = "サイズ        ：　${packet.areaData.sizeX} x ${packet.areaData.sizeY}"
-                this.areaCode.text = "エリアコード ：　${packet.areaData.categoryCode}/${packet.areaData.areaCode}"
+                areaName.text = "名前         ：　${packet.areaData.areaName}"
+                areaSize.text = "サイズ        ：　${packet.areaData.sizeX} x ${packet.areaData.sizeY}"
+                areaCode.text = "エリアコード ：　${packet.areaData.categoryCode}/${packet.areaData.areaCode}"
             }
 
             // Collect action
@@ -268,8 +268,8 @@ class MainWindow : Initializable {
                   }
                   file.writeText(actions)*/
 
-                if (!this.actionList.items.contains(packet.actionCode)) {
-                    this.actionList.items.add(packet.actionCode)
+                if (!actionList.items.contains(packet.actionCode)) {
+                    actionList.items.add(packet.actionCode)
                 }
             }
         })
@@ -281,12 +281,12 @@ class MainWindow : Initializable {
 
         Platform.runLater({
             if (packet is MoveEndPacket) {
-                this.areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
+                areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
             }
 
             if (packet is ClickPiggShopItemPacket && packet.itemType == "action") {
-                if (!this.actionList.items.contains(packet.itemCode)) {
-                    this.actionList.items.add(packet.itemCode)
+                if (!actionList.items.contains(packet.itemCode)) {
+                    actionList.items.add(packet.itemCode)
                 }
             }
         })

@@ -19,19 +19,19 @@ object Skeet : Module() {
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is MovePacket) {
-            this.skeeting = true
-            this.task?.cancel()
-            this.task?.purge()
-            this.task = timer(period = 50) {
-                this@Skeet.sendStop()
+            skeeting = true
+            task?.cancel()
+            task?.purge()
+            task = timer(period = 50) {
+                sendStop()
             }
         }
 
         if (packet is MoveEndPacket) {
             info("STOPPED SKEET")
-            this.skeeting = false
-            this.task?.cancel()
-            this.task?.purge()
+            skeeting = false
+            task?.cancel()
+            task?.purge()
         }
     }
 
@@ -42,7 +42,7 @@ object Skeet : Module() {
     }
 
     override fun onDisable() {
-        this.task?.cancel()
-        this.task?.purge()
+        task?.cancel()
+        task?.purge()
     }
 }

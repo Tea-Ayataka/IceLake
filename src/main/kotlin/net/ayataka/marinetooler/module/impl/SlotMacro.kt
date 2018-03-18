@@ -13,16 +13,16 @@ object SlotMacro : Module() {
     private var slotTimer: Timer? = null
 
     override fun onEnable() {
-        this.start()
+        start()
     }
 
     override fun onDisable() {
-        this.stop()
+        stop()
     }
 
     fun start() {
-        this.stop()
-        this.slotTimer = timer(period = 3000) {
+        stop()
+        slotTimer = timer(period = 3000) {
             val endGame = TableGamePacket()
             endGame.method = "onEndGame"
             endGame.data = ByteArray(0)
@@ -32,8 +32,8 @@ object SlotMacro : Module() {
     }
 
     fun stop() {
-        this.slotTimer?.cancel()
-        this.slotTimer?.purge()
+        slotTimer?.cancel()
+        slotTimer?.purge()
     }
 
     @EventListener

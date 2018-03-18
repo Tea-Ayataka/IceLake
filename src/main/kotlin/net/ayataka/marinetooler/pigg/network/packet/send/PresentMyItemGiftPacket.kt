@@ -16,21 +16,21 @@ class PresentMyItemGiftPacket : Packet() {
     var items = arrayListOf<UserItemData>()
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
-        this.message = buffer.readString()
+        usercode = buffer.readString()
+        message = buffer.readString()
         val itemsLength = buffer.readInt()
 
         for (i in 0 until itemsLength) {
-            this.items.add(UserItemData(buffer.readString(), buffer.readString(), buffer.readInt(), buffer.readInt()))
+            items.add(UserItemData(buffer.readString(), buffer.readString(), buffer.readInt(), buffer.readInt()))
         }
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.usercode)
-        buffer.writeString(this.message)
-        buffer.writeRawInt(this.items.size)
+        buffer.writeString(usercode)
+        buffer.writeString(message)
+        buffer.writeRawInt(items.size)
 
-        this.items.forEach {
+        items.forEach {
             buffer.writeString(it.item)
             buffer.writeString(it.type)
             buffer.writeRawInt(it.id)

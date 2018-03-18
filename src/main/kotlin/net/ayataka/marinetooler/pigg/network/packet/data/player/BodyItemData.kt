@@ -7,18 +7,18 @@ class BodyItemData {
     var size = 0
 
     fun readFrom(buffer: ByteBuilder){
-        this.size = buffer.readInt()
-        for (i in 1..this.size){
-            this.items.add(buffer.readString())
+        size = buffer.readInt()
+        for (i in 1..size){
+            items.add(buffer.readString())
         }
     }
 
     fun writeTo(): ByteBuilder{
         val bb = ByteBuilder()
 
-        bb.writeRawInt(this.size)
+        bb.writeRawInt(size)
 
-        this.items.forEach { bb.writeString(it) }
+        items.forEach { bb.writeString(it) }
 
         return bb
     }

@@ -15,16 +15,16 @@ class AddFavoritePacket : Packet() {
     var flag = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.userCode = buffer.readString()
-        this.timeStamp = buffer.readDouble()
-        this.flag = buffer.readBoolean()
+        userCode = buffer.readString()
+        timeStamp = buffer.readDouble()
+        flag = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.userCode)
-        buffer.writeRawDouble(this.timeStamp)
+        buffer.writeString(userCode)
+        buffer.writeRawDouble(timeStamp)
         //buffer.writeDoubleTimeStamp()
-        buffer.writeBoolean(this.flag)
+        buffer.writeBoolean(flag)
 
         return buffer
     }

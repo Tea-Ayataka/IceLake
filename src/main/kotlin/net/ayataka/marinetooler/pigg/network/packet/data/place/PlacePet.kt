@@ -11,21 +11,21 @@ class PlacePet {
     var sleeping = false
 
     fun readFrom(buffer: ByteBuilder){
-        this.petId = buffer.readInt()
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
-        this.direction = buffer.readByte()
-        this.sleeping = buffer.readBoolean()
+        petId = buffer.readInt()
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
+        direction = buffer.readByte()
+        sleeping = buffer.readBoolean()
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawInt(this.petId)
-                .writeRawShort(this.x)
-                .writeRawShort(this.y)
-                .writeRawShort(this.z)
-                .writeRawByte(this.direction)
-                .writeBoolean(this.sleeping)
+                .writeRawInt(petId)
+                .writeRawShort(x)
+                .writeRawShort(y)
+                .writeRawShort(z)
+                .writeRawByte(direction)
+                .writeBoolean(sleeping)
     }
 }

@@ -14,20 +14,20 @@ class TableGamePacket : Packet() {
     var data: ByteArray? = null
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.method = buffer.readString()
+        method = buffer.readString()
         val hasData = buffer.readBoolean()
 
         if (hasData) {
-            this.data = buffer.readAllBytes()
+            data = buffer.readAllBytes()
         }
 
-        info(" METHOD IS ${this.method} $hasData")
+        info(" METHOD IS ${method} $hasData")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.method)
-        buffer.writeBoolean(this.data != null)
-        this.data?.let { buffer.writeRawBytes(it) }
+        buffer.writeString(method)
+        buffer.writeBoolean(data != null)
+        data?.let { buffer.writeRawBytes(it) }
         return buffer
     }
 }

@@ -16,42 +16,42 @@ class PartData(val param2: Boolean) {
     var rawfacing = 0.0
 
     fun readFrom(buffer: ByteBuilder) {
-        this.height = buffer.readInt()
-        this.attachable = buffer.readBoolean()
-        this.sittable = buffer.readBoolean()
-        this.walkable = buffer.readBoolean()
+        height = buffer.readInt()
+        attachable = buffer.readBoolean()
+        sittable = buffer.readBoolean()
+        walkable = buffer.readBoolean()
 
         val facing = buffer.readByte()
 
-        this.rawfacing = facing.toDouble()
-        this.facing = Facing.walls[this.rawfacing.toInt()]
+        rawfacing = facing.toDouble()
+        facing = Facing.walls[rawfacing.toInt()]
 
         if(param2){
-            this.attachDirection = buffer.readByte()
+            attachDirection = buffer.readByte()
         }
 
-        this.rx = buffer.readByte()
-        this.ry = buffer.readByte()
+        rx = buffer.readByte()
+        ry = buffer.readByte()
 
         //必要ある気がしない
-        this.orgSittable = this.sittable
+        orgSittable = sittable
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder {
         val packet = buffer
-                .writeRawInt(this.height)
-                .writeBoolean(this.attachable)
-                .writeBoolean(this.sittable)
-                .writeBoolean(this.walkable)
+                .writeRawInt(height)
+                .writeBoolean(attachable)
+                .writeBoolean(sittable)
+                .writeBoolean(walkable)
 
-                .writeRawByte(this.rawfacing.toByte())
-                .writeBoolean(this.param2)
+                .writeRawByte(rawfacing.toByte())
+                .writeBoolean(param2)
 
-        this.attachDirection?.let { packet.writeRawByte(it) }
+        attachDirection?.let { packet.writeRawByte(it) }
 
         packet
-                .writeRawByte(this.rx)
-                .writeRawByte(this.ry)
+                .writeRawByte(rx)
+                .writeRawByte(ry)
 
         return packet
     }

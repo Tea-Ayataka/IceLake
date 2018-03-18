@@ -14,18 +14,18 @@ class AreaGamePlayPacket : Packet() {
     var data: ByteArray? = null
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.id = buffer.readInt()
+        id = buffer.readInt()
 
         if (buffer.array().size - buffer.getPos() > 0) {
-            this.data = buffer.readRawBytes(buffer.array().size - buffer.getPos())
+            data = buffer.readRawBytes(buffer.array().size - buffer.getPos())
         }
 
-        info("AREA GAME PLAY ${this.id} [${this.data?.size}")
+        info("AREA GAME PLAY ${id} [${data?.size}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.id)
-        this.data?.let { buffer.writeRawBytes(it) }
+        buffer.writeRawInt(id)
+        data?.let { buffer.writeRawBytes(it) }
         return buffer
     }
 }

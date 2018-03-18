@@ -15,9 +15,9 @@ class ClickPiggShopItemPacket : Packet() {
     var itemCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.shopCode = buffer.readString()
-        this.itemType = buffer.readString()
-        this.itemCode = buffer.readString()
+        shopCode = buffer.readString()
+        itemType = buffer.readString()
+        itemCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

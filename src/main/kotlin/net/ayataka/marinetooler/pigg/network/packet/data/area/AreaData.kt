@@ -15,33 +15,33 @@ class AreaData {
     var sizeY: Short = 0
 
     fun readFrom(buffer: ByteBuilder){
-        this.categoryCode = buffer.readString()
-        this.categoryName = buffer.readString()
-        this.areaCode = buffer.readString()
-        this.areaName = buffer.readString()
+        categoryCode = buffer.readString()
+        categoryName = buffer.readString()
+        areaCode = buffer.readString()
+        areaName = buffer.readString()
 
-        this.frontCode = buffer.readString()
-        this.wallCode = buffer.readString()
-        this.floorCode = buffer.readString()
-        this.windowCode = buffer.readString()
+        frontCode = buffer.readString()
+        wallCode = buffer.readString()
+        floorCode = buffer.readString()
+        windowCode = buffer.readString()
 
-        this.sizeX = buffer.readShort()
-        this.sizeY = buffer.readShort()
+        sizeX = buffer.readShort()
+        sizeY = buffer.readShort()
     }
 
     fun writeTo(buffer: ByteBuilder) : ByteBuilder{
         return buffer
-                .writeString(this.categoryCode)
-                .writeString(this.categoryName)
-                .writeString(this.areaCode)
-                .writeString(this.areaName)
+                .writeString(categoryCode)
+                .writeString(categoryName)
+                .writeString(areaCode)
+                .writeString(areaName)
 
-                .writeString(this.frontCode)
-                .writeString(this.wallCode)
-                .writeString(this.floorCode)
-                .writeString(this.windowCode)
+                .writeString(frontCode)
+                .writeString(wallCode)
+                .writeString(floorCode)
+                .writeString(windowCode)
 
-                .writeRawShort(this.sizeX)
-                .writeRawShort(this.sizeY)
+                .writeRawShort(sizeX)
+                .writeRawShort(sizeY)
     }
 }

@@ -14,13 +14,13 @@ class GetPiggShopCategory : Packet() {
     var category = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.type = buffer.readString()
-        this.category = buffer.readString()
+        type = buffer.readString()
+        category = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.type)
-        buffer.writeString(this.category)
+        buffer.writeString(type)
+        buffer.writeString(category)
         return buffer
     }
 }

@@ -15,13 +15,13 @@ class ActionPacket : Packet() {
     var actionId = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.actionId = buffer.readString()
+        actionId = buffer.readString()
 
-        dump(" ACTION ID IS ${this.actionId}")
+        dump(" ACTION ID IS ${actionId}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.actionId)
+        buffer.writeString(actionId)
         return buffer
     }
 }

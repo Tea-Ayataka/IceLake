@@ -13,13 +13,13 @@ class ActionResultPacket : Packet() {
     var actionCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
-        this.actionCode = buffer.readString()
+        usercode = buffer.readString()
+        actionCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.usercode)
-        buffer.writeString(this.actionCode)
+        buffer.writeString(usercode)
+        buffer.writeString(actionCode)
         return buffer
     }
 }

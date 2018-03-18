@@ -15,7 +15,7 @@ object ChatGhost : Module() {
 
         if (packet is TalkResultPacket) {
             if (packet.usercode == Tooler.targetUser) {
-                this.talk(packet.message)
+                talk(packet.message)
             }
         }
     }

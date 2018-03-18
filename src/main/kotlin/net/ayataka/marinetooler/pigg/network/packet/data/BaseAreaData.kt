@@ -47,12 +47,12 @@ open class BaseAreaData : Packet() {
     //一応動作は確認してるけどもっとデバッグが必要
     override fun readFrom(buffer: ByteBuilder) {
         dump("[Def] ${buffer.array().toHexString()}")
-        this.areaData = AreaData()
+        areaData = AreaData()
 
-        this.areaData.readFrom(buffer)
+        areaData.readFrom(buffer)
 
         // Get area users
-        this.users = readUCodesFromAreaPacket(buffer)
+        users = readUCodesFromAreaPacket(buffer)
 
         for(i in 1..buffer.readInt()){
             val placeFurniture = PlaceFurniture()
@@ -128,8 +128,8 @@ open class BaseAreaData : Packet() {
 
             defineAvatar.part = partData
 
-            this.placeAvatars.add(placeAvatar)
-            this.defineAvatars.add(defineAvatar)
+            placeAvatars.add(placeAvatar)
+            defineAvatars.add(defineAvatar)
         }
 
         for(i in 1..buffer.readInt()){
@@ -137,7 +137,7 @@ open class BaseAreaData : Packet() {
 
             definePet.data.readFrom(buffer)
 
-            this.definePets.add(definePet)
+            definePets.add(definePet)
 
             val placePet = PlacePet()
 
@@ -150,7 +150,7 @@ open class BaseAreaData : Packet() {
             placePet.direction = buffer.readByte()
             placePet.sleeping = buffer.readBoolean()
 
-            this.placePets.add(placePet)
+            placePets.add(placePet)
         }
 
         for(i in 1..buffer.readInt()){
@@ -169,7 +169,7 @@ open class BaseAreaData : Packet() {
 
             placeActionItem.mode = 0
 
-            this.placeActionItems.add(placeActionItem)
+            placeActionItems.add(placeActionItem)
         }
 
         for(i in 1..buffer.readInt()){
@@ -187,34 +187,34 @@ open class BaseAreaData : Packet() {
             placeActionItem.actionItemType = 2
 
             placeActionItem.mode = 1
-            this.placeActionItems.add(placeActionItem)
+            placeActionItems.add(placeActionItem)
         }
 
-        this.loc9 = buffer.readInt()
+        loc9 = buffer.readInt()
 
-        this.isAdmin = (this.loc9 and 1) > 0
-        this.isPatrol = (this.loc9 and 2) > 0
-        this.isChannelActor = buffer.readBoolean()
-        this.serverTime = buffer.readDouble()
-        this.isRefleshedCosmeItem = buffer.readBoolean()
-        this.isAllowRoomChange = buffer.readBoolean()
+        isAdmin = (loc9 and 1) > 0
+        isPatrol = (loc9 and 2) > 0
+        isChannelActor = buffer.readBoolean()
+        serverTime = buffer.readDouble()
+        isRefleshedCosmeItem = buffer.readBoolean()
+        isAllowRoomChange = buffer.readBoolean()
 
         for(i in 1..buffer.readByte()){
             val loc10 = buffer.readString()
 
-            this.loc11[loc10] = loc10
+            loc11[loc10] = loc10
         }
 
-        this.defineAvatars.filter { this.loc11[it.characterId] != null }.forEach { it.friend = true }
+        defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
     }
 
     //TODO: 未完成だから仕上げる
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        var bb = this.areaData.writeTo(buffer)
+        var bb = areaData.writeTo(buffer)
 
-        bb.writeRawInt(this.placeFurnitures.size)
+        bb.writeRawInt(placeFurnitures.size)
 
-        for (placeFurniture in this.placeFurnitures) {
+        for (placeFurniture in placeFurnitures) {
             bb.writeString(placeFurniture.characterId)
             bb.writeRawInt(placeFurniture.sequence)
 
@@ -226,9 +226,9 @@ open class BaseAreaData : Packet() {
             bb.writeString(placeFurniture.ownerId)
         }
 
-        bb.writeRawInt(this.defineFurnitures.size)
+        bb.writeRawInt(defineFurnitures.size)
 
-        for (defineFurniture in this.defineFurnitures) {
+        for (defineFurniture in defineFurnitures) {
             bb.writeRawShort(defineFurniture.parts.size.toShort())
 
             bb.writeString(defineFurniture.characterId)
@@ -245,11 +245,11 @@ open class BaseAreaData : Packet() {
             }
         }
 
-        bb.writeRawInt(this.placeAvatars.size)
+        bb.writeRawInt(placeAvatars.size)
 
-        for(i in 1..this.placeAvatars.size){
-            val placeAvatar = this.placeAvatars[i - 1]
-            val defineAvatar = this.defineAvatars[i - 1]
+        for(i in 1..placeAvatars.size){
+            val placeAvatar = placeAvatars[i - 1]
+            val defineAvatar = defineAvatars[i - 1]
             val avatarData = defineAvatar.data
 
             bb = avatarData.writeTo(bb)
@@ -264,11 +264,11 @@ open class BaseAreaData : Packet() {
             bb.writeRawByte(placeAvatar.mode)
         }
 
-        bb.writeRawInt(this.definePets.size)
+        bb.writeRawInt(definePets.size)
 
-        for (i in 1..this.definePets.size ) {
-            val definePet = this.definePets[i - 1]
-            val placePet = this.placePets[i - 1]
+        for (i in 1..definePets.size ) {
+            val definePet = definePets[i - 1]
+            val placePet = placePets[i - 1]
 
             bb = definePet.data.writeTo(bb)
 
@@ -281,9 +281,9 @@ open class BaseAreaData : Packet() {
 
         }
 
-        bb.writeRawInt(this.placeActionItems.size)
+        bb.writeRawInt(placeActionItems.size)
 
-        for (placeActionItem in this.placeActionItems) {
+        for (placeActionItem in placeActionItems) {
             if(placeActionItem.mode == 0){
                 bb.writeString(placeActionItem.itemType)
                 bb.writeString(placeActionItem.itemCode)
@@ -308,16 +308,16 @@ open class BaseAreaData : Packet() {
             }
         }
 
-        bb.writeRawInt(this.loc9)
+        bb.writeRawInt(loc9)
 
-        bb.writeBoolean(this.isChannelActor)
-        bb.writeRawDouble(this.serverTime)
-        bb.writeBoolean(this.isRefleshedCosmeItem)
-        bb.writeBoolean(this.isAllowRoomChange)
+        bb.writeBoolean(isChannelActor)
+        bb.writeRawDouble(serverTime)
+        bb.writeBoolean(isRefleshedCosmeItem)
+        bb.writeBoolean(isAllowRoomChange)
 
-        bb.writeRawByte(this.loc11.size.toByte())
+        bb.writeRawByte(loc11.size.toByte())
 
-        for (mutableEntry in this.loc11) {
+        for (mutableEntry in loc11) {
             bb.writeString(mutableEntry.key)
         }
 

@@ -14,6 +14,6 @@ fun ByteArray.toHexString(): String {
 }
 
 fun String.fromHexToBytes(): ByteArray {
-    val hex = this.replace(" ", "")
+    val hex = replace(" ", "")
     return Hex.decodeHex(hex.toCharArray())
 }

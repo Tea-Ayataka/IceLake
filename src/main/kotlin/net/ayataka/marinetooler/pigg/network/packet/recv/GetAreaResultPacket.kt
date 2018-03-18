@@ -15,17 +15,17 @@ class GetAreaResultPacket : Packet() {
     var protocol = String() // "ws"
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.type = buffer.readString()
-        this.areacode = buffer.readString()
-        this.chatServerUri = buffer.readString()
-        this.protocol = buffer.readString()
+        type = buffer.readString()
+        areacode = buffer.readString()
+        chatServerUri = buffer.readString()
+        protocol = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.type)
-        buffer.writeString(this.areacode)
-        buffer.writeString(this.chatServerUri)
-        buffer.writeString(this.protocol)
+        buffer.writeString(type)
+        buffer.writeString(areacode)
+        buffer.writeString(chatServerUri)
+        buffer.writeString(protocol)
         buffer.writeTimeStamp()
         return buffer
     }

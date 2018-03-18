@@ -24,17 +24,17 @@ class AvatarData {
     var cosme = mutableListOf<CosmeDressUpItemData>()
 
     fun readFrom(buffer: ByteBuilder){
-        this.userCode = buffer.readString()
-        this.amebaId = buffer.readString()
-        this.asUserId = buffer.readString()
-        this.nickName = buffer.readString()
-        this.part.gender = buffer.readByte()
-        this.part.readFrom(buffer)
-        this.color.readFrom(buffer)
-        this.position.readFrom(buffer)
+        userCode = buffer.readString()
+        amebaId = buffer.readString()
+        asUserId = buffer.readString()
+        nickName = buffer.readString()
+        part.gender = buffer.readByte()
+        part.readFrom(buffer)
+        color.readFrom(buffer)
+        position.readFrom(buffer)
 
         for(i in 1..buffer.readByte()){
-            this.item.items.add(buffer.readString())
+            item.items.add(buffer.readString())
         }
 
         for(i in 1..buffer.readByte()){
@@ -42,41 +42,41 @@ class AvatarData {
 
             data.readFrom(buffer)
 
-            this.cosme.add(data)
+            cosme.add(data)
         }
 
         for(i in 1..buffer.readByte()){
-            this.conditions.add(buffer.readString())
+            conditions.add(buffer.readString())
         }
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         var bb = buffer
 
-        bb.writeString(this.userCode)
-        .writeString(this.amebaId)
-        .writeString(this.asUserId)
-        .writeString(this.nickName)
+        bb.writeString(userCode)
+        .writeString(amebaId)
+        .writeString(asUserId)
+        .writeString(nickName)
 
-        bb = this.part.writeTo(bb)
-        bb = this.color.writeTo(bb)
-        bb = this.position.writeTo(bb)
+        bb = part.writeTo(bb)
+        bb = color.writeTo(bb)
+        bb = position.writeTo(bb)
 
-        bb.writeRawByte(this.item.items.size.toByte())
+        bb.writeRawByte(item.items.size.toByte())
 
-        this.item.items.forEach { bb.writeString(it) }
+        item.items.forEach { bb.writeString(it) }
 
-        bb.writeRawByte(this.cosme.size.toByte())
+        bb.writeRawByte(cosme.size.toByte())
 
-        this.cosme.forEach {
+        cosme.forEach {
             bb.writeString(it.itemCode)
                     .writeString(it.type)
                     .writeBoolean(it.newParts)
         }
 
-        bb.writeRawByte(this.conditions.size.toByte())
+        bb.writeRawByte(conditions.size.toByte())
 
-        this.conditions.forEach { bb.writeString(it) }
+        conditions.forEach { bb.writeString(it) }
 
         return bb
     }

@@ -15,15 +15,15 @@ class GetPiggShopGachaResultPacket : Packet() {
     var items = mutableListOf<ShopGachaData>()
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.type = buffer.readString()
-        this.category = buffer.readString()
+        type = buffer.readString()
+        category = buffer.readString()
 
         val length = buffer.readInt()
 
         (0 until length).forEach {
             val data = ShopGachaData()
             data.readFrom(buffer)
-            this.items.add(data)
+            items.add(data)
         }
     }
 

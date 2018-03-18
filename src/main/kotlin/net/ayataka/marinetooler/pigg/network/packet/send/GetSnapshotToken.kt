@@ -16,11 +16,11 @@ class GetSnapshotToken : Packet() {
     var type = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.type = buffer.readString()
+        type = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.type)
+        buffer.writeString(type)
         return buffer
     }
 }

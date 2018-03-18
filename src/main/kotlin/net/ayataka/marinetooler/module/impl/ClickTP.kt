@@ -21,9 +21,9 @@ object ClickTP : Module() {
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is MovePacket) {
-            if (this.meme && !this.moving) {
-                this.moving = true
-                this.goal = Vec3i(packet.x.toInt(), packet.y.toInt(), packet.z.toInt())
+            if (meme && !moving) {
+                moving = true
+                goal = Vec3i(packet.x.toInt(), packet.y.toInt(), packet.z.toInt())
 
                 val task = timer(period = 50) {
                     pos.x += if (goal.x > pos.x) 1 else if (goal.x < pos.x) -1 else 0
@@ -33,13 +33,13 @@ object ClickTP : Module() {
                     CurrentUser.teleport(pos.x, pos.y, pos.z, 0)
 
                     if (pos.equals(goal)) {
-                        this.cancel()
+                        cancel()
                         moving = false
                     }
                 }
 
                 timer(period = Long.MAX_VALUE, initialDelay = 5000) {
-                    this.cancel()
+                    cancel()
                     task.purge()
                     moving = false
                 }

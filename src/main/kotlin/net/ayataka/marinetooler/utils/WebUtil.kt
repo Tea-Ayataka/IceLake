@@ -17,22 +17,22 @@ fun validateUrl(urlString: String): Boolean {
 }
 
 fun HttpRequest.removeProxyHeaders() {
-    this.removeHeaders(HTTP.CONTENT_LEN)
-    this.removeHeaders(HTTP.TRANSFER_ENCODING)
-    this.removeHeaders(HTTP.CONN_DIRECTIVE)
-    this.removeHeaders(HTTP.CONN_KEEP_ALIVE)
-    this.removeHeaders("Proxy-Authenticate")
-    this.removeHeaders("Trailers")
-    this.removeHeaders("Upgrade")
-    this.removeHeaders("TE")
+    removeHeaders(HTTP.CONTENT_LEN)
+    removeHeaders(HTTP.TRANSFER_ENCODING)
+    removeHeaders(HTTP.CONN_DIRECTIVE)
+    removeHeaders(HTTP.CONN_KEEP_ALIVE)
+    removeHeaders("Proxy-Authenticate")
+    removeHeaders("Trailers")
+    removeHeaders("Upgrade")
+    removeHeaders("TE")
 }
 
 fun HttpResponse.removeProxyHeaders() {
-    this.removeHeaders(HTTP.CONTENT_LEN)
-    this.removeHeaders(HTTP.TRANSFER_ENCODING)
-    this.removeHeaders(HTTP.CONN_DIRECTIVE)
-    this.removeHeaders(HTTP.CONN_KEEP_ALIVE)
-    this.removeHeaders("Trailers")
-    this.removeHeaders("Upgrade")
-    this.removeHeaders("TE")
+    removeHeaders(HTTP.CONTENT_LEN)
+    removeHeaders(HTTP.TRANSFER_ENCODING)
+    removeHeaders(HTTP.CONN_DIRECTIVE)
+    removeHeaders(HTTP.CONN_KEEP_ALIVE)
+    removeHeaders("Trailers")
+    removeHeaders("Upgrade")
+    removeHeaders("TE")
 }

@@ -22,9 +22,9 @@ open class ListUserFurnitureResultPacket : Packet() {
     var loc10 = mutableListOf<Int>()
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.max = buffer.readInt()
+        max = buffer.readInt()
 
-        this.loc2 = buffer.readInt()
+        loc2 = buffer.readInt()
 
         for (i in 1..loc2){
             val furniture = StockFurniture()
@@ -39,8 +39,8 @@ open class ListUserFurnitureResultPacket : Packet() {
 
             val loc5 = buffer.readShort()
 
-            //this.loc5[i - 1] = loc5
-            this.loc5.add(loc5)
+            //loc5[i - 1] = loc5
+            loc5.add(loc5)
 
             val parts = mutableListOf<PartData>()
 
@@ -54,26 +54,26 @@ open class ListUserFurnitureResultPacket : Packet() {
             furniture.parts = parts
             furniture.time = buffer.readDouble()
 
-            this.furnitures.add(furniture)
+            furnitures.add(furniture)
         }
 
-        this.roomNum = buffer.readInt()
+        roomNum = buffer.readInt()
 
-        for (i in 1..this.roomNum){
+        for (i in 1..roomNum){
             val whatString1= buffer.readString()
             val loc10 = buffer.readInt()
 
-            //this.whatStrings1[i - 1] = whatString1
-            //this.loc10[i - 1] = loc10
+            //whatStrings1[i - 1] = whatString1
+            //loc10[i - 1] = loc10
 
-            this.whatStrings1.add(whatString1)
-            this.loc10.add(loc10)
+            whatStrings1.add(whatString1)
+            loc10.add(loc10)
 
             for(i2 in 1..loc10){
                 val whatString2 = buffer.readString()
 
-                this.whatStrings2.add(mutableListOf(whatString2))
-                this.placedFurnitures.add(buffer.readString())
+                whatStrings2.add(mutableListOf(whatString2))
+                placedFurnitures.add(buffer.readString())
             }
         }
     }

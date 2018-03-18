@@ -15,17 +15,17 @@ class CheckContributeClubFurnitureResult : Packet() {
     var isOverFurnitureMax = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.isContributable = buffer.readBoolean()
-        this.isNonContributableFurniture = buffer.readBoolean()
-        this.isOverFurnitureTypeMax = buffer.readBoolean()
-        this.isOverFurnitureMax = buffer.readBoolean()
+        isContributable = buffer.readBoolean()
+        isNonContributableFurniture = buffer.readBoolean()
+        isOverFurnitureTypeMax = buffer.readBoolean()
+        isOverFurnitureMax = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeBoolean(this.isContributable)
-        buffer.writeBoolean(this.isNonContributableFurniture)
-        buffer.writeBoolean(this.isOverFurnitureTypeMax)
-        buffer.writeBoolean(this.isOverFurnitureMax)
+        buffer.writeBoolean(isContributable)
+        buffer.writeBoolean(isNonContributableFurniture)
+        buffer.writeBoolean(isOverFurnitureTypeMax)
+        buffer.writeBoolean(isOverFurnitureMax)
         return buffer
     }
 }

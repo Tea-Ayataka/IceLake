@@ -13,26 +13,26 @@ class WebSocketProxy(ip: String, port: Int, val remoteUri: String, val packetLis
 
     init {
         // Start WServer with SSL certificate
-        this.server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
-        this.server.start()
+        server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
+        server.start()
     }
 
     fun stop() {
-        this.client?.close()
-        this.server.stop()
+        client?.close()
+        server.stop()
     }
 
     fun send(packet: Packet) {
         val data = packet.write()
         println("[WS SEND (FORCED)] ${data?.array()?.size} bytes")
         println(data?.array()?.toHexString())
-        this.client?.send(data)
+        client?.send(data)
     }
 
     fun receive(packet: Packet) {
         val data = packet.write()
         println("[WS RECV (FORCED)] ${data?.array()?.size} bytes")
         println(data?.array()?.toHexString())
-        this.server.broadcast(data?.array())
+        server.broadcast(data?.array())
     }
 }

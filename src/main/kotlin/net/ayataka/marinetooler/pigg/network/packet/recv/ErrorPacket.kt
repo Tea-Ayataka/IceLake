@@ -16,17 +16,17 @@ class ErrorPacket : Packet() {
     var exceptionTrace = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.code = buffer.readString()
-        this.message = buffer.readString()
-        this.exceptionClass = buffer.readString()
-        this.exceptionTrace = buffer.readString()
+        code = buffer.readString()
+        message = buffer.readString()
+        exceptionClass = buffer.readString()
+        exceptionTrace = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-       buffer.writeString(this.code)
-       buffer.writeString(this.message)
-       buffer.writeString(this.exceptionClass)
-       buffer.writeString(this.exceptionTrace)
+       buffer.writeString(code)
+       buffer.writeString(message)
+       buffer.writeString(exceptionClass)
+       buffer.writeString(exceptionTrace)
 
         return buffer
     }

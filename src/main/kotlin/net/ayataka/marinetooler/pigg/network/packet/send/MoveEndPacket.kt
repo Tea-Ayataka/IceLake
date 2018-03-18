@@ -17,19 +17,19 @@ class MoveEndPacket : Packet() {
     var dir: Byte = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
-        this.dir = buffer.readByte()
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
+        dir = buffer.readByte()
 
-        dump("MOVE END X: ${this.x} Y: ${this.y} Z: ${this.z} DIR: ${this.dir}")
+        dump("MOVE END X: ${x} Y: ${y} Z: ${z} DIR: ${dir}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawShort(this.x)
-        buffer.writeRawShort(this.y)
-        buffer.writeRawShort(this.z)
-        buffer.writeRawByte(this.dir)
+        buffer.writeRawShort(x)
+        buffer.writeRawShort(y)
+        buffer.writeRawShort(z)
+        buffer.writeRawByte(dir)
         return buffer
     }
 }

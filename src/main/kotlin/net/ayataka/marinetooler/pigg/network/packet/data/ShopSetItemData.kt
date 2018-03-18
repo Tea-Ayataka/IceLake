@@ -10,13 +10,13 @@ open class ShopSetItemData {
     var itemType = ""
 
     fun readFrom(buffer: ByteBuilder, hasType: Boolean = false) {
-        this.itemCode = buffer.readString()
-        this.itemCategory = buffer.readString()
-        this.itemName = buffer.readString()
-        this.itemQuantity = buffer.readInt()
+        itemCode = buffer.readString()
+        itemCategory = buffer.readString()
+        itemName = buffer.readString()
+        itemQuantity = buffer.readInt()
 
         if (hasType) {
-            this.itemType = buffer.readString()
+            itemType = buffer.readString()
         }
     }
 }

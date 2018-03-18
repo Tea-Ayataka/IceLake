@@ -22,69 +22,69 @@ object Protocol {
     val cipherKey = HashMap<ServerType, ByteArray>()
 
     init {
-        ServerType.values().forEach { this.packets[it] = HashMap() } // Init HashMap
+        ServerType.values().forEach { packets[it] = HashMap() } // Init HashMap
 
         // Register packets
         // SEND (Client bound)
-        this.register(MoveFurniture::class)
-        this.register(PlaceFurniture::class)
-        this.register(PlayGachaStepupPacket::class)
-        this.register(GetPiggShopCategory::class)
-        this.register(TravelBundlePacket::class)
-        this.register(GetShopPacket::class)
-        this.register(ClickPiggShopItemPacket::class)
-        this.register(ProceedTutorialPacket::class)
-        this.register(GetAreaPacket::class)
-        this.register(TableGamePacket::class)
-        this.register(EnterRoomPacket::class)
-        this.register(AreaGamePlayPacket::class)
-        this.register(SystemActionPacket::class)
-        this.register(RoomActionPacket::class)
-        this.register(PresentMyItemGiftPacket::class)
-        this.register(GoodPiggPacket::class)
-        this.register(ActionPacket::class)
-        this.register(CancelTypingPacket::class)
-        this.register(TalkPacket::class)
-        this.register(MovePacket::class)
-        this.register(MoveEndPacket::class)
-        this.register(GetUserProfilePacket::class)
-        this.register(GetDiaryPacket::class)
-        this.register(ChangeWindowAquariumPacket::class)
-        this.register(NotifyUserRoomEnteredPacket::class)
-        this.register(GetNoticeBoardMessageOfAreaPacket::class)
-        this.register(AddFavoritePacket::class)
-        this.register(ProgressPuzzlePacket::class)
-        this.register(CheckContributeClubFurniturePacket::class)
-        this.register(ContributeClubFurniturePacket::class)
-        this.register(AddClubMessagePacket::class)
-        this.register(GetSnapshotToken::class)
+        register(MoveFurniture::class)
+        register(PlaceFurniture::class)
+        register(PlayGachaStepupPacket::class)
+        register(GetPiggShopCategory::class)
+        register(TravelBundlePacket::class)
+        register(GetShopPacket::class)
+        register(ClickPiggShopItemPacket::class)
+        register(ProceedTutorialPacket::class)
+        register(GetAreaPacket::class)
+        register(TableGamePacket::class)
+        register(EnterRoomPacket::class)
+        register(AreaGamePlayPacket::class)
+        register(SystemActionPacket::class)
+        register(RoomActionPacket::class)
+        register(PresentMyItemGiftPacket::class)
+        register(GoodPiggPacket::class)
+        register(ActionPacket::class)
+        register(CancelTypingPacket::class)
+        register(TalkPacket::class)
+        register(MovePacket::class)
+        register(MoveEndPacket::class)
+        register(GetUserProfilePacket::class)
+        register(GetDiaryPacket::class)
+        register(ChangeWindowAquariumPacket::class)
+        register(NotifyUserRoomEnteredPacket::class)
+        register(GetNoticeBoardMessageOfAreaPacket::class)
+        register(AddFavoritePacket::class)
+        register(ProgressPuzzlePacket::class)
+        register(CheckContributeClubFurniturePacket::class)
+        register(ContributeClubFurniturePacket::class)
+        register(AddClubMessagePacket::class)
+        register(GetSnapshotToken::class)
 
         // RECV (Server bound)
-        this.register(RemoveFurniture::class)
-        this.register(GetPiggShopGachaResultPacket::class)
-        this.register(ActionResultPacket::class)
-        this.register(TalkResultPacket::class)
-        this.register(MoveResultPacket::class)
-        this.register(MoveEndResultPacket::class)
-        this.register(AppearUserPacket::class)
-        this.register(ErrorPacket::class)
-        this.register(EnterAreaResult::class)
-        this.register(GetUserProfileResultPacket::class)
-        this.register(EnterUserGardenResult::class)
-        this.register(EnterUserRoomResult::class)
-        this.register(GetAreaResultPacket::class)
-        this.register(AlertResultPacket::class)
-        this.register(LoginChatResultPacket::class)
-        this.register(ListAreaTopResultPacket::class)
-        this.register(TableGameResultPacket::class)
-        this.register(ListUserItemResultPacket::class)
-        this.register(ListUserFurnitureResultPacket::class)
-        this.register(GetSnapshotTokenResult::class)
+        register(RemoveFurniture::class)
+        register(GetPiggShopGachaResultPacket::class)
+        register(ActionResultPacket::class)
+        register(TalkResultPacket::class)
+        register(MoveResultPacket::class)
+        register(MoveEndResultPacket::class)
+        register(AppearUserPacket::class)
+        register(ErrorPacket::class)
+        register(EnterAreaResult::class)
+        register(GetUserProfileResultPacket::class)
+        register(EnterUserGardenResult::class)
+        register(EnterUserRoomResult::class)
+        register(GetAreaResultPacket::class)
+        register(AlertResultPacket::class)
+        register(LoginChatResultPacket::class)
+        register(ListAreaTopResultPacket::class)
+        register(TableGameResultPacket::class)
+        register(ListUserItemResultPacket::class)
+        register(ListUserFurnitureResultPacket::class)
+        register(GetSnapshotTokenResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
         val instance = clazz.java.newInstance()
-        this.packets[instance.server]!![instance.packetId] = clazz
+        packets[instance.server]!![instance.packetId] = clazz
     }
 
     fun convert(rawBuffer: ByteBuffer, type: ServerType): Packet? {
@@ -96,7 +96,7 @@ object Protocol {
         // Get header
         val header = buffer.readShort()
         if (header != HeaderID.COMMAND.id) {
-            this.handleSpecialPacket(header, buffer, type)
+            handleSpecialPacket(header, buffer, type)
             return null
         }
 
@@ -125,7 +125,7 @@ object Protocol {
         dump(String(rawBuffer.array()))
 
         // Find packet handler
-        val packet = this.packets[type]!![id]?.java?.newInstance() ?: return null
+        val packet = packets[type]!![id]?.java?.newInstance() ?: return null
 
         try {
             packet.read(buffer)
@@ -141,8 +141,8 @@ object Protocol {
 
     private fun handleSpecialPacket(header: Short, buffer: ByteBuilder, type: ServerType) {
         if (header == HeaderID.CIPHER_KEY.id) {
-            this.cipherKey[type] = buffer.skip(4).readRawBytes(4).plus(buffer.reset().skip(2).readRawBytes(4))
-            dump("$type SERVER Decrypt key : ${this.cipherKey[type]?.toHexString()}")
+            cipherKey[type] = buffer.skip(4).readRawBytes(4).plus(buffer.reset().skip(2).readRawBytes(4))
+            dump("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}")
         }
     }
 }

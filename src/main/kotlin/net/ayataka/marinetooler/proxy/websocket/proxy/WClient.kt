@@ -14,7 +14,7 @@ import java.nio.ByteBuffer
 
 class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketClient(URI(remoteUri)) {
     override fun onOpen(handshake: ServerHandshake?) {
-        println("[WS CLIENT] Client Connected to ${this.uri}")
+        println("[WS CLIENT] Client Connected to ${uri}")
         EventManager.fire(ConnectEvent())
     }
 
@@ -26,7 +26,7 @@ class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketC
     override fun onMessage(message: String?) {
         println("[WS RECV] : $message")
 
-        this.proxy.server.broadcast(message)
+        proxy.server.broadcast(message)
     }
 
     override fun onMessage(message: ByteBuffer?) {
@@ -39,11 +39,11 @@ class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketC
         var data: ByteBuffer = message
 
         // Fire packet event
-        this.proxy.packetListener?.let {
+        proxy.packetListener?.let {
             data = it.receive(data) ?: return // Canceled packet will be null.
         }
 
-        this.proxy.server.broadcast(data.array())
+        proxy.server.broadcast(data.array())
     }
 
     override fun onError(ex: Exception?) {

@@ -20,8 +20,8 @@ class HttpProxy(port: kotlin.Int, deamon: Boolean) : Thread() {
     private val httpService: HttpService
 
     init {
-        this.isDaemon = deamon
-        this.params
+        isDaemon = deamon
+        params
                 .setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 60 * 1000)
                 .setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, 8 * 1024)
                 .setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false)
@@ -33,22 +33,22 @@ class HttpProxy(port: kotlin.Int, deamon: Boolean) : Thread() {
         val requestHandlerRegistry = HttpRequestHandlerRegistry()
         requestHandlerRegistry.register("*", ProxyHandler())
 
-        this.httpService = HttpService(httpProcessor, AlwaysConnectionReuseStrategy(), DefaultHttpResponseFactory(), requestHandlerRegistry, this.params)
+        httpService = HttpService(httpProcessor, AlwaysConnectionReuseStrategy(), DefaultHttpResponseFactory(), requestHandlerRegistry, params)
     }
 
     override fun run() {
-        info("[HTTP] Listening on port ${this.serverSocket.localPort}")
+        info("[HTTP] Listening on port ${serverSocket.localPort}")
 
         // Infinite loop until this thread is canceled.
         while (!Thread.interrupted()) {
             try {
-                val socket = this.serverSocket.accept()
+                val socket = serverSocket.accept()
                 val connection = DefaultHttpServerConnection()
 
                 //info("Incoming connection from ${socket.inetAddress}")
-                connection.bind(socket, this.params)
+                connection.bind(socket, params)
 
-                val thread = ProxyThread(this.httpService, connection, socket)
+                val thread = ProxyThread(httpService, connection, socket)
                 thread.isDaemon = true
                 thread.start()
 

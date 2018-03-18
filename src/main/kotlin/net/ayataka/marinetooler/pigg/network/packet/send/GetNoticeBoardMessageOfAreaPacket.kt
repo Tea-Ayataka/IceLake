@@ -13,13 +13,13 @@ class GetNoticeBoardMessageOfAreaPacket : Packet() {
     var roomName = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.userCode = buffer.readString()
-        this.roomName = buffer.readString()
+        userCode = buffer.readString()
+        roomName = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.userCode)
-        buffer.writeString(this.roomName)
+        buffer.writeString(userCode)
+        buffer.writeString(roomName)
         return buffer
     }
 }

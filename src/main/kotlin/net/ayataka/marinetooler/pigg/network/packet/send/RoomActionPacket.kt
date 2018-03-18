@@ -17,29 +17,29 @@ class RoomActionPacket : Packet() {
     var isAdminRequest = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.actionCode = buffer.readString()
+        actionCode = buffer.readString()
         val length = buffer.readShort()
 
         if (length > 0) {
-            this.data = buffer.readRawBytes(length.toInt())
+            data = buffer.readRawBytes(length.toInt())
         }
 
-        this.isAdminRequest = buffer.readBoolean()
+        isAdminRequest = buffer.readBoolean()
 
-        info(" ROOM ACTION ID IS ${this.actionCode}")
-        info(" AND DATA IS ${this.data.toHexString()}")
+        info(" ROOM ACTION ID IS ${actionCode}")
+        info(" AND DATA IS ${data.toHexString()}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.actionCode)
+        buffer.writeString(actionCode)
 
-        if (this.data.isEmpty()) {
+        if (data.isEmpty()) {
             buffer.writeRawShort(-1)
         } else {
-            buffer.writeBytes(this.data)
+            buffer.writeBytes(data)
         }
 
-        buffer.writeBoolean(this.isAdminRequest)
+        buffer.writeBoolean(isAdminRequest)
         return buffer
     }
 }

@@ -14,17 +14,17 @@ open class ListUserItemResultPacket : Packet() {
 
     var data = ByteArray(0)
     override fun readFrom(buffer: ByteBuilder) {
-        this.max = buffer.readInt()
-        this.size = buffer.readInt()
+        max = buffer.readInt()
+        size = buffer.readInt()
 
-        this.data = buffer.readAllBytes()
+        data = buffer.readAllBytes()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.max)
-        buffer.writeRawInt(this.size)
+        buffer.writeRawInt(max)
+        buffer.writeRawInt(size)
 
-        buffer.writeRawBytes(this.data)
+        buffer.writeRawBytes(data)
 
         return buffer
     }

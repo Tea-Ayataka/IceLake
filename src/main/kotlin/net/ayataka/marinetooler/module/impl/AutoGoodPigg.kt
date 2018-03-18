@@ -17,26 +17,26 @@ object AutoGoodPigg : Module() {
     var running = false
 
     private fun start() {
-        this.running = true
+        running = true
 
         Thread({
             if (CurrentUser.areaData.users.isEmpty()) {
-                this.running = false
+                running = false
                 return@Thread
             }
 
             val target = CurrentUser.areaData.users
-            target.removeAll(this.goodpigged)
+            target.removeAll(goodpigged)
 
             target.forEach {
-                this.openProfile(it)
+                openProfile(it)
                 Thread.sleep(300)
-                this.sendGoodPigg(it)
-                this.goodpigged.add(it)
+                sendGoodPigg(it)
+                goodpigged.add(it)
             }
 
             Thread.sleep(300)
-            this.running = false
+            running = false
         }).start()
     }
 
@@ -57,7 +57,7 @@ object AutoGoodPigg : Module() {
     @EventListener
     fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
-        if (this.running) {
+        if (running) {
             if (packet is GetUserProfileResultPacket) {
                 packet.canceled = true
             }
@@ -66,21 +66,21 @@ object AutoGoodPigg : Module() {
             }
         }
 
-        if (!this.running && (packet is EnterUserRoomResult || packet is EnterUserGardenResult || packet is EnterAreaResult)) {
-            this.start()
+        if (!running && (packet is EnterUserRoomResult || packet is EnterUserGardenResult || packet is EnterAreaResult)) {
+            start()
         }
 
-        if (!this.running && packet is AppearUserPacket && !this.goodpigged.contains(packet.usercode)) {
+        if (!running && packet is AppearUserPacket && !goodpigged.contains(packet.usercode)) {
             val user = packet.usercode
 
             Thread({
-                this.running = true
-                this.openProfile(user)
+                running = true
+                openProfile(user)
                 Thread.sleep(300)
-                this.sendGoodPigg(user)
-                this.goodpigged.add(user)
+                sendGoodPigg(user)
+                goodpigged.add(user)
                 Thread.sleep(300)
-                this.running = false
+                running = false
             }).start()
         }
     }

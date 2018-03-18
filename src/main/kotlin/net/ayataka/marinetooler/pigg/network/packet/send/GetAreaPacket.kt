@@ -18,17 +18,17 @@ class GetAreaPacket : Packet() {
     var isShuffleGarden = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.category = buffer.readString()
-        this.code = buffer.readString()
-        this.targetUser = buffer.readBoolean()
-        this.isShuffleGarden = buffer.readBoolean()
+        category = buffer.readString()
+        code = buffer.readString()
+        targetUser = buffer.readBoolean()
+        isShuffleGarden = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.category)
-        buffer.writeString(this.code)
-        buffer.writeBoolean(this.targetUser)
-        buffer.writeBoolean(this.isShuffleGarden)
+        buffer.writeString(category)
+        buffer.writeString(code)
+        buffer.writeBoolean(targetUser)
+        buffer.writeBoolean(isShuffleGarden)
         buffer.writeDoubleTimeStamp()
         return buffer
     }

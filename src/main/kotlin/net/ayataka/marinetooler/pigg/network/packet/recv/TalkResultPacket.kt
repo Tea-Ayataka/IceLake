@@ -13,8 +13,8 @@ class TalkResultPacket : Packet() {
     var message = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString(16)
-        this.message = buffer.readString()
+        usercode = buffer.readString(16)
+        message = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

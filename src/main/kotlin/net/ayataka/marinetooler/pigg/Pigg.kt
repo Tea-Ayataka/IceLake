@@ -21,14 +21,14 @@ object Pigg {
     init {
         PolicyServer().start()
         // Start info server proxy
-        this.proxies[ServerType.INFO] = WebSocketProxy(this.PROXY_IP, this.INFO_SERVER_PORT, this.INFO_SERVER_URI, InfoPacketListener(), this.CERTIFICATE)
+        proxies[ServerType.INFO] = WebSocketProxy(PROXY_IP, INFO_SERVER_PORT, INFO_SERVER_URI, InfoPacketListener(), CERTIFICATE)
     }
 
     fun send(packet: Packet) {
-        this.proxies[packet.server]?.send(packet)
+        proxies[packet.server]?.send(packet)
     }
 
     fun receive(packet: Packet) {
-        this.proxies[packet.server]?.receive(packet)
+        proxies[packet.server]?.receive(packet)
     }
 }

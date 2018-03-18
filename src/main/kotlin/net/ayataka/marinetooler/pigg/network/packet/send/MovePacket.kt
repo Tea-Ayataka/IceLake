@@ -16,17 +16,17 @@ class MovePacket : Packet() {
     var z: Short = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
 
-        dump("X: ${this.x} Y: ${this.y} Z: ${this.z}")
+        dump("X: ${x} Y: ${y} Z: ${z}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawShort(this.x)
-        buffer.writeRawShort(this.y)
-        buffer.writeRawShort(this.z)
+        buffer.writeRawShort(x)
+        buffer.writeRawShort(y)
+        buffer.writeRawShort(z)
         return buffer
     }
 }

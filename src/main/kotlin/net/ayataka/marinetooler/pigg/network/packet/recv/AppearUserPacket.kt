@@ -12,7 +12,7 @@ class AppearUserPacket : Packet() {
     var usercode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
+        usercode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

@@ -14,8 +14,8 @@ class GetSnapshotTokenResult : Packet() {
     var type = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.token = buffer.readString()
-        this.type = buffer.readString()
+        token = buffer.readString()
+        type = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

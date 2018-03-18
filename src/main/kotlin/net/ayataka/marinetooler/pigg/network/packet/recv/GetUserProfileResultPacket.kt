@@ -14,10 +14,10 @@ class GetUserProfileResultPacket : Packet() {
     var nickName = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
-        this.amebaId = buffer.readString()
+        usercode = buffer.readString()
+        amebaId = buffer.readString()
         buffer.readString()
-        this.nickName = buffer.readString()
+        nickName = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

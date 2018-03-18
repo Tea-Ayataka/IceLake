@@ -13,14 +13,14 @@ class TCPRelayer(
         var bufferedLength = 0
         val buffer = ByteArray(1024)
 
-        val nameFrom = this.readFrom.inetAddress.toString()
-        val nameTo = this.writeTo.inetAddress.toString()
+        val nameFrom = readFrom.inetAddress.toString()
+        val nameTo = writeTo.inetAddress.toString()
 
-        val inputStream = BufferedInputStream(this.readFrom.getInputStream())
-        val outputStream = BufferedOutputStream(this.writeTo.getOutputStream())
+        val inputStream = BufferedInputStream(readFrom.getInputStream())
+        val outputStream = BufferedOutputStream(writeTo.getOutputStream())
 
         try {
-            while (!this.readFrom.isClosed && !this.writeTo.isClosed && { bufferedLength = inputStream.read(buffer); bufferedLength }() != -1) {
+            while (!readFrom.isClosed && !writeTo.isClosed && { bufferedLength = inputStream.read(buffer); bufferedLength }() != -1) {
                 outputStream.write(buffer, 0, bufferedLength)
                 outputStream.flush()
             }

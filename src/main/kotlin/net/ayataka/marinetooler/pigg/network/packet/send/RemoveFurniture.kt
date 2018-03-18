@@ -13,11 +13,11 @@ class RemoveFurniture : Packet() {
     var sequence = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.sequence = buffer.readInt()
+        sequence = buffer.readInt()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.sequence)
+        buffer.writeRawInt(sequence)
         return buffer
     }
 }

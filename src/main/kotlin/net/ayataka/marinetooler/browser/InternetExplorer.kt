@@ -7,13 +7,13 @@ class InternetExplorer {
     init {
         Thread({
             val builder = ProcessBuilder("Player.exe", "start")
-            this.process = builder.start()
-            this.process?.waitFor()
+            process = builder.start()
+            process?.waitFor()
             System.exit(0)
         }).start()
     }
 
     fun shutdown() {
-        this.process?.destroy()
+        process?.destroy()
     }
 }

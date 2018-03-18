@@ -13,14 +13,14 @@ class BodyColorData {
     var eyeshadow: Short = -1
 
     fun readFrom(buffer: ByteBuilder){
-        this.skin = buffer.readShort()
-        this.hair = buffer.readShort()
-        this.eyebrow = buffer.readShort()
-        this.eye = buffer.readShort()
-        this.beard = buffer.readShort()
-        this.lip = buffer.readShort()
-        this.cheek = buffer.readShort()
-        this.eyeshadow = buffer.readShort()
+        skin = buffer.readShort()
+        hair = buffer.readShort()
+        eyebrow = buffer.readShort()
+        eye = buffer.readShort()
+        beard = buffer.readShort()
+        lip = buffer.readShort()
+        cheek = buffer.readShort()
+        eyeshadow = buffer.readShort()
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
