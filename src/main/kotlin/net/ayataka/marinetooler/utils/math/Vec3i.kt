@@ -9,7 +9,15 @@ class Vec3i(var x: Int = 0, var y: Int = 0, var z: Int = 0) {
         return "X: ${this.x}, Y: ${this.y}, Z: ${this.z}"
     }
 
-    fun equals(another: Vec3i): Boolean {
-        return another.x == this.x && another.y == this.y && another.z == this.z
+    override fun equals(other: Any?): Boolean {
+        if (other == this) {
+            return true
+        }
+
+        if (other !is Vec3i) {
+            return false
+        }
+
+        return other.x == this.x && other.y == this.y && other.z == this.z
     }
 }
