@@ -18,7 +18,7 @@ object CurrentUser {
 
     fun showAlert(msg: String) {
         val packet = AlertResultPacket()
-        packet.message = "# Marine Tooler #\n\n" + msg + "\n"
+        packet.message = "# Marine Tooler #\n$msg\n\n\n"
         Pigg.receive(packet)
     }
 

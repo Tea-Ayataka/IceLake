@@ -6,11 +6,11 @@ import net.ayataka.marinetooler.utils.info
 open class Module {
     var enabled = false
         set(value) {
-            if (value) {
+            if (value && !field) {
                 EventManager.register(this)
                 this.onEnable()
                 info("Enabled ${this.javaClass.simpleName}")
-            } else {
+            } else if(!value && field) {
                 EventManager.unregister(this)
                 this.onDisable()
                 info("Disabled ${this.javaClass.simpleName}")
