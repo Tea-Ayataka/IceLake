@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     compile name: 'swfedit-1.0'
-    compile name: 'eventapi-1.0'
+    compile name: 'EventAPI-1.0-SNAPSHOT'
 
     compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.6'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.4'
@@ -35,6 +35,7 @@ dependencies {
     compile 'org.controlsfx:controlsfx:8.40.14'
     compile 'com.github.kotlin-graphics:kotlin-unsigned:v2.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
 compileKotlin {

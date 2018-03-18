@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
@@ -24,7 +24,7 @@ object MuryouGatyaZenkaihou : Module() {
         Pigg.send(packet)
     }
 
-    @EventTarget
+    @EventListener
     fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
 

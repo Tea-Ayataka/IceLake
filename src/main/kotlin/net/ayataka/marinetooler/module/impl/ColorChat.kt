@@ -1,7 +1,7 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
 import javafx.scene.paint.Color
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
@@ -9,7 +9,7 @@ import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
 object ColorChat : Module() {
     var color = Color.WHITE!!
 
-    @EventTarget
+    @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is TalkPacket) {

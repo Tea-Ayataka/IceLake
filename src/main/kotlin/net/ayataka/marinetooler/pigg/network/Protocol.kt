@@ -26,6 +26,8 @@ object Protocol {
 
         // Register packets
         // SEND (Client bound)
+        this.register(MoveFurniture::class)
+        this.register(PlaceFurniture::class)
         this.register(PlayGachaStepupPacket::class)
         this.register(GetPiggShopCategory::class)
         this.register(TravelBundlePacket::class)
@@ -58,6 +60,7 @@ object Protocol {
         this.register(GetSnapshotToken::class)
 
         // RECV (Server bound)
+        this.register(RemoveFurniture::class)
         this.register(GetPiggShopGachaResultPacket::class)
         this.register(ActionResultPacket::class)
         this.register(TalkResultPacket::class)

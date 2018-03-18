@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.pigg.network.listener
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
@@ -8,10 +8,10 @@ import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
-import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.pigg.network.packet.send.MoveEndPacket
 import net.ayataka.marinetooler.proxy.websocket.IPacketListener
-import java.io.File
+import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.utils.math.Vec3i
 import java.nio.ByteBuffer
 
 class ChatPacketListener : IPacketListener {
@@ -34,7 +34,13 @@ class ChatPacketListener : IPacketListener {
 
     private fun onSend(packet: Packet): Packet {
         val event = SendPacketEvent(packet)
-        EventManager.call(event)
+        EventManager.fire(event)
+
+        // Set location after handling events
+        if (packet is MoveEndPacket) {
+            CurrentUser.location = Vec3i(packet.x.toInt(), packet.y.toInt(), packet.z.toInt())
+        }
+
         return event.packet
     }
 
@@ -47,7 +53,7 @@ class ChatPacketListener : IPacketListener {
         }
 
         val event = RecvPacketEvent(packet)
-        EventManager.call(event)
+        EventManager.fire(event)
         return event.packet
     }
 }

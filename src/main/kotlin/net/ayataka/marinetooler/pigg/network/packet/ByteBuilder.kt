@@ -53,7 +53,7 @@ open class ByteBuilder() {
         return this.buffer.get()
     }
 
-    fun readDouble() : Double{
+    fun readDouble(): Double {
         return this.buffer.double
     }
 
@@ -81,7 +81,7 @@ open class ByteBuilder() {
         return result
     }
 
-    fun readFloat(): Float{
+    fun readFloat(): Float {
         return this.buffer.float
     }
 
@@ -150,10 +150,9 @@ open class ByteBuilder() {
     fun writeString(text: String): ByteBuilder {
         this.writeRawShort(text.toByteArray().size.toShort())
 
-        if(text.toByteArray().isEmpty()){
+        if (text.toByteArray().isEmpty()) {
             this.writeRawByte(0)
-        }
-        else {
+        } else {
             this.writeRawBytes(text.toByteArray())
         }
         return this
@@ -185,7 +184,7 @@ open class ByteBuilder() {
         return this
     }
 
-    fun writeRawFloat(float: Float): ByteBuilder{
+    fun writeRawFloat(float: Float): ByteBuilder {
         this.buffer.putFloat(float)
         return this
     }

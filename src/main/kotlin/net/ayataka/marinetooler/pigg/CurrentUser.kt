@@ -1,14 +1,16 @@
 package net.ayataka.marinetooler.pigg
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
+import net.ayataka.marinetooler.utils.math.Vec3i
 
 object CurrentUser {
     var usercode: String? = null
     var areaData = BaseAreaData()
+    var location = Vec3i()
 
     init {
         EventManager.register(this)
@@ -20,19 +22,19 @@ object CurrentUser {
         Pigg.receive(packet)
     }
 
-    fun move(x: Short, y: Short, z: Short) {
+    fun move(x: Int, y: Int, z: Int) {
         val packet = MovePacket()
-        packet.x = x
-        packet.y = y
-        packet.z = z
+        packet.x = x.toShort()
+        packet.y = y.toShort()
+        packet.z = z.toShort()
         Pigg.send(packet)
     }
 
-    fun teleport(x: Short, y: Short, z: Short, direction: Byte) {
+    fun teleport(x: Int, y: Int, z: Int, direction: Byte) {
         val packet = MoveEndPacket()
-        packet.x = x
-        packet.y = y
-        packet.z = z
+        packet.x = x.toShort()
+        packet.y = y.toShort()
+        packet.z = z.toShort()
         packet.dir = direction
         Pigg.send(packet)
     }

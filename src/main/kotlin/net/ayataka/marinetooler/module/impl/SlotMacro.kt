@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
@@ -36,7 +36,7 @@ object SlotMacro : Module() {
         this.slotTimer?.purge()
     }
 
-    @EventTarget
+    @EventListener
     fun onSend(event: SendPacketEvent) {
         if(event.packet is TableGamePacket){
             event.packet.canceled = true

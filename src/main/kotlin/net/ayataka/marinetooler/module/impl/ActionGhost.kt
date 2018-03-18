@@ -1,16 +1,14 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.Tooler
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 
 object ActionGhost : Module() {
-    @EventTarget
+    @EventListener
     fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
 

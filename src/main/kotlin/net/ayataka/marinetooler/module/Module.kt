@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.module
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.utils.info
 
 open class Module {

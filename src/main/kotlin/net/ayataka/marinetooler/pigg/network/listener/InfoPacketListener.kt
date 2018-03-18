@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.pigg.network.listener
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
@@ -37,7 +37,7 @@ class InfoPacketListener : IPacketListener {
 
     private fun onSend(packet: Packet): Packet {
         val event = SendPacketEvent(packet)
-        EventManager.call(event)
+        EventManager.fire(event)
         return event.packet
     }
 
@@ -64,7 +64,7 @@ class InfoPacketListener : IPacketListener {
         }
 
         val event = RecvPacketEvent(packet)
-        EventManager.call(event)
+        EventManager.fire(event)
         return event.packet
     }
 }

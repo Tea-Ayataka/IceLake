@@ -1,7 +1,5 @@
 package net.ayataka.marinetooler.gui
 
-import com.darkmagician6.eventapi.EventManager
-import com.darkmagician6.eventapi.EventTarget
 import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -11,6 +9,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.Clipboard
 import javafx.scene.input.DataFormat
 import javafx.scene.input.KeyCode
+import net.ayataka.eventapi.EventListener
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.Tooler
 import net.ayataka.marinetooler.module.impl.*
 import net.ayataka.marinetooler.pigg.CurrentUser
@@ -194,13 +194,13 @@ class MainWindow : Initializable {
 
         // Instant teleport
         this.tpX.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(new.toShort(), this.tpY.value.toShort(), this.tpZ.value.toShort(), 0)
+            CurrentUser.teleport(new, this.tpY.value, this.tpZ.value, 0)
         }
         this.tpY.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value.toShort(), new.toShort(), this.tpZ.value.toShort(), 0)
+            CurrentUser.teleport(this.tpX.value, new, this.tpZ.value, 0)
         }
         this.tpZ.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value.toShort(), this.tpY.value.toShort(), new.toShort(), 0)
+            CurrentUser.teleport(this.tpX.value, this.tpY.value, new, 0)
         }
 
         // Enable default modules
@@ -215,21 +215,21 @@ class MainWindow : Initializable {
         })
     }
 
-    @EventTarget
+    @EventListener
     fun onConnect(event: ConnectEvent) {
         Platform.runLater({
             this.statusBar.text = "  Connecting..."
         })
     }
 
-    @EventTarget
+    @EventListener
     fun onDisconnect(event: DisconnectEvent) {
         Platform.runLater({
             this.statusBar.text = "  Disconnected."
         })
     }
 
-    @EventTarget
+    @EventListener
     fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
 
@@ -275,7 +275,7 @@ class MainWindow : Initializable {
         })
     }
 
-    @EventTarget
+    @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
 

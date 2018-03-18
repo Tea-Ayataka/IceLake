@@ -1,6 +1,5 @@
 package net.ayataka.marinetooler.pigg.event
 
-import com.darkmagician6.eventapi.events.Event
-import net.ayataka.marinetooler.pigg.network.packet.Packet
+import net.ayataka.eventapi.Event
 
-class DisconnectEvent : Event
+class DisconnectEvent : Event()

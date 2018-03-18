@@ -1,20 +1,19 @@
 package net.ayataka.marinetooler.pigg.network.packet.data
 
-import com.flagstone.transform.Place
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
-import net.ayataka.marinetooler.pigg.network.packet.data.player.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
-import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefinePet
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceActionItem
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
+import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
+import net.ayataka.marinetooler.pigg.network.packet.data.player.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.readUCodesFromAreaPacket
 import net.ayataka.marinetooler.utils.dump
 import net.ayataka.marinetooler.utils.toHexString
@@ -68,6 +67,7 @@ open class BaseAreaData : Packet() {
             placeFurniture.direction = buffer.readByte()
             placeFurniture.ownerId = buffer.readString()
 
+            dump("[Furniture] ID: ${placeFurniture.characterId}, Sequence: ${placeFurniture.sequence}, X: ${placeFurniture.x}, Y: ${placeFurniture.y}, Z: ${placeFurniture.z}, Direction: ${placeFurniture.direction}, ownerId: ${placeFurniture.ownerId}")
             placeFurnitures.add(placeFurniture)
         }
 

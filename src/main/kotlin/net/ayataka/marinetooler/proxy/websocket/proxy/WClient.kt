@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.proxy.websocket.proxy
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
 import net.ayataka.marinetooler.utils.info
@@ -15,12 +15,12 @@ import java.nio.ByteBuffer
 class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketClient(URI(remoteUri)) {
     override fun onOpen(handshake: ServerHandshake?) {
         println("[WS CLIENT] Client Connected to ${this.uri}")
-        EventManager.call(ConnectEvent())
+        EventManager.fire(ConnectEvent())
     }
 
     override fun onClose(code: Int, reason: String?, remote: Boolean) {
         println("[WS CLIENT] Disconnected from remote server")
-        EventManager.call(DisconnectEvent())
+        EventManager.fire(DisconnectEvent())
     }
 
     override fun onMessage(message: String?) {

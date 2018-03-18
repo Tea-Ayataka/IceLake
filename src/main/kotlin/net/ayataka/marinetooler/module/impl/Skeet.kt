@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
@@ -15,7 +15,7 @@ object Skeet : Module() {
     private var skeeting = false
     var task: Timer? = null
 
-    @EventTarget
+    @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is MovePacket) {

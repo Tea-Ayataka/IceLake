@@ -1,16 +1,15 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
-import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
+import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
+import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.info
 
 object Command : Module() {
-    @EventTarget
+    @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
 
@@ -54,6 +53,15 @@ object Command : Module() {
                 }
                 "spam" -> {
                     NoticeSpammer.enabled = !NoticeSpammer.enabled
+                }
+                "m" -> {
+                    FurnitureExploiter.move(-1, spitted[1].toInt(), spitted[2].toInt(), spitted[3].toInt(), spitted[4].toByte())
+                }
+                "place" -> {
+                    FurnitureExploiter.place(spitted[1], spitted[2].toInt(), spitted[3].toInt(), spitted[4].toInt(), spitted[5].toByte())
+                }
+                "del" -> {
+                    FurnitureExploiter.remove(spitted[1].toInt())
                 }
                 "roomact" -> {
                     val packet = RoomActionPacket()
