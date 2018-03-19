@@ -21,7 +21,7 @@ class RoomActionPacket : Packet() {
         val length = buffer.readShort()
 
         if (length > 0) {
-            data = buffer.readRawBytes(length.toInt())
+            data = buffer.readBytes(length.toInt())
         }
 
         isAdminRequest = buffer.readBoolean()
@@ -34,7 +34,7 @@ class RoomActionPacket : Packet() {
         buffer.writeString(actionCode)
 
         if (data.isEmpty()) {
-            buffer.writeRawShort(-1)
+            buffer.writeShort(-1)
         } else {
             buffer.writeBytes(data)
         }

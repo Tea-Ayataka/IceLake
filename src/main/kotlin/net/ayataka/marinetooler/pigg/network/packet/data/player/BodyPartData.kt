@@ -32,17 +32,17 @@ class BodyPartData {
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawByte(gender)
-                .writeRawShort(face)
-                .writeRawShort(hairFront)
-                .writeRawShort(hairBack)
-                .writeRawShort(eye)
-                .writeRawShort(eyebrow)
-                .writeRawShort(nose)
-                .writeRawShort(mouth)
-                .writeRawShort(beard)
-                .writeRawShort(mole1)
-                .writeRawShort(mole2)
-                .writeRawShort(option)
+                .writeByte(gender)
+                .writeShort(face)
+                .writeShort(hairFront)
+                .writeShort(hairBack)
+                .writeShort(eye)
+                .writeShort(eyebrow)
+                .writeShort(nose)
+                .writeShort(mouth)
+                .writeShort(beard)
+                .writeShort(mole1)
+                .writeShort(mole2)
+                .writeShort(option)
     }
 }

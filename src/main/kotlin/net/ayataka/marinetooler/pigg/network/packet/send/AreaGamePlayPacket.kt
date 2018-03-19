@@ -17,14 +17,14 @@ class AreaGamePlayPacket : Packet() {
         id = buffer.readInt()
 
         if (buffer.array().size - buffer.getPos() > 0) {
-            data = buffer.readRawBytes(buffer.array().size - buffer.getPos())
+            data = buffer.readBytes(buffer.array().size - buffer.getPos())
         }
 
         info("AREA GAME PLAY ${id} [${data?.size}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(id)
+        buffer.writeInt(id)
         data?.let { buffer.writeRawBytes(it) }
         return buffer
     }

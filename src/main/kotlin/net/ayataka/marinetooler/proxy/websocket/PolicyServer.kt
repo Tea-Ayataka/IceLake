@@ -13,7 +13,7 @@ class PolicyServer : Thread() {
 
     init {
         try {
-            serverSocket = ServerSocket(843)
+           // serverSocket = ServerSocket(843)
         } catch (ex: BindException) {
             Tooler.showError("ポリシーサーバーの初期化に失敗しました。ポート 843 が既に利用されています。")
             System.exit(1)

@@ -212,28 +212,28 @@ open class BaseAreaData : Packet() {
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         var bb = areaData.writeTo(buffer)
 
-        bb.writeRawInt(placeFurnitures.size)
+        bb.writeInt(placeFurnitures.size)
 
         for (placeFurniture in placeFurnitures) {
             bb.writeString(placeFurniture.characterId)
-            bb.writeRawInt(placeFurniture.sequence)
+            bb.writeInt(placeFurniture.sequence)
 
-            bb.writeRawShort(placeFurniture.x)
-            bb.writeRawShort(placeFurniture.y)
-            bb.writeRawShort(placeFurniture.z)
+            bb.writeShort(placeFurniture.x)
+            bb.writeShort(placeFurniture.y)
+            bb.writeShort(placeFurniture.z)
 
-            bb.writeRawByte(placeFurniture.direction)
+            bb.writeByte(placeFurniture.direction)
             bb.writeString(placeFurniture.ownerId)
         }
 
-        bb.writeRawInt(defineFurnitures.size)
+        bb.writeInt(defineFurnitures.size)
 
         for (defineFurniture in defineFurnitures) {
-            bb.writeRawShort(defineFurniture.parts.size.toShort())
+            bb.writeShort(defineFurniture.parts.size.toShort())
 
             bb.writeString(defineFurniture.characterId)
 
-            bb.writeRawByte(defineFurniture.type)
+            bb.writeByte(defineFurniture.type)
 
             bb.writeString(defineFurniture.category)
             bb.writeString(defineFurniture.name)
@@ -245,7 +245,7 @@ open class BaseAreaData : Packet() {
             }
         }
 
-        bb.writeRawInt(placeAvatars.size)
+        bb.writeInt(placeAvatars.size)
 
         for(i in 1..placeAvatars.size){
             val placeAvatar = placeAvatars[i - 1]
@@ -254,17 +254,17 @@ open class BaseAreaData : Packet() {
 
             bb = avatarData.writeTo(bb)
 
-            bb.writeRawShort(placeAvatar.x)
-            bb.writeRawShort(placeAvatar.y)
-            bb.writeRawShort(placeAvatar.z)
+            bb.writeShort(placeAvatar.x)
+            bb.writeShort(placeAvatar.y)
+            bb.writeShort(placeAvatar.z)
 
-            bb.writeRawByte(placeAvatar.direction)
-            bb.writeRawByte(placeAvatar.status)
-            bb.writeRawByte(placeAvatar.tired)
-            bb.writeRawByte(placeAvatar.mode)
+            bb.writeByte(placeAvatar.direction)
+            bb.writeByte(placeAvatar.status)
+            bb.writeByte(placeAvatar.tired)
+            bb.writeByte(placeAvatar.mode)
         }
 
-        bb.writeRawInt(definePets.size)
+        bb.writeInt(definePets.size)
 
         for (i in 1..definePets.size ) {
             val definePet = definePets[i - 1]
@@ -272,50 +272,50 @@ open class BaseAreaData : Packet() {
 
             bb = definePet.data.writeTo(bb)
 
-            bb.writeRawShort(placePet.x)
-            bb.writeRawShort(placePet.y)
-            bb.writeRawShort(placePet.z)
+            bb.writeShort(placePet.x)
+            bb.writeShort(placePet.y)
+            bb.writeShort(placePet.z)
 
-            bb.writeRawByte(placePet.direction)
+            bb.writeByte(placePet.direction)
             bb.writeBoolean(placePet.sleeping)
 
         }
 
-        bb.writeRawInt(placeActionItems.size)
+        bb.writeInt(placeActionItems.size)
 
         for (placeActionItem in placeActionItems) {
             if(placeActionItem.mode == 0){
                 bb.writeString(placeActionItem.itemType)
                 bb.writeString(placeActionItem.itemCode)
                 bb.writeString(placeActionItem.ownerCode)
-                bb.writeRawInt(placeActionItem.sequence)
+                bb.writeInt(placeActionItem.sequence)
 
-                bb.writeRawByte(placeActionItem.actionItemType)
+                bb.writeByte(placeActionItem.actionItemType)
 
-                bb.writeRawShort(placeActionItem.x)
-                bb.writeRawShort(placeActionItem.y)
-                bb.writeRawShort(placeActionItem.z)
+                bb.writeShort(placeActionItem.x)
+                bb.writeShort(placeActionItem.y)
+                bb.writeShort(placeActionItem.z)
             }
             else{
                 bb.writeString(placeActionItem.itemCode)
                 bb.writeString(placeActionItem.itemType)
-                bb.writeRawInt(placeActionItem.sequence)
+                bb.writeInt(placeActionItem.sequence)
                 bb.writeString(placeActionItem.ownerCode)
 
-                bb.writeRawShort(placeActionItem.x)
-                bb.writeRawShort(placeActionItem.y)
-                bb.writeRawShort(placeActionItem.z)
+                bb.writeShort(placeActionItem.x)
+                bb.writeShort(placeActionItem.y)
+                bb.writeShort(placeActionItem.z)
             }
         }
 
-        bb.writeRawInt(loc9)
+        bb.writeInt(loc9)
 
         bb.writeBoolean(isChannelActor)
-        bb.writeRawDouble(serverTime)
+        bb.writeDouble(serverTime)
         bb.writeBoolean(isRefleshedCosmeItem)
         bb.writeBoolean(isAllowRoomChange)
 
-        bb.writeRawByte(loc11.size.toByte())
+        bb.writeByte(loc11.size.toByte())
 
         for (mutableEntry in loc11) {
             bb.writeString(mutableEntry.key)

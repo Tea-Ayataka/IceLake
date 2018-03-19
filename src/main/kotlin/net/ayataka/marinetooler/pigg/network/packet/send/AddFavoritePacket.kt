@@ -22,7 +22,7 @@ class AddFavoritePacket : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeString(userCode)
-        buffer.writeRawDouble(timeStamp)
+        buffer.writeDouble(timeStamp)
         //buffer.writeDoubleTimeStamp()
         buffer.writeBoolean(flag)
 

@@ -4,9 +4,6 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
-import net.ayataka.marinetooler.utils.info
-import net.ayataka.marinetooler.utils.toHexString
 
 class EnterRoomPacket : Packet() {
     override val server = ServerType.CHAT
@@ -29,7 +26,7 @@ class EnterRoomPacket : Packet() {
         buffer.writeString(category)
         buffer.writeString(code)
         buffer.writeBoolean(queue)
-        buffer.writeRawInt(fromMove)
+        buffer.writeInt(fromMove)
         buffer.writeDoubleTimeStamp()
         return buffer
     }

@@ -50,7 +50,7 @@ abstract class Packet {
         if (encrypted) {
             body = encrypt(body)
         }
-        formatted.writeRawShort(body.size.toShort())
+        formatted.writeShort(body.size.toShort())
         formatted.writeRawBytes(body)
 
         val debug = formatted.build()
@@ -62,7 +62,7 @@ abstract class Packet {
 
     private fun writeHeader(buffer: ByteBuilder) {
         buffer.writeRawBytes("00 10 00 00 00 00".fromHexToBytes())
-        buffer.writeRawShort(packetId)
+        buffer.writeShort(packetId)
         buffer.writeRawBytes("00 00".fromHexToBytes())
     }
 

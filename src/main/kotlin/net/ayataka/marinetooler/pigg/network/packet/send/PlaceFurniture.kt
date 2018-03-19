@@ -31,10 +31,10 @@ class PlaceFurniture : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeString(code)
-        buffer.writeRawByte(direction)
-        buffer.writeRawInt(x)
-        buffer.writeRawInt(y)
-        buffer.writeRawInt(z)
+        buffer.writeByte(direction)
+        buffer.writeInt(x)
+        buffer.writeInt(y)
+        buffer.writeInt(z)
         buffer.writeBoolean(isFinishTutorial)
         return buffer
     }

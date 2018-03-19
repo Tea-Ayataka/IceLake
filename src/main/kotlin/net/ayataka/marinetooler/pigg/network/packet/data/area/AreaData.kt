@@ -41,7 +41,7 @@ class AreaData {
                 .writeString(floorCode)
                 .writeString(windowCode)
 
-                .writeRawShort(sizeX)
-                .writeRawShort(sizeY)
+                .writeShort(sizeX)
+                .writeShort(sizeY)
     }
 }

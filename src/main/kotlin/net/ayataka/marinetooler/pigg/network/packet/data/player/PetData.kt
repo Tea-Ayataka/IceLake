@@ -46,16 +46,16 @@ class PetData {
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawInt(petId)
+                .writeInt(petId)
                 .writeString(type)
                 .writeString(name)
                 .writeString(owner)
-                .writeRawInt(treasuresID)
+                .writeInt(treasuresID)
                 .writeString(treasuresCode)
-                .writeRawByte(colorId)
-                .writeRawByte(gender)
-                .writeRawByte(levelFeel)
-                .writeRawByte(levelFriendly)
+                .writeByte(colorId)
+                .writeByte(gender)
+                .writeByte(levelFeel)
+                .writeByte(levelFriendly)
                 .writeString(category)
     }
 }

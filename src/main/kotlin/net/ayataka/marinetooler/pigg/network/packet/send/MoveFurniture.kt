@@ -28,11 +28,11 @@ class MoveFurniture : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(sequence)
-        buffer.writeRawByte(direction)
-        buffer.writeRawInt(x)
-        buffer.writeRawInt(y)
-        buffer.writeRawInt(z)
+        buffer.writeInt(sequence)
+        buffer.writeByte(direction)
+        buffer.writeInt(x)
+        buffer.writeInt(y)
+        buffer.writeInt(z)
         return buffer
     }
 }

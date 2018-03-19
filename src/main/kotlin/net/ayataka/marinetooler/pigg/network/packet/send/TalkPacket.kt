@@ -22,8 +22,8 @@ class TalkPacket : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeString(text)
-        buffer.writeRawInt(color)
-        buffer.writeRawInt(balloonColor)
+        buffer.writeInt(color)
+        buffer.writeInt(balloonColor)
         return buffer
     }
 }

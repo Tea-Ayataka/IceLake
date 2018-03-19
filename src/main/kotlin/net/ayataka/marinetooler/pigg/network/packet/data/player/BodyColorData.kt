@@ -25,14 +25,14 @@ class BodyColorData {
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawShort(skin)
-                .writeRawShort(hair)
-                .writeRawShort(eyebrow)
-                .writeRawShort(eye)
-                .writeRawShort(beard)
-                .writeRawShort(lip)
-                .writeRawShort(cheek)
-                .writeRawShort(eyeshadow)
+                .writeShort(skin)
+                .writeShort(hair)
+                .writeShort(eyebrow)
+                .writeShort(eye)
+                .writeShort(beard)
+                .writeShort(lip)
+                .writeShort(cheek)
+                .writeShort(eyeshadow)
     }
 
     fun clone(): BodyColorData{

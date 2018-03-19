@@ -21,8 +21,8 @@ open class ListUserItemResultPacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(max)
-        buffer.writeRawInt(size)
+        buffer.writeInt(max)
+        buffer.writeInt(size)
 
         buffer.writeRawBytes(data)
 

@@ -2,7 +2,7 @@ package net.ayataka.marinetooler.pigg.network.packet.data.area
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 
-class PartData(val param2: Boolean) {
+class PartData(private var hasAttachDirection: Boolean) {
     var height: Int = 0
     var walkable = false
     var sittable = false
@@ -12,21 +12,19 @@ class PartData(val param2: Boolean) {
     var rx: Byte = 0
     var ry: Byte = 0
     var index: Int = 0
-    var facing: Facing = Facing.walls[0]
-    var rawfacing = 0.0
+    var wall: Wall = Wall.NONE // Read only
+    var facing: Byte = 0
 
     fun readFrom(buffer: ByteBuilder) {
         height = buffer.readInt()
         attachable = buffer.readBoolean()
         sittable = buffer.readBoolean()
         walkable = buffer.readBoolean()
+        facing = buffer.readByte()
 
-        val facing = buffer.readByte()
+        wall = Wall.values()[facing.toInt()]
 
-        rawfacing = facing.toDouble()
-        facing = Facing.walls[rawfacing.toInt()]
-
-        if(param2){
+        if (hasAttachDirection) {
             attachDirection = buffer.readByte()
         }
 
@@ -38,25 +36,18 @@ class PartData(val param2: Boolean) {
     }
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder {
-        val packet = buffer
-                .writeRawInt(height)
+        buffer.writeInt(height)
                 .writeBoolean(attachable)
                 .writeBoolean(sittable)
                 .writeBoolean(walkable)
+                .writeByte(facing)
+                .writeBoolean(hasAttachDirection)
 
-                .writeRawByte(rawfacing.toByte())
-                .writeBoolean(param2)
+        attachDirection?.let { buffer.writeByte(it) }
 
-        attachDirection?.let { packet.writeRawByte(it) }
+        buffer.writeByte(rx)
+                .writeByte(ry)
 
-        packet
-                .writeRawByte(rx)
-                .writeRawByte(ry)
-
-        return packet
-    }
-
-    fun clone() : PartData {
-        return this
+        return buffer
     }
 }

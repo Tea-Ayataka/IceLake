@@ -21,11 +21,11 @@ class PlacePet {
 
     fun writeTo(buffer: ByteBuilder): ByteBuilder{
         return buffer
-                .writeRawInt(petId)
-                .writeRawShort(x)
-                .writeRawShort(y)
-                .writeRawShort(z)
-                .writeRawByte(direction)
+                .writeInt(petId)
+                .writeShort(x)
+                .writeShort(y)
+                .writeShort(z)
+                .writeByte(direction)
                 .writeBoolean(sleeping)
     }
 }

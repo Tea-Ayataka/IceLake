@@ -141,7 +141,7 @@ object Protocol {
 
     private fun handleSpecialPacket(header: Short, buffer: ByteBuilder, type: ServerType) {
         if (header == HeaderID.CIPHER_KEY.id) {
-            cipherKey[type] = buffer.skip(4).readRawBytes(4).plus(buffer.reset().skip(2).readRawBytes(4))
+            cipherKey[type] = buffer.skip(4).readBytes(4).plus(buffer.reset().skip(2).readBytes(4))
             dump("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}")
         }
     }

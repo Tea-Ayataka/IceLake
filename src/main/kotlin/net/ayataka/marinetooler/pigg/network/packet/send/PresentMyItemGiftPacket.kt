@@ -28,13 +28,13 @@ class PresentMyItemGiftPacket : Packet() {
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeString(usercode)
         buffer.writeString(message)
-        buffer.writeRawInt(items.size)
+        buffer.writeInt(items.size)
 
         items.forEach {
             buffer.writeString(it.item)
             buffer.writeString(it.type)
-            buffer.writeRawInt(it.id)
-            buffer.writeRawInt(it.flag)
+            buffer.writeInt(it.id)
+            buffer.writeInt(it.flag)
         }
 
         buffer.writeDoubleTimeStamp()

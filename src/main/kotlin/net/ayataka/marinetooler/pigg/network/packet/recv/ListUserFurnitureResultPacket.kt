@@ -40,7 +40,7 @@ open class ListUserFurnitureResultPacket : Packet() {
             val loc5 = buffer.readShort()
 
             //loc5[i - 1] = loc5
-            loc5.add(loc5)
+            this.loc5.add(loc5)
 
             val parts = mutableListOf<PartData>()
 
@@ -67,7 +67,7 @@ open class ListUserFurnitureResultPacket : Packet() {
             //loc10[i - 1] = loc10
 
             whatStrings1.add(whatString1)
-            loc10.add(loc10)
+            this.loc10.add(loc10)
 
             for(i2 in 1..loc10){
                 val whatString2 = buffer.readString()

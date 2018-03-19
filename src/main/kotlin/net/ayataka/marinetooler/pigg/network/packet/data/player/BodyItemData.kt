@@ -16,7 +16,7 @@ class BodyItemData {
     fun writeTo(): ByteBuilder{
         val bb = ByteBuilder()
 
-        bb.writeRawInt(size)
+        bb.writeInt(size)
 
         items.forEach { bb.writeString(it) }
 

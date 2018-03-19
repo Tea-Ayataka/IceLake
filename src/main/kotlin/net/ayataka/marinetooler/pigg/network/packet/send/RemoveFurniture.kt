@@ -17,7 +17,7 @@ class RemoveFurniture : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(sequence)
+        buffer.writeInt(sequence)
         return buffer
     }
 }

@@ -14,7 +14,7 @@ import java.nio.ByteBuffer
 
 class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketClient(URI(remoteUri)) {
     override fun onOpen(handshake: ServerHandshake?) {
-        println("[WS CLIENT] Client Connected to ${uri}")
+        println("[WS CLIENT] Client Connected to $uri")
         EventManager.fire(ConnectEvent())
     }
 

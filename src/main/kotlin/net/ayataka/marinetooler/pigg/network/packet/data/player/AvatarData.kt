@@ -62,11 +62,11 @@ class AvatarData {
         bb = color.writeTo(bb)
         bb = position.writeTo(bb)
 
-        bb.writeRawByte(item.items.size.toByte())
+        bb.writeByte(item.items.size.toByte())
 
         item.items.forEach { bb.writeString(it) }
 
-        bb.writeRawByte(cosme.size.toByte())
+        bb.writeByte(cosme.size.toByte())
 
         cosme.forEach {
             bb.writeString(it.itemCode)
@@ -74,7 +74,7 @@ class AvatarData {
                     .writeBoolean(it.newParts)
         }
 
-        bb.writeRawByte(conditions.size.toByte())
+        bb.writeByte(conditions.size.toByte())
 
         conditions.forEach { bb.writeString(it) }
 

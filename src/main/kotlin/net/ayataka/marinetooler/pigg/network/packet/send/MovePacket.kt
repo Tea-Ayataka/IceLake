@@ -24,9 +24,9 @@ class MovePacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawShort(x)
-        buffer.writeRawShort(y)
-        buffer.writeRawShort(z)
+        buffer.writeShort(x)
+        buffer.writeShort(y)
+        buffer.writeShort(z)
         return buffer
     }
 }

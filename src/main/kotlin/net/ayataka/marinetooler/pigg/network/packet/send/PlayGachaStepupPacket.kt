@@ -5,7 +5,6 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.dump
-import net.ayataka.marinetooler.utils.info
 
 class PlayGachaStepupPacket : Packet() {
     override val server = ServerType.INFO
@@ -33,9 +32,9 @@ class PlayGachaStepupPacket : Packet() {
         buffer.writeString(gachaCode)
         buffer.writeBoolean(useCoupon)
         buffer.writeBoolean(useFreeAccount)
-        buffer.writeRawByte(spendType)
-        buffer.writeRawInt(categoryType)
-        buffer.writeRawByte(playType)
+        buffer.writeByte(spendType)
+        buffer.writeInt(categoryType)
+        buffer.writeByte(playType)
         return buffer
     }
 }
