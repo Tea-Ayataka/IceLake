@@ -1,8 +1,8 @@
 package net.ayataka.marinetooler.proxy.websocket.proxy
 
+import net.ayataka.marinetooler.proxy.websocket.WebSocketProxy
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.warn
-import net.ayataka.marinetooler.proxy.websocket.WebSocketProxy
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
@@ -10,7 +10,7 @@ import java.lang.Exception
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 
-class WServer(private val ip: String, private val prt: Int, private val proxy: WebSocketProxy) : WebSocketServer(InetSocketAddress(ip, prt)) {
+class WServer(private val ip: String, private val prt: Int, private val proxy: WebSocketProxy, private val onDisconnected: () -> Unit? = {}) : WebSocketServer(InetSocketAddress(ip, prt)) {
     override fun onOpen(conn: WebSocket?, handshake: ClientHandshake?) {
         println("[WS SERVER] New WebSocket connection with ${handshake!!.resourceDescriptor}")
 
@@ -22,6 +22,7 @@ class WServer(private val ip: String, private val prt: Int, private val proxy: W
     override fun onClose(conn: WebSocket?, code: Int, reason: String?, remote: Boolean) {
         println("[WS SERVER] Disconnected.")
         proxy.client!!.close()
+        onDisconnected.invoke()
     }
 
     override fun onMessage(conn: WebSocket?, message: String?) {
@@ -43,7 +44,7 @@ class WServer(private val ip: String, private val prt: Int, private val proxy: W
     }
 
     override fun onStart() {
-        info("[WS SERVER] Server started on ${ip}:${prt}")
+        info("[WS SERVER] Server started on $ip:$prt")
     }
 
     override fun onError(conn: WebSocket?, ex: Exception?) {

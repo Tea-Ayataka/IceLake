@@ -19,9 +19,8 @@ object Pigg {
     val proxies = hashMapOf<ServerType, WebSocketProxy>()
 
     init {
-        PolicyServer().start()
         // Start info server proxy
-        proxies[ServerType.INFO] = WebSocketProxy(PROXY_IP, INFO_SERVER_PORT, INFO_SERVER_URI, InfoPacketListener(), CERTIFICATE)
+        proxies[ServerType.INFO] = WebSocketProxy(PROXY_IP, INFO_SERVER_PORT, INFO_SERVER_URI, InfoPacketListener(), CERTIFICATE, true)
     }
 
     fun send(packet: Packet) {
