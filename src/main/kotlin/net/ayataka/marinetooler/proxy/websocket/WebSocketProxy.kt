@@ -16,35 +16,36 @@ class WebSocketProxy(
         private val ssl: SSLContext,
         private val usePolicyServer: Boolean = false
 ) {
-
-    //TODO: 汚い
     var server: WServer
     var client: WClient? = null
 
     var pServer: PolicyServer? = null
 
     init {
-        server = if (usePolicyServer) {
-            WServer(ip, port, this, { startPolicyServer() })
-        } else {
-            WServer(ip, port, this)
-        }
-
-        server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
-
         if (usePolicyServer) {
+            server = WServer(ip, port, this, { startPolicyServer() })
+            server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
+
+            // PolicyServerを起動する
             pServer = PolicyServer {
                 server.start()
             }
-        } else {
+        }
+        else {
+            server = WServer(ip, port, this)
+            server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
             server.start()
         }
     }
 
+    // サーバーの接続が切断された時、PolicyServerに切り替える。
     private fun startPolicyServer() {
+        // HAX: BugFix
         timer(initialDelay = 200, period = Long.MAX_VALUE) {
             this.cancel()
             server.stop()
+
+            // PolicyServerを起動する
             pServer = PolicyServer {
                 server = WServer(ip, port, this@WebSocketProxy, { startPolicyServer() })
                 server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
