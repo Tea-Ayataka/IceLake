@@ -1,6 +1,10 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
+import net.ayataka.marinetooler.pigg.network.ServerType
+import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
+import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineFurniture
@@ -10,19 +14,20 @@ import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
-import net.ayataka.marinetooler.pigg.network.packet.readUCodesFromAreaPacket
 import net.ayataka.marinetooler.utils.dump
 import net.ayataka.marinetooler.utils.toHexString
 
-open class BaseAreaData : PacketData {
+open class BaseAreaData : Packet() {
+    override val server = ServerType.CHAT
+    override val packetId = InfoPacketID.NONE.id
+
     var areaData: AreaData = AreaData()
-    var users = mutableListOf<String>()
 
     var isAdmin = false
     var isPatrol = false
     var isChannelActor = false
     var serverTime: Double = 0.0
-    var isRefleshedCosmeItem = false
+    var isRefreshedCosmeItem = false
     var isAllowRoomChange = false
 
     var meta = 0
@@ -40,9 +45,6 @@ open class BaseAreaData : PacketData {
         // エリアデータ
         areaData = AreaData()
         areaData.readFrom(buffer)
-
-        // Get area users
-        users = readUCodesFromAreaPacket(buffer)
 
         // 家具をロード
         (0 until buffer.readInt()).forEach {
@@ -122,7 +124,7 @@ open class BaseAreaData : PacketData {
             definePets.add(definePet)
 
             val placePet = PlacePet()
-            placePet.petId = definePet.getPetID()
+            placePet.petId = definePet.data.petId
 
             placePet.x = buffer.readShort()
             placePet.y = buffer.readShort()
@@ -179,7 +181,7 @@ open class BaseAreaData : PacketData {
 
         isChannelActor = buffer.readBoolean()
         serverTime = buffer.readDouble()
-        isRefleshedCosmeItem = buffer.readBoolean()
+        isRefreshedCosmeItem = buffer.readBoolean()
         isAllowRoomChange = buffer.readBoolean()
 
         // ??
@@ -192,7 +194,7 @@ open class BaseAreaData : PacketData {
     }
 
     //TODO: 未完成だから仕上げる
-    override fun writeTo(buffer: ByteBuilder) {
+    override fun writeTo(buffer: ByteBuilder) : ByteBuilder? {
         areaData.writeTo(buffer)
 
         buffer.writeInt(placeFurnitures.size)
@@ -294,7 +296,7 @@ open class BaseAreaData : PacketData {
 
         buffer.writeBoolean(isChannelActor)
         buffer.writeDouble(serverTime)
-        buffer.writeBoolean(isRefleshedCosmeItem)
+        buffer.writeBoolean(isRefreshedCosmeItem)
         buffer.writeBoolean(isAllowRoomChange)
 
         buffer.writeByte(loc11.size.toByte())
@@ -304,5 +306,7 @@ open class BaseAreaData : PacketData {
         }
 
         dump("[Write] ${buffer.build().array().toHexString()}")
+
+        return null
     }
 }

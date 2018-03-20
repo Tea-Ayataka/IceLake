@@ -20,12 +20,13 @@ object AutoGoodPigg : Module() {
         running = true
 
         Thread({
-            if (CurrentUser.areaData.users.isEmpty()) {
+            val target = CurrentUser.areaData.defineAvatars.filter { it.data.userCode != CurrentUser.usercode }.map { it.data.userCode }.toMutableList()
+
+            if (target.isEmpty()) {
                 running = false
                 return@Thread
             }
 
-            val target = CurrentUser.areaData.users
             target.removeAll(goodpigged)
 
             target.forEach {

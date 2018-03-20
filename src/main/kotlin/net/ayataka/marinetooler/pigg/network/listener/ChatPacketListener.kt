@@ -49,7 +49,7 @@ class ChatPacketListener : IPacketListener {
         if (packet is BaseAreaData) {
             CurrentUser.areaData = packet
 
-            info("JOINED TO ${packet.areaData.categoryCode}.${packet.areaData.areaCode} with ${packet.users.size} users.")
+            info("JOINED TO ${packet.areaData.categoryCode}.${packet.areaData.areaCode} with ${packet.defineAvatars.size} users.")
         }
 
         val event = RecvPacketEvent(packet)
