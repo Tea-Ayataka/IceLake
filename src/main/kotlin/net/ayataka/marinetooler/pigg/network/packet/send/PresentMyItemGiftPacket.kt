@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.UserItemData
+import net.ayataka.marinetooler.pigg.network.packet.data.shop.UserItemData
 
 class PresentMyItemGiftPacket : Packet() {
     override val server = ServerType.INFO

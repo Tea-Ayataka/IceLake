@@ -1,8 +1,9 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.place
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class PlacePet {
+class PlacePet : PacketData {
     var petId = 0
     var x: Short = 0
     var y: Short = 0
@@ -10,7 +11,7 @@ class PlacePet {
     var direction: Byte = 0
     var sleeping = false
 
-    fun readFrom(buffer: ByteBuilder){
+    override fun readFrom(buffer: ByteBuilder) {
         petId = buffer.readInt()
         x = buffer.readShort()
         y = buffer.readShort()
@@ -19,12 +20,9 @@ class PlacePet {
         sleeping = buffer.readBoolean()
     }
 
-    fun writeTo(buffer: ByteBuilder): ByteBuilder{
-        return buffer
-                .writeInt(petId)
-                .writeShort(x)
-                .writeShort(y)
-                .writeShort(z)
+    override fun writeTo(buffer: ByteBuilder) {
+        buffer.writeInt(petId)
+                .writeShort(x, y, z)
                 .writeByte(direction)
                 .writeBoolean(sleeping)
     }

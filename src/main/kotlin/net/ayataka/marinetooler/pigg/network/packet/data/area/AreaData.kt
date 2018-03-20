@@ -1,8 +1,9 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class AreaData {
+class AreaData : PacketData {
     var categoryCode: String = ""
     var categoryName: String = ""
     var areaCode: String = ""
@@ -14,7 +15,7 @@ class AreaData {
     var sizeX: Short = 0
     var sizeY: Short = 0
 
-    fun readFrom(buffer: ByteBuilder){
+    override fun readFrom(buffer: ByteBuilder) {
         categoryCode = buffer.readString()
         categoryName = buffer.readString()
         areaCode = buffer.readString()
@@ -29,9 +30,8 @@ class AreaData {
         sizeY = buffer.readShort()
     }
 
-    fun writeTo(buffer: ByteBuilder) : ByteBuilder{
-        return buffer
-                .writeString(categoryCode)
+    override fun writeTo(buffer: ByteBuilder) {
+        buffer.writeString(categoryCode)
                 .writeString(categoryName)
                 .writeString(areaCode)
                 .writeString(areaName)

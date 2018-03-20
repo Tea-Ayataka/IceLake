@@ -1,8 +1,9 @@
-package net.ayataka.marinetooler.pigg.network.packet.data
+package net.ayataka.marinetooler.pigg.network.packet.data.shop
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-open class ShopGachaData {
+class ShopGachaData : PacketData {
     var code: String = ""
     var name: String = ""
     var payType: Byte = 0
@@ -25,7 +26,7 @@ open class ShopGachaData {
     var stepUpGachaStatus: Byte = 0
     var consecutiveGachaStatus: Byte = 0
 
-    fun readFrom(buffer: ByteBuilder) {
+    override fun readFrom(buffer: ByteBuilder) {
         code = buffer.readString()
         name = buffer.readString()
         payType = buffer.readByte()
@@ -54,4 +55,9 @@ open class ShopGachaData {
         stepUpGachaStatus = buffer.readByte()
         consecutiveGachaStatus = buffer.readByte()
     }
+
+    override fun writeTo(buffer: ByteBuilder) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

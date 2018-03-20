@@ -86,8 +86,10 @@ open class ByteBuilder() {
     }
 
     // Writers
-    fun writeByte(byte: Byte): ByteBuilder {
-        buffer.put(byte)
+    fun writeByte(vararg bytes: Byte): ByteBuilder {
+        bytes.forEach {
+            buffer.put(it)
+        }
         return this
     }
 
@@ -96,8 +98,10 @@ open class ByteBuilder() {
         return this
     }
 
-    fun writeShort(short: Short): ByteBuilder {
-        buffer.putShort(short)
+    fun writeShort(vararg shorts: Short): ByteBuilder {
+        shorts.forEach {
+            buffer.putShort(it)
+        }
         return this
     }
 
@@ -147,14 +151,17 @@ open class ByteBuilder() {
     }
 
     // Writers
-    fun writeString(text: String): ByteBuilder {
-        writeShort(text.toByteArray().size.toShort())
+    fun writeString(vararg texts: String): ByteBuilder {
+        texts.forEach {
+            writeShort(it.toByteArray().size.toShort())
 
-        if (text.toByteArray().isEmpty()) {
-            writeByte(0)
-        } else {
-            writeRawBytes(text.toByteArray())
+            if (it.toByteArray().isEmpty()) {
+                writeByte(0)
+            } else {
+                writeRawBytes(it.toByteArray())
+            }
         }
+
         return this
     }
 

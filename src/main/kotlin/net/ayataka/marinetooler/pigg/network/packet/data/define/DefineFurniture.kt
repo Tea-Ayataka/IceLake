@@ -14,8 +14,4 @@ class DefineFurniture : DefineData() {
 
     var description = ""
     var actionCode = ""
-
-    fun clone() : DefineFurniture{
-        return this
-    }
 }

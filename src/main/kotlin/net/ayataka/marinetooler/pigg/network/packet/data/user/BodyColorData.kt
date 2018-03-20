@@ -1,8 +1,9 @@
-package net.ayataka.marinetooler.pigg.network.packet.data.player
+package net.ayataka.marinetooler.pigg.network.packet.data.user
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class BodyColorData {
+class BodyColorData : PacketData {
     var skin: Short = 2
     var hair: Short = 2
     var eyebrow: Short = 1
@@ -12,7 +13,7 @@ class BodyColorData {
     var cheek: Short = -1
     var eyeshadow: Short = -1
 
-    fun readFrom(buffer: ByteBuilder){
+    override fun readFrom(buffer: ByteBuilder) {
         skin = buffer.readShort()
         hair = buffer.readShort()
         eyebrow = buffer.readShort()
@@ -23,19 +24,7 @@ class BodyColorData {
         eyeshadow = buffer.readShort()
     }
 
-    fun writeTo(buffer: ByteBuilder): ByteBuilder{
-        return buffer
-                .writeShort(skin)
-                .writeShort(hair)
-                .writeShort(eyebrow)
-                .writeShort(eye)
-                .writeShort(beard)
-                .writeShort(lip)
-                .writeShort(cheek)
-                .writeShort(eyeshadow)
-    }
-
-    fun clone(): BodyColorData{
-        return this
+    override fun writeTo(buffer: ByteBuilder) {
+        buffer.writeShort(skin, hair, eyebrow, eye, beard, lip, cheek, eyeshadow)
     }
 }

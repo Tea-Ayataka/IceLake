@@ -1,12 +1,12 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class PartData(private var hasAttachDirection: Boolean) {
+class PartData(private var hasAttachDirection: Boolean) : PacketData {
     var height: Int = 0
     var walkable = false
     var sittable = false
-    var orgSittable = false
     var attachable = false
     var attachDirection: Byte? = -1
     var rx: Byte = 0
@@ -15,7 +15,7 @@ class PartData(private var hasAttachDirection: Boolean) {
     var wall: Wall = Wall.NONE // Read only
     var facing: Byte = 0
 
-    fun readFrom(buffer: ByteBuilder) {
+    override fun readFrom(buffer: ByteBuilder) {
         height = buffer.readInt()
         attachable = buffer.readBoolean()
         sittable = buffer.readBoolean()
@@ -30,24 +30,18 @@ class PartData(private var hasAttachDirection: Boolean) {
 
         rx = buffer.readByte()
         ry = buffer.readByte()
-
-        //必要ある気がしない
-        orgSittable = sittable
     }
 
-    fun writeTo(buffer: ByteBuilder): ByteBuilder {
+    override fun writeTo(buffer: ByteBuilder) {
         buffer.writeInt(height)
-                .writeBoolean(attachable)
-                .writeBoolean(sittable)
-                .writeBoolean(walkable)
+                .writeBoolean(attachable, sittable, walkable)
                 .writeByte(facing)
                 .writeBoolean(hasAttachDirection)
 
-        attachDirection?.let { buffer.writeByte(it) }
+        attachDirection?.let {
+            buffer.writeByte(it)
+        }
 
-        buffer.writeByte(rx)
-                .writeByte(ry)
-
-        return buffer
+        buffer.writeByte(rx, ry)
     }
 }

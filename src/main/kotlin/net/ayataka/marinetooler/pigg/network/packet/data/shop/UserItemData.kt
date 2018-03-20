@@ -1,4 +1,4 @@
-package net.ayataka.marinetooler.pigg.network.packet.data
+package net.ayataka.marinetooler.pigg.network.packet.data.shop
 
 data class UserItemData(
         var item: String,

@@ -1,9 +1,10 @@
-package net.ayataka.marinetooler.pigg.network.packet.data.player
+package net.ayataka.marinetooler.pigg.network.packet.data.user
 
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class PetData {
+class PetData : PacketData {
     var petId = 0
     var colorId: Byte = 0
     var type = ""
@@ -25,12 +26,11 @@ class PetData {
     var reachedDaylyMaxPoint = false
     var actions = null
 
-    fun isSelf(): Boolean{
+    fun isSelf(): Boolean {
         return owner == CurrentUser.usercode
     }
 
-    fun readFrom(buffer: ByteBuilder)
-    {
+    override fun readFrom(buffer: ByteBuilder) {
         petId = buffer.readInt()
         type = buffer.readString()
         name = buffer.readString()
@@ -44,18 +44,12 @@ class PetData {
         category = buffer.readString()
     }
 
-    fun writeTo(buffer: ByteBuilder): ByteBuilder{
-        return buffer
-                .writeInt(petId)
-                .writeString(type)
-                .writeString(name)
-                .writeString(owner)
+    override fun writeTo(buffer: ByteBuilder) {
+        buffer.writeInt(petId)
+                .writeString(type, name, owner)
                 .writeInt(treasuresID)
                 .writeString(treasuresCode)
-                .writeByte(colorId)
-                .writeByte(gender)
-                .writeByte(levelFeel)
-                .writeByte(levelFriendly)
+                .writeByte(colorId, gender, levelFeel, levelFriendly)
                 .writeString(category)
     }
 }

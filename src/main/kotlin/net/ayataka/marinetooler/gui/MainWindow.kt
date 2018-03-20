@@ -18,7 +18,7 @@ import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.LoginChatResultPacket

@@ -27,12 +27,12 @@ object ClickTP : Module() {
 
                 val task = timer(period = 50) {
                     pos.x += if (goal.x > pos.x) 1 else if (goal.x < pos.x) -1 else 0
-                    pos.y = goal.y
-                    pos.z += if (goal.z > pos.z) 1 else if (goal.z < pos.z) -1 else 0
+                    pos.y += if (goal.y > pos.y) 1 else if (goal.y < pos.y) -1 else 0
+                    pos.z = goal.z
 
                     CurrentUser.teleport(pos.x, pos.y, pos.z, 0)
 
-                    if (pos.equals(goal)) {
+                    if (pos == goal) {
                         cancel()
                         moving = false
                     }

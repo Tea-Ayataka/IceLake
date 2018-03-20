@@ -8,7 +8,7 @@ import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
 import net.ayataka.marinetooler.proxy.websocket.IPacketListener
 import net.ayataka.marinetooler.proxy.websocket.WebSocketProxy

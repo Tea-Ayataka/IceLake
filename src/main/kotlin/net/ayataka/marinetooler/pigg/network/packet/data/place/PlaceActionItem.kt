@@ -11,8 +11,4 @@ class PlaceActionItem {
     var z: Short = 0
 
     var mode = 0
-
-    fun clone() : PlaceActionItem{
-        return this
-    }
 }

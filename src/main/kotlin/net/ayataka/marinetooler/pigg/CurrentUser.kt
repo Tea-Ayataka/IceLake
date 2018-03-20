@@ -1,7 +1,7 @@
 package net.ayataka.marinetooler.pigg
 
 import net.ayataka.eventapi.EventManager
-import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes

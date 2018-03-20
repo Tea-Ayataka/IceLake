@@ -1,26 +1,22 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.define
 
-import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
-import net.ayataka.marinetooler.pigg.network.packet.data.player.AvatarData
+import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 
 class DefineAvatar : DefineData() {
     var part = PartData(false)
     var data = AvatarData()
     var friend = false
 
-    fun readData(buffer: ByteBuilder){
-        data = AvatarData()
+    fun load(data: AvatarData) {
+        characterId = data.userCode
 
-        data.readFrom(buffer)
-        friend = false
-    }
+        name = if (data.amebaId.isEmpty()) {
+            data.nickName
+        } else {
+            data.amebaId
+        }
 
-    fun writeData(buffer: ByteBuilder): ByteBuilder{
-        return data.writeTo(buffer)
-    }
-
-    fun clone(): DefineAvatar{
-        return this
+        this.data = data
     }
 }

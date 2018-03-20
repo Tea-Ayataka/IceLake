@@ -1,8 +1,9 @@
-package net.ayataka.marinetooler.pigg.network.packet.data
+package net.ayataka.marinetooler.pigg.network.packet.data.shop
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-open class GachaItemData {
+class GachaItemData : PacketData {
     var code = ""
     var type = ""
     var name = ""
@@ -13,7 +14,7 @@ open class GachaItemData {
     var setItemSize = 0
     var setItemData = mutableListOf<ShopSetItemData>()
 
-    fun readFrom(buffer: ByteBuilder) {
+    override fun readFrom(buffer: ByteBuilder) {
         code = buffer.readString()
         type = buffer.readString()
         name = buffer.readString()
@@ -26,5 +27,9 @@ open class GachaItemData {
             data.readFrom(buffer)
             setItemData.add(data)
         }
+    }
+
+    override fun writeTo(buffer: ByteBuilder) {
+        TODO("not implemented")
     }
 }

@@ -1,8 +1,9 @@
-package net.ayataka.marinetooler.pigg.network.packet.data.player
+package net.ayataka.marinetooler.pigg.network.packet.data.user
 
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
+import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
-class BodyPartData {
+class BodyPartData : PacketData {
     var gender: Byte = 0
     var face: Short = 0
     var hairFront: Short = 0
@@ -16,7 +17,7 @@ class BodyPartData {
     var mole2: Short = -1
     var option: Short = -1
 
-    fun readFrom(buffer: ByteBuilder){
+    override fun readFrom(buffer: ByteBuilder) {
         face = buffer.readShort()
         hairFront = buffer.readShort()
         hairBack = buffer.readShort()
@@ -30,19 +31,8 @@ class BodyPartData {
         option = buffer.readShort()
     }
 
-    fun writeTo(buffer: ByteBuilder): ByteBuilder{
-        return buffer
-                .writeByte(gender)
-                .writeShort(face)
-                .writeShort(hairFront)
-                .writeShort(hairBack)
-                .writeShort(eye)
-                .writeShort(eyebrow)
-                .writeShort(nose)
-                .writeShort(mouth)
-                .writeShort(beard)
-                .writeShort(mole1)
-                .writeShort(mole2)
-                .writeShort(option)
+    override fun writeTo(buffer: ByteBuilder) {
+        buffer.writeByte(gender)
+                .writeShort(face, hairFront, hairBack, eye, eyebrow, nose, mouth, beard, mole1, mole2, option)
     }
 }
