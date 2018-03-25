@@ -5,10 +5,10 @@ import java.net.CookieStore
 
 class VirtualPigg(val amebaId: String, val password: String) {
     var connected = false
-    var cookie: CookieStore = null
+    var cookie: CookieStore? = null
 
     fun login() {
-        val httpGet = HTTP.
+      //  val httpGet = HTTP.
     }
 
     fun connect() {
