@@ -13,8 +13,9 @@ import net.ayataka.marinetooler.utils.warn
 import java.nio.ByteBuffer
 import kotlin.reflect.KClass
 
-// Pigg Protocol Implementation
-object Protocol {
+// Piggプロトコルの実装
+// ByteArray -> Packet へ変換する。必要であれば複合化も行う。
+class Protocol {
     // PacketID:PacketClass
     private val packets = HashMap<ServerType, HashMap<Short, KClass<out Packet>>>()
 
@@ -26,6 +27,7 @@ object Protocol {
 
         // Register packets
         // SEND (Client bound)
+        register(LoginPacket::class)
         register(MoveFurniture::class)
         register(PlaceFurniture::class)
         register(PlayGachaStepupPacket::class)
@@ -128,7 +130,7 @@ object Protocol {
         val packet = packets[type]!![id]?.java?.newInstance() ?: return null
 
         try {
-            packet.read(buffer)
+            packet.read(buffer, cipherKey[type])
         } catch (ex: Exception) {
             warn("FAILED TO CONVERT PACKET!")
             ex.printStackTrace()

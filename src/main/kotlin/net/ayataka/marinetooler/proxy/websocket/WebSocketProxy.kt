@@ -5,6 +5,7 @@ import net.ayataka.marinetooler.proxy.websocket.proxy.WClient
 import net.ayataka.marinetooler.proxy.websocket.proxy.WServer
 import net.ayataka.marinetooler.utils.toHexString
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory
+import java.nio.ByteBuffer
 import javax.net.ssl.SSLContext
 import kotlin.concurrent.timer
 
@@ -59,17 +60,15 @@ class WebSocketProxy(
         server.stop()
     }
 
-    fun send(packet: Packet) {
-        val data = packet.write()
-        println("[WS SEND (FORCED)] ${data?.array()?.size} bytes")
-        println(data?.array()?.toHexString())
-        client?.send(data)
+    fun send(data: ByteBuffer) {
+        println("[WS SEND (FORCED)] ${data.array().size} bytes")
+        println(data.array().toHexString())
+        client?.send(data.array())
     }
 
-    fun receive(packet: Packet) {
-        val data = packet.write()
-        println("[WS RECV (FORCED)] ${data?.array()?.size} bytes")
-        println(data?.array()?.toHexString())
-        server.broadcast(data?.array())
+    fun receive(data: ByteBuffer) {
+        println("[WS RECV (FORCED)] ${data.array().size} bytes")
+        println(data.array().toHexString())
+        server.broadcast(data.array())
     }
 }

@@ -2,6 +2,7 @@
 
 package net.ayataka.marinetooler.pigg
 
+import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.listener.InfoPacketListener
 import net.ayataka.marinetooler.pigg.network.packet.Packet
@@ -14,6 +15,7 @@ object Pigg {
     const val INFO_SERVER_PORT = 443
     const val CHAT_SERVER_PORT = 8443
     const val INFO_SERVER_URI = "wss://27.133.213.64:443/command"
+    val protocol = Protocol()
     val CERTIFICATE = getSSLContextFromPFXFile("pigg.pfx", "pigg.jks", "nopass")
 
     val proxies = hashMapOf<ServerType, WebSocketProxy>()
@@ -24,10 +26,14 @@ object Pigg {
     }
 
     fun send(packet: Packet) {
-        proxies[packet.server]?.send(packet)
+        packet.write(protocol.cipherKey[packet.server])?.let {
+            proxies[packet.server]?.send(it)
+        }
     }
 
     fun receive(packet: Packet) {
-        proxies[packet.server]?.receive(packet)
+        packet.write(protocol.cipherKey[packet.server])?.let {
+            proxies[packet.server]?.receive(it)
+        }
     }
 }

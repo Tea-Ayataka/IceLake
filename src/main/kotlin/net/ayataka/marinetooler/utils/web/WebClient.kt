@@ -22,8 +22,9 @@ class WebClient(
         val domain = URI(URL(link).host)
         val connection: HttpURLConnection = URL(link).openConnection() as HttpURLConnection
 
-        // メソッド・ヘッダーをセットする
         connection.requestMethod = method.name
+        connection.readTimeout = timeout
+        connection.connectTimeout = timeout
 
         // デフォルトヘッダー
         connection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
@@ -42,6 +43,7 @@ class WebClient(
             connection.addRequestProperty(it.key, it.value)
         }
 
+        // POSTデータを送信
         if (method == RequestMethod.POST) {
             connection.doOutput = true
             connection.outputStream.write(postData?.toByteArray(Charset.forName(encoding)))

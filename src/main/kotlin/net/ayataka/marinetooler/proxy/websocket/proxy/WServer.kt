@@ -2,6 +2,7 @@ package net.ayataka.marinetooler.proxy.websocket.proxy
 
 import net.ayataka.marinetooler.proxy.websocket.WebSocketProxy
 import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.utils.toHexString
 import net.ayataka.marinetooler.utils.warn
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
@@ -32,6 +33,7 @@ class WServer(private val ip: String, private val prt: Int, private val proxy: W
 
     override fun onMessage(conn: WebSocket, message: ByteBuffer) {
         println("[WS SEND] ${message.array().size} bytes")
+        println(message.array().toHexString())
 
         var data: ByteBuffer = message
 

@@ -2,9 +2,10 @@ package net.ayataka.marinetooler.pigg.network.listener
 
 import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.CurrentUser
+import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.Pigg.protocol
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
@@ -17,17 +18,17 @@ import java.nio.ByteBuffer
 class ChatPacketListener : IPacketListener {
     // Raw
     override fun send(buffer: ByteBuffer): ByteBuffer? {
-        Protocol.convert(buffer, ServerType.CHAT)?.let {
+        protocol.convert(buffer, ServerType.CHAT)?.let {
             val packet = onSend(it)
-            return if (packet.canceled) null else packet.write() ?: buffer
+            return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }
         return buffer
     }
 
     override fun receive(buffer: ByteBuffer): ByteBuffer? {
-        Protocol.convert(buffer, ServerType.CHAT)?.let {
+        protocol.convert(buffer, ServerType.CHAT)?.let {
             val packet = onReceive(it)
-            return if (packet.canceled) null else packet.write() ?: buffer
+            return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }
         return buffer
     }

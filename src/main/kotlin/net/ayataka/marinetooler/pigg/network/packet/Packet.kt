@@ -1,6 +1,5 @@
 package net.ayataka.marinetooler.pigg.network.packet
 
-import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.utils.dump
 import net.ayataka.marinetooler.utils.fromHexToBytes
@@ -19,10 +18,10 @@ abstract class Packet {
     protected abstract fun readFrom(buffer: ByteBuilder)
     protected abstract fun writeTo(buffer: ByteBuilder): ByteBuilder?
 
-    fun read(buffer: ByteBuilder) {
+    fun read(buffer: ByteBuilder, key: ByteArray?) {
         if (encrypted) {
             buffer.pos(10) // Move pos to get body length
-            val body = decrypt(buffer.readBytes())
+            val body = decrypt(buffer.readBytes(), key!!)
             val decrypted = ByteBuilder().writeRawBytes(body)
             readFrom(ByteBuilder(decrypted.build()))
         } else {
@@ -31,11 +30,11 @@ abstract class Packet {
         }
     }
 
-    fun write(): ByteBuffer? {
-        return format(writeTo(ByteBuilder()))
+    fun write(key: ByteArray?): ByteBuffer? {
+        return format(writeTo(ByteBuilder()), key)
     }
 
-    private fun format(buffer: ByteBuilder?): ByteBuffer? {
+    private fun format(buffer: ByteBuilder?, key: ByteArray?): ByteBuffer? {
         if (buffer == null) {
             return null
         }
@@ -48,8 +47,9 @@ abstract class Packet {
 
         // Write encrypted body with length
         if (encrypted) {
-            body = encrypt(body)
+            body = encrypt(body, key!!)
         }
+
         formatted.writeShort(body.size.toShort())
         formatted.writeRawBytes(body)
 
@@ -66,15 +66,15 @@ abstract class Packet {
         buffer.writeRawBytes("00 00".fromHexToBytes())
     }
 
-    private fun decrypt(source: ByteArray): ByteArray {
+    private fun decrypt(source: ByteArray, key: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("DES/ECB/PKCS5Padding")
-        cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(Protocol.cipherKey[server], "DES"))
+        cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "DES"))
         return cipher.doFinal(source)
     }
 
-    private fun encrypt(source: ByteArray): ByteArray {
+    private fun encrypt(source: ByteArray, key: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("DES/ECB/PKCS5Padding")
-        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(Protocol.cipherKey[server], "DES"))
+        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(key, "DES"))
         return cipher.doFinal(source)
     }
 }

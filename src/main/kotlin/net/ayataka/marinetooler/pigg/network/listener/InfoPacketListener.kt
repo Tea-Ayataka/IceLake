@@ -5,7 +5,6 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
@@ -18,18 +17,18 @@ import java.nio.ByteBuffer
 class InfoPacketListener : IPacketListener {
     // Raw
     override fun send(buffer: ByteBuffer): ByteBuffer? {
-        Protocol.convert(buffer, ServerType.INFO)?.let {
+        Pigg.protocol.convert(buffer, ServerType.INFO)?.let {
             val packet = onSend(it)
-            return if (packet.canceled) null else packet.write() ?: buffer
+            return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }
 
         return buffer
     }
 
     override fun receive(buffer: ByteBuffer): ByteBuffer? {
-        Protocol.convert(buffer, ServerType.INFO)?.let {
+        Pigg.protocol.convert(buffer, ServerType.INFO)?.let {
             val packet = onReceive(it)
-            return if (packet.canceled) null else packet.write() ?: buffer
+            return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }
 
         return buffer
