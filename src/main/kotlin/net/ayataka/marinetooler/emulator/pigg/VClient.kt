@@ -40,11 +40,11 @@ class VClient(remoteUri: String, val packetListener: IPacketListener?) : WebSock
     }
 
     override fun onError(ex: Exception?) {
-        warn("[WS CLIENT] An error occurred on connection : $ex")
+        warn("[VWS CLIENT] An error occurred on connection : $ex")
         ex?.printStackTrace()
     }
 
     init {
-        info("[WS CLIENT] Initialized")
+        info("[VWS CLIENT] Initialized")
     }
 }

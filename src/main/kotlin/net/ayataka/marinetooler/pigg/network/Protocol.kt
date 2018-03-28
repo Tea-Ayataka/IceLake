@@ -27,6 +27,8 @@ class Protocol {
 
         // Register packets
         // SEND (Client bound)
+        register(PlaceActionItem::class)
+        register(OneMessageSavePacket::class)
         register(LoginPacket::class)
         register(MoveFurniture::class)
         register(PlaceFurniture::class)
@@ -62,6 +64,8 @@ class Protocol {
         register(GetSnapshotToken::class)
 
         // RECV (Server bound)
+        register(CheckBanWordResultPacket::class)
+        register(LoginResultPacket::class)
         register(RemoveFurniture::class)
         register(GetPiggShopGachaResultPacket::class)
         register(ActionResultPacket::class)
@@ -123,7 +127,6 @@ class Protocol {
 
         // Dump data
         dump("PACKET ID : $packetID ($type)")
-        dump(rawBuffer.array().toHexString())
         dump(String(rawBuffer.array()))
 
         // Find packet handler

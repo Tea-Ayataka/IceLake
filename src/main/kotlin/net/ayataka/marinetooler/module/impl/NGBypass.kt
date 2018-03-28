@@ -2,7 +2,10 @@ package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
+import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.pigg.network.packet.recv.CheckBanWordResultPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.OneMessageSavePacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
 import org.apache.commons.io.IOUtils
 
@@ -17,6 +20,23 @@ object NGBypass : Module() {
             for (line in ngWords) {
                 packet.text = packet.text.replace(line, line.first() + "\n" + line.substring(1))
             }
+        }
+
+        if (packet is OneMessageSavePacket) {
+            for (line in ngWords) {
+                packet.text = packet.text.replace(line, line.first() + "\n" + line.substring(1))
+            }
+
+            packet.text = packet.text.replace("\\n", "\n")
+        }
+    }
+
+    @EventListener
+    fun onReceive(event: RecvPacketEvent) {
+        val packet = event.packet
+
+        if (packet is CheckBanWordResultPacket) {
+            packet.isBan = false
         }
     }
 }

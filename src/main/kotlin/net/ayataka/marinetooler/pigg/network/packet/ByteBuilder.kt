@@ -154,12 +154,7 @@ open class ByteBuilder() {
     fun writeString(vararg texts: String): ByteBuilder {
         texts.forEach {
             writeShort(it.toByteArray().size.toShort())
-
-            if (it.toByteArray().isEmpty()) {
-                writeByte(0)
-            } else {
-                writeRawBytes(it.toByteArray())
-            }
+            writeRawBytes(it.toByteArray())
         }
 
         return this

@@ -54,7 +54,7 @@ abstract class Packet {
         formatted.writeRawBytes(body)
 
         val debug = formatted.build()
-        dump("BUILT PACKET")
+        dump("BUILT PACKET (${debug.array().size} bytes)")
         dump(debug.array().toHexString())
         dump(String(debug.array()))
         return debug

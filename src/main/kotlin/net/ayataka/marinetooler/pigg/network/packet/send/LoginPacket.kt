@@ -38,23 +38,31 @@ class LoginPacket : Packet() {
         p = buffer.readString()
         ph = buffer.readString()
 
+        dump("wtf? ${buffer.readAllBytes().size}")
+
         dump(" Huh? Ticket: $ticket amebaId: $amebaId password: $password fromAndroid: $fromAndroid  Agent: $agent flashPlayerVersion: $flashplayerVersion amebaAuthTicket: $amebaAuthTicket frmId: $frmId p: $p ph: $ph")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        return null
+        buffer.writeString(ticket, amebaId, password)
+        buffer.writeBoolean(fromAndroid)
+        buffer.writeString(agent, flashplayerVersion, amebaAuthTicket, frmId, p, ph)
+        return buffer
     }
 
     fun fuck() {
         ph = l(p, frmId, amebaAuthTicket, flashplayerVersion, agent, fromAndroid.toString(), password, amebaId, ticket)
         ph = j(ticket, amebaId, password, fromAndroid.toString(), agent, flashplayerVersion, amebaAuthTicket, frmId, p, ph)
         p = p.substring(0, 32)
+
+        println("FUCKED p: $p ph: $ph")
     }
 
     private fun l(vararg params: String): String {
         var result = ""
         for (i in 0 until params.size) {
-            result += if (i == 0) DigestUtils.md5Hex(params[i].substring(0, 32)) else params[i].substring(0, 32)
+            val var1 = if(params[i].length > 32) params[i].substring(0, 32) else params[i]
+            result += if (i == 0) DigestUtils.md5Hex(var1) else var1
         }
 
         return result
@@ -71,18 +79,18 @@ class LoginPacket : Packet() {
     }
 
     private fun c(vararg args: String): String {
-        var var2 = ""
-        var var3 = 0
-        var var4 = "GehBraumua><mvaals;dkfj02348u:JKLHL:KJHfdaoifullD!C?Z12038%9i*14u12[409hj;3"
+        var var1 = ""
+        var var2 = 0
+        var var3 = "GehBraumua><mvaals;dkfj02348u:JKLHL:KJHfdaoifullD!C?Z12038%9i*14u12[409hj;3"
 
-        while (var3 < args[0].length) {
-            if (var3 > var4.length - 1) {
-                var4 += var4
+        while (var2 < args[0].length) {
+            if (var2 > var3.length - 1) {
+                var3 += var3
             }
 
-            var2 += Character.toString((args[0][var3].toByte() xor var4[var3].toByte()).toChar())
-            var3 += 1
+            var1 += Character.toString((args[0][var2].toByte() xor var3[var2].toByte()).toChar())
+            var2 += 1
         }
-        return var2
+        return var1
     }
 }

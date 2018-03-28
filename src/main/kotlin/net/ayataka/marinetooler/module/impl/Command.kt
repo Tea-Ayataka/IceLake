@@ -51,6 +51,14 @@ object Command : Module() {
                 "addfish" -> {
                     AquariumSpammer.addFish(spitted[1])
                 }
+                "placea" -> {
+                    val packet = PlaceActionItem()
+                    packet.code = spitted[1]
+                    packet.x = 10
+                    packet.y = 10
+
+                    Pigg.send(packet)
+                }
                 "spam" -> {
                     NoticeSpammer.enabled = !NoticeSpammer.enabled
                 }
@@ -62,6 +70,11 @@ object Command : Module() {
                 }
                 "del" -> {
                     FurnitureExploiter.remove(spitted[1].toInt())
+                }
+                "onemsg" -> {
+                    val packet = OneMessageSavePacket()
+                    packet.text = spitted[1].replace("\\n", "\n")
+                    Pigg.send(packet)
                 }
                 "roomact" -> {
                     val packet = RoomActionPacket()
