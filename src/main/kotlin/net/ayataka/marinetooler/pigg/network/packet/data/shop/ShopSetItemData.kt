@@ -11,10 +11,10 @@ class ShopSetItemData : PacketData {
     var itemType = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.readFrom(buffer)
+        this.readData(buffer)
     }
 
-    fun readFrom(buffer: ByteBuilder, hasType: Boolean = false) {
+    fun readData(buffer: ByteBuilder, hasType: Boolean = false) {
         itemCode = buffer.readString()
         itemCategory = buffer.readString()
         itemName = buffer.readString()
