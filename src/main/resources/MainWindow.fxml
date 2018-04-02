@@ -107,6 +107,7 @@
                                     <Button fx:id="freeGacha" layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="無料ガチャ" />
                                     <CheckBox fx:id="actionGhost" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="アクションゴースト" />
                                     <CheckBox fx:id="instantDonate" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" text="ワンクリック寄付" />
+                                    <CheckBox fx:id="gumiPoint" layoutX="15.0" layoutY="90.0" mnemonicParsing="false" text="グミポイント増殖" />
                                  </children>
                               </AnchorPane>
                            </content>

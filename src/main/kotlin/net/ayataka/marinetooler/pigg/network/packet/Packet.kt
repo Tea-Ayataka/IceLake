@@ -46,6 +46,8 @@ abstract class Packet {
         writeHeader(formatted)
 
         // Write encrypted body with length
+        dump("UNCRYPTED BUILT PACKET (${body.size} bytes)")
+        dump(body.toHexString())
         if (encrypted) {
             body = encrypt(body, key!!)
         }

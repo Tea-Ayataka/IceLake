@@ -5,8 +5,11 @@ import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.send.*
+import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
+import java.nio.ByteBuffer
 
 object Command : Module() {
     @EventListener
@@ -70,6 +73,13 @@ object Command : Module() {
                 }
                 "del" -> {
                     FurnitureExploiter.remove(spitted[1].toInt())
+                }
+                "sendpacket" -> {
+                    if (spitted[1] == "info") {
+                        Pigg.proxies[ServerType.INFO]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
+                    }else if(spitted[1] == "chat") {
+                        Pigg.proxies[ServerType.CHAT]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
+                    }
                 }
                 "onemsg" -> {
                     val packet = OneMessageSavePacket()

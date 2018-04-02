@@ -41,7 +41,7 @@ object CurrentUser {
 
     fun playAction(actionCode: String) {
         val packet = ActionPacket()
-        packet.actionId = actionCode + "\u0000_secret"
+        packet.actionId = "$actionCode\u0000_secret"
         Pigg.send(packet)
     }
 

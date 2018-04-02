@@ -28,6 +28,6 @@ class ErrorPacket : Packet() {
        buffer.writeString(exceptionClass)
        buffer.writeString(exceptionTrace)
 
-        return buffer
+        return null
     }
 }

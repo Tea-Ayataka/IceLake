@@ -99,6 +99,8 @@ class MainWindow : Initializable {
     lateinit var command: TextField
     @FXML
     lateinit var instantDonate: CheckBox
+    @FXML
+    lateinit var gumiPoint: CheckBox
 
     init {
         EventManager.register(this)
@@ -190,6 +192,10 @@ class MainWindow : Initializable {
 
         instantDonate.setOnAction {
             InstantDonator.enabled = (it.source as CheckBox).isSelected
+        }
+
+        gumiPoint.setOnAction {
+            PuzzleZousyoku.enabled = (it.source as CheckBox).isSelected
         }
 
         // Instant teleport
