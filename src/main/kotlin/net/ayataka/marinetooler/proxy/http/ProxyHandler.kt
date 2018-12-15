@@ -1,5 +1,6 @@
 package net.ayataka.marinetooler.proxy.http
 
+import net.ayataka.marinetooler.Tooler
 import net.ayataka.marinetooler.pigg.swf.SWFInjector
 import net.ayataka.marinetooler.utils.*
 import org.apache.http.HttpRequest
@@ -31,7 +32,13 @@ class ProxyHandler : HttpRequestHandler {
     }
 
     override fun handle(request: HttpRequest?, response: HttpResponse?, context: HttpContext?) {
-        dump("[HTTP PROXY] ${request!!.requestLine!!.uri}")
+        val uri = request!!.requestLine!!.uri
+        dump("[HTTP PROXY] $uri")
+
+        if (uri.startsWith("http://pigg.ameba.jp/stat/swf/motion/")) {
+            val actionShit = uri.replace("http://pigg.ameba.jp/stat/swf/motion/", "").replace(".mot", "")
+            Tooler.mainWindow?.log("Action: $actionShit")
+        }
 
         val requestMethod = request.requestLine.method
 

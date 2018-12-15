@@ -13,7 +13,6 @@ object ClickTP : Module() {
     var meme = true
 
     var pos: Vec3i = CurrentUser.location.clone()
-    var goal: Vec3i = Vec3i()
     var moving = false
 
     @Suppress("ImplicitThis")
@@ -21,28 +20,8 @@ object ClickTP : Module() {
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is MovePacket) {
-            if (meme && !moving) {
-                moving = true
-                goal = Vec3i(packet.x.toInt(), packet.y.toInt(), packet.z.toInt())
-
-                val task = timer(period = 50) {
-                    pos.x += if (goal.x > pos.x) 1 else if (goal.x < pos.x) -1 else 0
-                    pos.y += if (goal.y > pos.y) 1 else if (goal.y < pos.y) -1 else 0
-                    pos.z = goal.z
-
-                    CurrentUser.teleport(pos.x, pos.y, pos.z, 0)
-
-                    if (pos == goal) {
-                        cancel()
-                        moving = false
-                    }
-                }
-
-                timer(period = Long.MAX_VALUE, initialDelay = 5000) {
-                    cancel()
-                    task.purge()
-                    moving = false
-                }
+            if (meme) {
+                zigzag(Vec3i(packet.x.toInt(), packet.y.toInt(), packet.z.toInt()))
             } else {
                 // クリック式瞬間移動
                 val end = MoveEndPacket()
@@ -50,6 +29,26 @@ object ClickTP : Module() {
                 end.y = packet.y
                 end.z = packet.z
                 event.packet = end
+            }
+        }
+    }
+
+    fun zigzag(destination: Vec3i) {
+        if (moving) {
+            return
+        }
+
+        moving = true
+        timer(period = 50) {
+            pos.x += if (destination.x > pos.x) 1 else if (destination.x < pos.x) -1 else 0
+            pos.y += if (destination.y > pos.y) 1 else if (destination.y < pos.y) -1 else 0
+            pos.z = destination.z
+
+            CurrentUser.teleport(pos.x, pos.y, pos.z, 0)
+
+            if (pos == destination) {
+                cancel()
+                moving = false
             }
         }
     }

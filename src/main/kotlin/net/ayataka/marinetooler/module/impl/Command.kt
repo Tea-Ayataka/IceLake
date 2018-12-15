@@ -9,7 +9,11 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.utils.math.Vec3i
 import java.nio.ByteBuffer
+import java.security.SecureRandom
+import java.util.*
+import kotlin.concurrent.timer
 
 object Command : Module() {
     @EventListener
@@ -26,6 +30,8 @@ object Command : Module() {
         }
     }
 
+    var fucker : Timer? = null
+
     fun doCommand(string: String) {
         try {
             val spitted = string.split(" ")
@@ -33,6 +39,9 @@ object Command : Module() {
             when (spitted[0].toLowerCase()) {
                 "act" -> {
                     CurrentUser.playAction(spitted[1])
+                }
+                "sact" -> {
+                    CurrentUser.playSystemAction(spitted[1])
                 }
                 "area" -> {
                     val packet = GetAreaPacket()
@@ -77,8 +86,22 @@ object Command : Module() {
                 "sendpacket" -> {
                     if (spitted[1] == "info") {
                         Pigg.proxies[ServerType.INFO]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
-                    }else if(spitted[1] == "chat") {
+                    } else if (spitted[1] == "chat") {
                         Pigg.proxies[ServerType.CHAT]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
+                    }
+                }
+                "zigzag" -> {
+                    if (spitted[1] == "start") {
+                        fucker = timer(period = 50) {
+                            val maxX = CurrentUser.areaData.areaData.sizeX.toInt()
+                            val maxY = CurrentUser.areaData.areaData.sizeY.toInt()
+
+                            ClickTP.zigzag(Vec3i(SecureRandom().nextInt(maxX), SecureRandom().nextInt(maxY), 0))
+                        }
+                    }
+
+                    if (spitted[1] == "stop") {
+                        fucker?.cancel()
                     }
                 }
                 "onemsg" -> {

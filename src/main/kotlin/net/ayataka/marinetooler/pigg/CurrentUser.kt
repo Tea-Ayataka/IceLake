@@ -45,6 +45,10 @@ object CurrentUser {
         Pigg.send(packet)
     }
 
+    fun playSystemAction(actionCode: String) {
+        Pigg.send(SystemActionPacket().apply { this.actionCode = "$actionCode _secret" })
+    }
+
     fun giveGood(ucode: String) {
         val profile = GetUserProfilePacket()
         profile.usercode = ucode
