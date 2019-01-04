@@ -17,7 +17,7 @@ object MoveGhost : Module() {
 
         if (packet is MoveResultPacket) {
             if (packet.usercode == Tooler.targetUser) {
-               // runLater({ CurrentUser.move(packet.x, packet.y, packet.z) }, 200)
+                runLater({ CurrentUser.move(packet.x.toInt(), packet.y.toInt(), packet.z.toInt()) }, 200)
             }
         }
     }

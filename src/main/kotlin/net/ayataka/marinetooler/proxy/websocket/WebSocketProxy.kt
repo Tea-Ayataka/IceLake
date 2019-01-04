@@ -24,7 +24,7 @@ class WebSocketProxy(
 
     init {
         if (usePolicyServer) {
-            server = WServer(ip, port, this, { startPolicyServer() })
+            server = WServer(ip, port, this) { startPolicyServer() }
             server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
 
             // PolicyServerを起動する
@@ -48,7 +48,7 @@ class WebSocketProxy(
 
             // PolicyServerを起動する
             pServer = PolicyServer {
-                server = WServer(ip, port, this@WebSocketProxy, { startPolicyServer() })
+                server = WServer(ip, port, this@WebSocketProxy) { startPolicyServer() }
                 server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
                 server.start()
             }

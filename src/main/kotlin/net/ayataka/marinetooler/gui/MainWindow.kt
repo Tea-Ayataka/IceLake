@@ -213,6 +213,7 @@ class MainWindow : Initializable {
         Command.enabled = true
         AutoGoodPigg.enabled = true
         NGBypass.enabled = true
+        FakeEquipment.enabled = true
     }
 
     fun log(msg: String) {

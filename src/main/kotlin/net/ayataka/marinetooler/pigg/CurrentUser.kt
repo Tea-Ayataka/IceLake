@@ -2,6 +2,7 @@ package net.ayataka.marinetooler.pigg
 
 import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
@@ -11,6 +12,8 @@ object CurrentUser {
     var usercode: String? = null
     var areaData = BaseAreaData()
     var location = Vec3i()
+    var avatarData = AvatarData()
+    var selectedPetId: Int? = null
 
     init {
         EventManager.register(this)

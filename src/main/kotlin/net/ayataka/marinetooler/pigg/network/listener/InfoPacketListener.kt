@@ -9,6 +9,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.GetPetProfile
 import net.ayataka.marinetooler.proxy.websocket.IPacketListener
 import net.ayataka.marinetooler.proxy.websocket.WebSocketProxy
 import net.ayataka.marinetooler.utils.dump
@@ -35,6 +36,10 @@ class InfoPacketListener : IPacketListener {
     }
 
     private fun onSend(packet: Packet): Packet {
+        if(packet is GetPetProfile) {
+            CurrentUser.selectedPetId = packet.petId
+        }
+
         val event = SendPacketEvent(packet)
         EventManager.fire(event)
         return event.packet

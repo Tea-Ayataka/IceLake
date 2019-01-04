@@ -1,11 +1,9 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
 import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefinePet
@@ -60,7 +58,7 @@ open class BaseAreaData : Packet() {
             furniture.direction = buffer.readByte()
             furniture.ownerId = buffer.readString()
 
-            //dump("[Furniture] ID: ${furniture.characterId}, Sequence: ${furniture.sequence}, X: ${furniture.x}, Y: ${furniture.y}, Z: ${furniture.z}, Direction: ${furniture.direction}, ownerId: ${furniture.ownerId}")
+            dump("[Furniture] ID: ${furniture.characterId}, Sequence: ${furniture.sequence}, X: ${furniture.x}, Y: ${furniture.y}, Z: ${furniture.z}, Direction: ${furniture.direction}, ownerId: ${furniture.ownerId}")
             placeFurnitures.add(furniture)
         }
 

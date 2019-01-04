@@ -31,6 +31,7 @@ object Command : Module() {
     }
 
     var fucker : Timer? = null
+    var petTimer: Timer? = null
 
     fun doCommand(string: String) {
         try {
@@ -114,6 +115,30 @@ object Command : Module() {
                     packet.actionCode = spitted[1]
 
                     Pigg.send(packet)
+                }
+                "actionget" -> {
+                    ActionGetter.enabled = !ActionGetter.enabled
+                }
+                "hackpet" -> {
+                    HackPet.enabled = !HackPet.enabled
+                }
+                "petzigzag" -> {
+                    if (spitted[1] == "start" && CurrentUser.selectedPetId != null) {
+                        petTimer = timer(period = 50) {
+                            val maxX = CurrentUser.areaData.areaData.sizeX.toInt()
+                            val maxY = CurrentUser.areaData.areaData.sizeY.toInt()
+
+                            HackPet.teleport(CurrentUser.selectedPetId!!, SecureRandom().nextInt(maxX).toShort(), SecureRandom().nextInt(maxY).toShort(), 0, 0)
+                        }
+                    }
+                    if (spitted[1] == "stop") {
+                        petTimer?.cancel()
+                    }
+                }
+                "addequip" -> {
+                    val equipment = spitted[1]
+
+                    FakeEquipment.addEquipment(equipment)
                 }
                 else -> {
                     info("無効なコマンドです")
