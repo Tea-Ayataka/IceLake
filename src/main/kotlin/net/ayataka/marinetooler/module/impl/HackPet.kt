@@ -11,7 +11,7 @@ import net.ayataka.marinetooler.pigg.network.packet.send.PetMoveEnd
 import net.ayataka.marinetooler.pigg.network.packet.send.SetPetProfile
 
 object HackPet : Module() {
-    private var teleportMode = false
+    private var isTeleportMode = false
 
     @EventListener
     fun onSendPacket(event: SendPacketEvent) {
@@ -22,7 +22,7 @@ object HackPet : Module() {
         if(packet is MovePacket && petId != null){
             packet.canceled = true
 
-            if(teleportMode) {
+            if(isTeleportMode) {
                 teleport(petId, packet.x, packet.y, packet.z,0)
             }
             else{
@@ -30,7 +30,7 @@ object HackPet : Module() {
             }
         }
         else if(packet is SetPetProfile){
-            teleportMode = !teleportMode
+            isTeleportMode = !isTeleportMode
 
             packet.canceled = true
         }

@@ -336,6 +336,7 @@ class MainWindow : Initializable {
         AutoGoodPigg.enabled = true
         NGBypass.enabled = true
         FishMacro.enabled = true
+        FakeEquipment.enabled = true
     }
 
     fun openPacketDialog(data: PacketView) {

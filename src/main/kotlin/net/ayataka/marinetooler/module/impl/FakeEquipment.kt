@@ -8,6 +8,7 @@ import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
+import net.ayataka.marinetooler.utils.info
 
 object FakeEquipment : Module() {
     val equipments = mutableListOf<String>()
@@ -38,6 +39,7 @@ object FakeEquipment : Module() {
         val packet = event.packet
 
         if(packet is ActionResultPacket){
+            info("Test: ${packet.actionCode}")
             if(!packet.actionCode.contains("equip:")){
                 return
             }
