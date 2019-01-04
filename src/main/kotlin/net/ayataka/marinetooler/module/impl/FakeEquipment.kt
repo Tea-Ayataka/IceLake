@@ -7,86 +7,83 @@ import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
+import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.recv.RoomActionResult
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.RoomActionPacket
-import net.ayataka.marinetooler.utils.info
-import kotlin.concurrent.thread
 
 object FakeEquipment : Module() {
-    fun addEquipment(usercode: String, equipment: String){
-        val avatarData = Pigg.userEquipments[usercode]?.apply { item.items.add(equipment) } ?: CurrentUser.areaData.defineAvatars
-                .find { it.data.userCode == usercode }?.data!!
-                .apply {
-                    item.items.add(equipment)
-                    Pigg.userEquipments[usercode] = this
-                }
+    private val userEquipments = mutableMapOf<String, AvatarData>()
 
-        val packet = FinishDressupResult().apply {
+    fun addEquipment(usercode: String, equipment: String) {
+        val avatarData = userEquipments[usercode]?.apply { item.items.add(equipment) }
+                ?: CurrentUser.areaData.defineAvatars
+                        .find { it.data.userCode == usercode }?.data!!
+                        .apply {
+                            item.items.add(equipment)
+                            userEquipments[usercode] = this
+                        }
+
+        Pigg.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
-        }
+        })
 
-        Pigg.receive(packet)
-
-        if(usercode != CurrentUser.usercode){
+        if (usercode != CurrentUser.usercode) {
             return
         }
 
-        val actionPacket = RoomActionPacket().apply {
-            actionCode = "equip:$equipment"
-        }
-
-        Pigg.send(actionPacket)
+        Pigg.send(ActionPacket().apply {
+            actionId = "hello\u0000equip#$equipment"
+        })
     }
 
-    fun deleteEquipment(usercode: String, equipment: String){
-        val avatarData = Pigg.userEquipments[usercode]?.apply { item.items.remove(equipment) }!!
+    fun deleteEquipment(usercode: String, equipment: String) {
+        val avatarData = userEquipments[usercode]?.apply {
+            item.items.remove(equipment)
+        } ?: return
 
-        val packet = FinishDressupResult().apply {
+        Pigg.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
-        }
+        })
 
-        Pigg.receive(packet)
-
-        if(usercode != CurrentUser.usercode){
+        if (usercode != CurrentUser.usercode) {
             return
         }
 
-        val actionPacket = RoomActionPacket().apply {
-            actionCode = "unequip:$equipment"
-        }
-
-        Pigg.send(actionPacket)
+        Pigg.send(ActionPacket().apply {
+            actionId = "hello\u0000unequip#$equipment"
+        })
     }
 
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent){
+    fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
 
-        if(packet is RoomActionResult){
-            if(packet.userCode == CurrentUser.usercode){
+        if (packet is ActionResultPacket) {
+            if (packet.usercode == CurrentUser.usercode || !packet.actionCode.startsWith("hello\u0000")) {
                 return
             }
 
-            val command = packet.actionCode.split(":")
+            packet.canceled = true
 
-            when(command[0]){
-                "equip" -> addEquipment(packet.userCode, command[1])
-                "unequip" -> deleteEquipment(packet.userCode, command[1])
+            val data = packet.actionCode.split("\u0000")[1].split("#")
+            when (data[0]) {
+                "equip" -> addEquipment(packet.usercode, data[1])
+                "unequip" -> deleteEquipment(packet.usercode, data[1])
             }
         }
-        else if(packet is BaseAreaData){
-            packet.defineAvatars.filter { Pigg.userEquipments.containsKey(it.data.userCode) }.forEach {
-                it.data = Pigg.userEquipments[it.data.userCode]!!
-            }
+
+        if (packet is BaseAreaData) {
+            packet.defineAvatars
+                    .filter { userEquipments.containsKey(it.data.userCode) }
+                    .forEach { it.data = userEquipments[it.data.userCode]!! }
         }
-        else if(packet is GetUserProfileResultPacket){
-            Pigg.userEquipments[packet.usercode]?.let {
+
+        if (packet is GetUserProfileResultPacket) {
+            userEquipments[packet.usercode]?.let {
                 packet.defineAvatar = DefineAvatar().apply { load(it) }
             }
         }
