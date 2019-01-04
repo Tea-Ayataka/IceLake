@@ -12,25 +12,12 @@ class GetUserProfileResultPacket : Packet() {
     var usercode = ""
     var amebaId = ""
     var nickName = ""
-    var description = ""
-    var goodCount = 0
-    var friendCount = 0
-    var isFriend = false
-    //？
-    var ignore = false
-    var sameArea = false
 
     override fun readFrom(buffer: ByteBuilder) {
         usercode = buffer.readString()
         amebaId = buffer.readString()
         buffer.readString()
         nickName = buffer.readString()
-        description = buffer.readString()
-        goodCount = buffer.readInt()
-        friendCount = buffer.readInt()
-        isFriend = buffer.readBoolean()
-        ignore = buffer.readBoolean()
-        sameArea = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

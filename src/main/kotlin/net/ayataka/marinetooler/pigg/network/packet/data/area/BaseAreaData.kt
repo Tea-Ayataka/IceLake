@@ -58,7 +58,7 @@ open class BaseAreaData : Packet() {
             furniture.direction = buffer.readByte()
             furniture.ownerId = buffer.readString()
 
-            dump("[Furniture] ID: ${furniture.characterId}, Sequence: ${furniture.sequence}, X: ${furniture.x}, Y: ${furniture.y}, Z: ${furniture.z}, Direction: ${furniture.direction}, ownerId: ${furniture.ownerId}")
+            //dump("[Furniture] ID: ${furniture.characterId}, Sequence: ${furniture.sequence}, X: ${furniture.x}, Y: ${furniture.y}, Z: ${furniture.z}, Direction: ${furniture.direction}, ownerId: ${furniture.ownerId}")
             placeFurnitures.add(furniture)
         }
 
@@ -306,5 +306,9 @@ open class BaseAreaData : Packet() {
         dump("[Write] ${buffer.build().array().toHexString()}")
 
         return null
+    }
+
+    override fun toString(): String {
+        return "BaseAreaData(areaData=$areaData, defineAvatars=$defineAvatars)"
     }
 }

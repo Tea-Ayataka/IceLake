@@ -8,12 +8,17 @@ import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
 
 object ColorChat : Module() {
     var color = Color.WHITE!!
+    var hue = 0
 
     @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is TalkPacket) {
-            packet.color = getRGB(color)
+            packet.color = getRGB(Color.hsb(hue.toDouble(), 0.5, 1.0))
+            hue += 50
+            if (hue > 360) {
+                hue = 0
+            }
         }
     }
 

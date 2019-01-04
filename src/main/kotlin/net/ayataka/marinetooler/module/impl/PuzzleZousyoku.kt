@@ -6,11 +6,14 @@ import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.send.ProgressPuzzlePacket
 
 object PuzzleZousyoku : Module() {
+    @Volatile
+    var amount = 100_000
+
     @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is ProgressPuzzlePacket) {
-            packet.point = 100000
+            packet.point *= 50
         }
     }
 }

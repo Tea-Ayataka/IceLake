@@ -1,25 +1,24 @@
 package net.ayataka.marinetooler.module.impl
 
-import net.ayataka.eventapi.EventListener
-import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.network.packet.send.*
+import net.ayataka.marinetooler.pigg.network.packet.send.NotifyUserRoomEnteredPacket
+import java.util.*
+import kotlin.concurrent.timer
 
 object NoticeSpammer : Module() {
+    var timer: Timer? = null
 
-    @EventListener
-    fun onSendPacket(event: SendPacketEvent) {
-        val packet = event.packet
+    override fun onEnable() {
+        timer?.cancel()
 
-        if (packet is AddFavoritePacket) {
-            event.packet.canceled = true
-
-            val target = packet.userCode
-
-            val noticePacket = NotifyUserRoomEnteredPacket()
-            noticePacket.userCode = target
-            Pigg.send(noticePacket)
+        timer = timer(period = 100) {
+            Pigg.send(NotifyUserRoomEnteredPacket().apply { userCode = ICE_LAKE.targetUser })
         }
+    }
+
+    override fun onDisable() {
+        timer?.cancel()
     }
 }

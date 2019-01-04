@@ -14,12 +14,17 @@ import net.ayataka.marinetooler.utils.info
 object AutoGoodPigg : Module() {
     val goodpigged = mutableListOf<String>()
 
+    @Volatile
     var running = false
+
+    override fun onEnable() {
+        start()
+    }
 
     private fun start() {
         running = true
 
-        Thread({
+        Thread {
             val target = CurrentUser.areaData.defineAvatars.filter { it.data.userCode != CurrentUser.usercode }.map { it.data.userCode }.toMutableList()
 
             if (target.isEmpty()) {
@@ -30,22 +35,13 @@ object AutoGoodPigg : Module() {
             target.removeAll(goodpigged)
 
             target.forEach {
-                openProfile(it)
-                Thread.sleep(300)
                 sendGoodPigg(it)
                 goodpigged.add(it)
+                Thread.sleep(300)
             }
 
-            Thread.sleep(300)
             running = false
-        }).start()
-    }
-
-    private fun openProfile(userCode: String) {
-        info("OPEN PROFILE $userCode")
-        val profile = GetUserProfilePacket()
-        profile.usercode = userCode
-        Pigg.send(profile)
+        }.start()
     }
 
     private fun sendGoodPigg(userCode: String) {
@@ -74,15 +70,13 @@ object AutoGoodPigg : Module() {
         if (!running && packet is AppearUserPacket && !goodpigged.contains(packet.usercode)) {
             val user = packet.usercode
 
-            Thread({
+            Thread {
                 running = true
-                openProfile(user)
-                Thread.sleep(300)
                 sendGoodPigg(user)
                 goodpigged.add(user)
                 Thread.sleep(300)
                 running = false
-            }).start()
+            }.start()
         }
     }
 

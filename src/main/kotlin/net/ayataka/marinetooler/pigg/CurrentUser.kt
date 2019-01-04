@@ -10,6 +10,7 @@ import net.ayataka.marinetooler.utils.math.Vec3i
 
 object CurrentUser {
     var usercode: String? = null
+    var secure: ByteArray? = null
     var areaData = BaseAreaData()
     var location = Vec3i()
     var avatarData = AvatarData()
@@ -49,7 +50,7 @@ object CurrentUser {
     }
 
     fun playSystemAction(actionCode: String) {
-        Pigg.send(SystemActionPacket().apply { this.actionCode = "$actionCode _secret" })
+        Pigg.send(SystemActionPacket().apply { this.actionCode = actionCode })
     }
 
     fun giveGood(ucode: String) {

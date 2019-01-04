@@ -1,19 +1,6 @@
 package net.ayataka.marinetooler.utils
 
-import org.apache.commons.codec.binary.Hex
 
-fun ByteArray.toHexString(): String {
-    val builder = StringBuilder()
+fun ByteArray.toHexString() = joinToString(" ") { it.toUByte().toString(16).padStart(2, '0') }
 
-    for (byte in this) {
-        builder.append(Hex.encodeHexString(byteArrayOf(byte)))
-        builder.append(" ")
-    }
-
-    return builder.toString()
-}
-
-fun String.fromHexToBytes(): ByteArray {
-    val hex = replace(" ", "")
-    return Hex.decodeHex(hex.toCharArray())
-}
+fun String.fromHexToBytes() = replace(" ", "").chunked(2).map { it.toUByte(16).toByte() }.toByteArray()

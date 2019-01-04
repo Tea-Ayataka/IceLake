@@ -1,5 +1,6 @@
 package net.ayataka.marinetooler.pigg.network
 
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.id.HeaderID
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
@@ -20,6 +21,7 @@ class Protocol {
     private val packets = HashMap<ServerType, HashMap<Short, KClass<out Packet>>>()
 
     // Packet Cipher Keys
+    val connectionId = HashMap<ServerType, Int>()
     val cipherKey = HashMap<ServerType, ByteArray>()
 
     init {
@@ -62,6 +64,10 @@ class Protocol {
         register(ContributeClubFurniturePacket::class)
         register(AddClubMessagePacket::class)
         register(GetSnapshotToken::class)
+        register(ListActionPacket::class)
+        register(AreaGameJoinPacket::class)
+        register(AreaGameLeavePacket::class)
+        register(LoginChatPacket::class)
         register(PetMove::class)
         register(PetMoveEnd::class)
         register(GetPetProfile::class)
@@ -90,7 +96,9 @@ class Protocol {
         register(ListUserItemResultPacket::class)
         register(ListUserFurnitureResultPacket::class)
         register(GetSnapshotTokenResult::class)
-        register(PlaceFurnitureResult::class)
+        register(AreaGamePlayResult::class)
+        register(ProgressPuzzleResultPacket::class)
+        register(GetPuzzleUserStatusResult::class)
         register(FinishDressupResult::class)
     }
 
@@ -99,7 +107,7 @@ class Protocol {
         packets[instance.server]!![instance.packetId] = clazz
     }
 
-    fun convert(rawBuffer: ByteBuffer, type: ServerType): Packet? {
+    fun convert(rawBuffer: ByteBuffer, type: ServerType, direction: PacketDirection): Packet? {
         if (rawBuffer.array().size > 1024 * 128 || rawBuffer.array().size < 6)
             return null
 
@@ -135,6 +143,8 @@ class Protocol {
         dump("PACKET ID : $packetID ($type)")
         dump(String(rawBuffer.array()))
 
+        ICE_LAKE.mainWindow?.recordPacket(direction, type.name, packetID.name, rawBuffer.array())
+
         // Find packet handler
         val packet = packets[type]!![id]?.java?.newInstance() ?: return null
 
@@ -152,8 +162,9 @@ class Protocol {
 
     private fun handleSpecialPacket(header: Short, buffer: ByteBuilder, type: ServerType) {
         if (header == HeaderID.CIPHER_KEY.id) {
-            cipherKey[type] = buffer.skip(4).readBytes(4).plus(buffer.reset().skip(2).readBytes(4))
-            dump("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}")
+            connectionId[type] = buffer.readInt()
+            cipherKey[type] = buffer.pos(buffer.getPos() - 4).skip(4).readBytes(4).plus(buffer.reset().skip(2).readBytes(4))
+            dump("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}, Connection ID: ${connectionId[type]}")
         }
     }
 }

@@ -3,17 +3,15 @@ package net.ayataka.marinetooler.emulator.pigg
 import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
-import net.ayataka.marinetooler.proxy.websocket.IPacketListener
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
 import net.ayataka.marinetooler.utils.warn
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
-import java.lang.Exception
 import java.net.URI
 import java.nio.ByteBuffer
 
-class VClient(remoteUri: String, val packetListener: IPacketListener?) : WebSocketClient(URI(remoteUri)) {
+open class VClient(remoteUri: String) : WebSocketClient(URI(remoteUri)) {
     override fun onOpen(handshake: ServerHandshake?) {
         println("[VWS CLIENT] Client Connected to $uri")
         EventManager.fire(ConnectEvent())
@@ -35,8 +33,13 @@ class VClient(remoteUri: String, val packetListener: IPacketListener?) : WebSock
 
         println("[VWS RECV] : ${message.array().size} bytes")
         println(message.array().toHexString())
+    }
 
-        packetListener?.receive(message)
+    override fun send(bytes: ByteBuffer) {
+        println("[VWS SEND] : ${bytes.array().size} bytes")
+        println(bytes.array().toHexString())
+
+        super.send(bytes)
     }
 
     override fun onError(ex: Exception?) {

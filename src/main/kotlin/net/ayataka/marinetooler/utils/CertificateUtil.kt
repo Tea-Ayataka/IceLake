@@ -1,8 +1,6 @@
 package net.ayataka.marinetooler.utils
 
 import net.ayataka.marinetooler.pigg.Pigg
-import java.io.File
-import java.io.FileInputStream
 import java.security.KeyStore
 import java.security.SecureRandom
 import javax.net.ssl.KeyManagerFactory

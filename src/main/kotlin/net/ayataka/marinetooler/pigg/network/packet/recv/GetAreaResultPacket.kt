@@ -10,20 +10,20 @@ class GetAreaResultPacket : Packet() {
     override val packetId = InfoPacketID.GET_AREA_RESULT.id
 
     var type = String() // "user"
-    var areacode = String() // "c4be9c50d3ff8704"
+    var userCode = String() // "c4be9c50d3ff8704"
     var chatServerUri = String() // "wss://chat06.pigg.ameba.jp:443/command"
     var protocol = String() // "ws"
 
     override fun readFrom(buffer: ByteBuilder) {
         type = buffer.readString()
-        areacode = buffer.readString()
+        userCode = buffer.readString()
         chatServerUri = buffer.readString()
         protocol = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeString(type)
-        buffer.writeString(areacode)
+        buffer.writeString(userCode)
         buffer.writeString(chatServerUri)
         buffer.writeString(protocol)
         buffer.writeTimeStamp()

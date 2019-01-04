@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.utils
 
-import net.ayataka.marinetooler.Tooler
+import net.ayataka.marinetooler.ICE_LAKE
 import java.util.logging.Logger
 
 private fun getLogger(): Logger {
@@ -13,7 +13,7 @@ fun dump(msg: String) {
 
 fun info(msg: String) {
     println("   [INFO] $msg")
-    Tooler.mainWindow?.log(msg)
+    ICE_LAKE.mainWindow?.log(msg)
 }
 
 fun warn(msg: String) {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="378.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ayataka.marinetooler.gui.PacketDialog">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="15.0" prefWidth="35.0" text="Raw" />
+      <TextArea fx:id="rawTextArea" layoutX="15.0" layoutY="31.0" prefHeight="93.0" prefWidth="491.0" />
+      <TextArea fx:id="textTextArea" editable="false" layoutX="15.0" layoutY="148.0" prefHeight="93.0" prefWidth="491.0">
+         <font>
+            <Font name="Meiryo" size="12.0" />
+         </font></TextArea>
+      <Label layoutX="15.0" layoutY="131.0" text="Text" />
+      <TitledPane animated="false" collapsible="false" layoutX="15.0" layoutY="250.0" prefHeight="114.0" prefWidth="491.0" text="送信 / 受信">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="69.0" prefWidth="489.0">
+               <children>
+                  <RadioButton fx:id="repeatRadioButton" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" text="連続" />
+                  <RadioButton fx:id="amountRadioButton" accessibleRoleDescription="く" layoutX="92.0" layoutY="14.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="16.0" />
+                  <Spinner fx:id="amountSpinner" editable="true" layoutX="115.0" layoutY="10.0" prefHeight="25.0" prefWidth="59.0" />
+                  <Label layoutX="182.0" layoutY="14.0" prefHeight="17.0" prefWidth="16.0" text="回" />
+                  <Spinner fx:id="timerDelaySpinner" editable="true" layoutX="79.0" layoutY="47.0" prefHeight="25.0" prefWidth="84.0" />
+                  <Label layoutX="167.0" layoutY="51.0" text="ms" />
+                  <Label layoutX="22.0" layoutY="50.0" text="タイマー ：" />
+                  <Button fx:id="playButton" layoutX="391.0" layoutY="46.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="スタート" />
+                  <Label fx:id="progressLabel" layoutX="421.0" layoutY="23.0" text="0 / 0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

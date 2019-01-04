@@ -10,10 +10,9 @@ import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.OneMessageSavePacket
 import net.ayataka.marinetooler.pigg.network.packet.send.SystemActionPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
-import org.apache.commons.io.IOUtils
 
 object NGBypass : Module() {
-    private val ngWords = IOUtils.readLines(javaClass.classLoader.getResourceAsStream("ng-words.txt"))!!
+    private val ngWords = javaClass.classLoader.getResourceAsStream("ng-words.txt").reader().readLines()
 
     @EventListener
     fun onSend(event: SendPacketEvent) {

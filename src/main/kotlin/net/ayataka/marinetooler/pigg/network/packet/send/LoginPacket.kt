@@ -5,10 +5,6 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.dump
-import org.apache.commons.codec.digest.DigestUtils
-import java.nio.charset.Charset
-import java.util.*
-import kotlin.experimental.xor
 
 class LoginPacket : Packet() {
     override val server = ServerType.INFO
@@ -50,7 +46,7 @@ class LoginPacket : Packet() {
         return buffer
     }
 
-    fun fuck() {
+    /*fun fuck() {
         ph = l(p, frmId, amebaAuthTicket, flashplayerVersion, agent, fromAndroid.toString(), password, amebaId, ticket)
         ph = j(ticket, amebaId, password, fromAndroid.toString(), agent, flashplayerVersion, amebaAuthTicket, frmId, p, ph)
         p = p.substring(0, 32)
@@ -92,5 +88,5 @@ class LoginPacket : Packet() {
             var2 += 1
         }
         return var1
-    }
+    }*/
 }

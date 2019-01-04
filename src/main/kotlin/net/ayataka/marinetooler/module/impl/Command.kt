@@ -16,6 +16,7 @@ import java.util.*
 import kotlin.concurrent.timer
 
 object Command : Module() {
+
     @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
@@ -30,8 +31,10 @@ object Command : Module() {
         }
     }
 
-    var fucker : Timer? = null
+    var fucker: Timer? = null
+    var actionSpammer: Timer? = null
     var petTimer: Timer? = null
+    var eventNumber = 0
 
     fun doCommand(string: String) {
         try {
@@ -46,8 +49,8 @@ object Command : Module() {
                 }
                 "area" -> {
                     val packet = GetAreaPacket()
-                    packet.category = spitted[1].split(".")[0]
-                    packet.code = spitted[1].split(".")[1]
+                    packet.category = spitted[1].split("/")[0]
+                    packet.code = spitted[1].split("/")[1]
                     Pigg.send(packet)
                 }
                 "travel" -> {
@@ -91,6 +94,22 @@ object Command : Module() {
                         Pigg.proxies[ServerType.CHAT]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
                     }
                 }
+                "rod" -> {
+                    Thread {
+                        repeat(1000) {
+                            Pigg.proxies[ServerType.INFO]?.send(ByteBuffer.wrap("00 10 00 00 00 00 18 05 00 00 00 3c 01 00 09 69 6e 63 65 6e 74 69 76 65 00 07 6f 6e 53 74 61 72 74 00 03 72 6f 64 00 1c 69 73 68 69 6b 61 72 69 67 61 77 61 5f 66 69 73 68 69 6e 67 5f 72 6f 64 30 31 5f 70 00 00 00 03".fromHexToBytes()))
+                            Thread.sleep(50)
+                        }
+                    }.start()
+                }
+                "areadata" -> {
+                    info(CurrentUser.areaData.toString())
+                }
+                "'" -> {
+                    Pigg.send(TravelBundlePacket().apply { categoryCode = "event"; areaCode = "event$eventNumber" })
+                    info("event event$eventNumber")
+                    eventNumber++
+                }
                 "zigzag" -> {
                     if (spitted[1] == "start") {
                         fucker = timer(period = 50) {
@@ -102,7 +121,15 @@ object Command : Module() {
                     }
 
                     if (spitted[1] == "stop") {
+                        ClickTP.moving = false
                         fucker?.cancel()
+                    }
+                }
+                "kurukuru" -> {
+                    if (ClickTP.rotater == null) {
+                        ClickTP.rotateStart()
+                    } else {
+                        ClickTP.rotateStop()
                     }
                 }
                 "onemsg" -> {
@@ -116,8 +143,8 @@ object Command : Module() {
 
                     Pigg.send(packet)
                 }
-                "actionget" -> {
-                    ActionGetter.enabled = !ActionGetter.enabled
+                "listaction" -> {
+                    Pigg.send(ListActionPacket())
                 }
                 "hackpet" -> {
                     HackPet.enabled = !HackPet.enabled

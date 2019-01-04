@@ -4,7 +4,6 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.info
 
 class AreaGamePlayPacket : Packet() {
     override val server = ServerType.CHAT
@@ -19,8 +18,6 @@ class AreaGamePlayPacket : Packet() {
         if (buffer.array().size - buffer.getPos() > 0) {
             data = buffer.readBytes(buffer.array().size - buffer.getPos())
         }
-
-        info("AREA GAME PLAY ${id} [${data?.size}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

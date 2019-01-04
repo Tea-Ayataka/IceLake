@@ -44,4 +44,8 @@ class AreaData : PacketData {
                 .writeShort(sizeX)
                 .writeShort(sizeY)
     }
+
+    override fun toString(): String {
+        return "AreaData(categoryCode='$categoryCode', categoryName='$categoryName', areaCode='$areaCode', areaName='$areaName', frontCode='$frontCode', wallCode='$wallCode', floorCode='$floorCode', windowCode='$windowCode', sizeX=$sizeX, sizeY=$sizeY)"
+    }
 }

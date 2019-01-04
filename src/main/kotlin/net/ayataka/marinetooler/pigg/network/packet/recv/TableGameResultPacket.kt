@@ -2,15 +2,13 @@ package net.ayataka.marinetooler.pigg.network.packet.recv
 
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
-import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.info
-import net.ayataka.marinetooler.utils.toHexString
 import java.io.ByteArrayOutputStream
 import java.util.zip.Deflater
-import java.util.zip.Inflater
 import java.util.zip.DeflaterOutputStream
+import java.util.zip.Inflater
 
 class TableGameResultPacket : Packet() {
     override val server = ServerType.CHAT

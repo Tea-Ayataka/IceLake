@@ -6,7 +6,6 @@ import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
-import net.ayataka.marinetooler.utils.toHexString
 
 //TODO: Refactor
 class FinishDressupResult : Packet() {

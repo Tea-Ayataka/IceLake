@@ -6,11 +6,12 @@ import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.Pigg.protocol
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.pigg.network.PacketDirection
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.send.MoveEndPacket
-import net.ayataka.marinetooler.proxy.websocket.IPacketListener
+import net.ayataka.marinetooler.proxy.IPacketListener
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.math.Vec3i
 import java.nio.ByteBuffer
@@ -18,7 +19,7 @@ import java.nio.ByteBuffer
 class ChatPacketListener : IPacketListener {
     // Raw
     override fun send(buffer: ByteBuffer): ByteBuffer? {
-        protocol.convert(buffer, ServerType.CHAT)?.let {
+        protocol.convert(buffer, ServerType.CHAT, PacketDirection.SEND)?.let {
             val packet = onSend(it)
             return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }
@@ -26,7 +27,7 @@ class ChatPacketListener : IPacketListener {
     }
 
     override fun receive(buffer: ByteBuffer): ByteBuffer? {
-        protocol.convert(buffer, ServerType.CHAT)?.let {
+        protocol.convert(buffer, ServerType.CHAT, PacketDirection.RECEIVE)?.let {
             val packet = onReceive(it)
             return if (packet.canceled) null else packet.write(Pigg.protocol.cipherKey[packet.server]) ?: buffer
         }

@@ -1,7 +1,7 @@
 package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
-import net.ayataka.marinetooler.Tooler
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
@@ -14,7 +14,7 @@ object ChatGhost : Module() {
         val packet = event.packet
 
         if (packet is TalkResultPacket) {
-            if (packet.usercode == Tooler.targetUser) {
+            if (packet.usercode == ICE_LAKE.targetUser) {
                 talk(packet.message)
             }
         }
