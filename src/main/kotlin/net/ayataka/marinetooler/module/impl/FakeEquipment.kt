@@ -6,8 +6,10 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
+import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.RoomActionResult
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.RoomActionPacket
@@ -81,6 +83,11 @@ object FakeEquipment : Module() {
         else if(packet is BaseAreaData){
             packet.defineAvatars.filter { Pigg.userEquipments.containsKey(it.data.userCode) }.forEach {
                 it.data = Pigg.userEquipments[it.data.userCode]!!
+            }
+        }
+        else if(packet is GetUserProfileResultPacket){
+            Pigg.userEquipments[packet.usercode]?.let {
+                packet.defineAvatar = DefineAvatar().apply { load(it) }
             }
         }
     }

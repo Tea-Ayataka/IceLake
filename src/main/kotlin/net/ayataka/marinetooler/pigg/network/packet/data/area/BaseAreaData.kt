@@ -218,10 +218,7 @@ open class BaseAreaData : Packet() {
 
             buffer.writeByte(it.type)
 
-            buffer.writeString(it.category)
-            buffer.writeString(it.name)
-            buffer.writeString(it.description)
-            buffer.writeString(it.actionCode)
+            buffer.writeString(it.category, it.name, it.description, it.actionCode)
 
             it.parts.forEach {
                 it.writeTo(buffer)
