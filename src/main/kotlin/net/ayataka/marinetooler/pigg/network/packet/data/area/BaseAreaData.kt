@@ -194,6 +194,7 @@ open class BaseAreaData : Packet() {
         data = buffer.readAllBytes()
     }
 
+    //FIX: 年末年始のエリア（他にもあるかもしれない）に入れないバグを修正する
     override fun writeTo(buffer: ByteBuilder) : ByteBuilder? {
         areaData.writeTo(buffer)
 

@@ -72,6 +72,7 @@ class Protocol {
         register(PetMoveEnd::class)
         register(GetPetProfile::class)
         register(SetPetProfile::class)
+        register(ChannelFloorUpdatePlayListRequest::class)
 
         // RECV (Server bound)
         register(CheckBanWordResultPacket::class)

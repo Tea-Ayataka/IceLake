@@ -1,6 +1,7 @@
 package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
@@ -167,6 +168,14 @@ object Command : Module() {
                         "add" -> FakeEquipment.addEquipment(CurrentUser.usercode!!, spitted[2])
                         "del" -> FakeEquipment.deleteEquipment(CurrentUser.usercode!!, spitted[2])
                     }
+                }
+                "djmodifer" -> {
+                    PlaylistModifer.enabled = true
+
+                    PlaylistModifer.videoID = spitted[1]
+                    spitted.getOrNull(2)?.let { PlaylistModifer.title = it }
+
+                    CurrentUser.showAlert("何でもいいのでプレイリストに追加してください。")
                 }
                 else -> {
                     info("無効なコマンドです")
