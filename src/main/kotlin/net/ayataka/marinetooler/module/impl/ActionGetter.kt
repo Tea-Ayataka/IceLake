@@ -1,7 +1,6 @@
 package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
-import net.ayataka.marinetooler.Tooler
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg

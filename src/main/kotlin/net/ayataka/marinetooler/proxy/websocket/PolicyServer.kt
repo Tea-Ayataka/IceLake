@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.proxy.websocket
 
-import net.ayataka.marinetooler.Tooler
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.warn
 import java.io.IOException
@@ -14,7 +14,7 @@ class PolicyServer(private val onSent: () -> Unit) : Thread() {
         try {
             serverSocket = ServerSocket(443)
         } catch (ex: BindException) {
-            Tooler.showError("ポリシーサーバーの初期化に失敗しました。ポート 443 が既に利用されています。")
+            ICE_LAKE.showError("ポリシーサーバーの初期化に失敗しました。ポート 443 が既に利用されています。")
             System.exit(1)
         } catch (ex: Exception) {
             ex.printStackTrace()
