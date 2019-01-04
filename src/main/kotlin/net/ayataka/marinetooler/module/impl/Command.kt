@@ -138,7 +138,7 @@ object Command : Module() {
                 "addequip" -> {
                     val equipment = spitted[1]
 
-                    FakeEquipment.addEquipment(equipment)
+                    FakeEquipment.addEquipment(CurrentUser.usercode!!, equipment)
                 }
                 else -> {
                     info("無効なコマンドです")
