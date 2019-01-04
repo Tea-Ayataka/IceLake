@@ -3,6 +3,7 @@
 /bin/
 /build/
 /.gradle/
+/run/
 
 *.test
 *.swp
