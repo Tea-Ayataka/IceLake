@@ -50,7 +50,6 @@ class ChatPacketListener : IPacketListener {
         // Set area data
         if (packet is BaseAreaData) {
             CurrentUser.areaData = packet
-            CurrentUser.avatarData = packet.defineAvatars.find { it.data.userCode == CurrentUser.usercode }?.data!!
 
             info("JOINED TO ${packet.areaData.categoryCode}.${packet.areaData.areaCode} with ${packet.defineAvatars.size} users.")
         }

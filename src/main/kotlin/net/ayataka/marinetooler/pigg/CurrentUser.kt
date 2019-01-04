@@ -13,7 +13,6 @@ object CurrentUser {
     var secure: ByteArray? = null
     var areaData = BaseAreaData()
     var location = Vec3i()
-    var avatarData = AvatarData()
     var selectedPetId: Int? = null
 
     init {

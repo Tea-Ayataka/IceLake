@@ -7,7 +7,9 @@ import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
+import net.ayataka.marinetooler.pigg.network.packet.recv.RoomActionResult
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.RoomActionPacket
 import net.ayataka.marinetooler.utils.info
 
 object FakeEquipment : Module() {
@@ -17,7 +19,7 @@ object FakeEquipment : Module() {
         equipments.add(equipment)
 
         val packet = FinishDressupResult().apply {
-            avatarData = CurrentUser.avatarData.apply { item.items.add(equipment) }
+            avatarData = CurrentUser.areaData.defineAvatars.find { it.data.userCode == usercode }?.data?.apply { item.items.add(equipment) }
             this.usercode = usercode
         }
 
@@ -27,8 +29,8 @@ object FakeEquipment : Module() {
             return
         }
 
-        val actionPacket = ActionPacket().apply {
-            actionId = "hello\u0000equip:$equipment"
+        val actionPacket = RoomActionPacket().apply {
+            actionCode = "equip:$equipment"
         }
 
         Pigg.send(actionPacket)
@@ -38,15 +40,14 @@ object FakeEquipment : Module() {
     fun onRecvPacket(event: RecvPacketEvent){
         val packet = event.packet
 
-        if(packet is ActionResultPacket){
-            info("Test: ${packet.actionCode}")
-            if(!packet.actionCode.contains("equip:")){
+        if(packet is RoomActionResult){
+            if(!packet.actionCode.contains("equip:") || packet.userCode == CurrentUser.usercode){
                 return
             }
 
             val equipment = packet.actionCode.split("equip:")[1]
 
-            addEquipment(packet.usercode, equipment)
+            addEquipment(packet.userCode, equipment)
         }
     }
 }

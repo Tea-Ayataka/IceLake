@@ -27,8 +27,6 @@ class FinishDressupResult : Packet() {
             avatarData = AvatarData().apply { readFrom(buffer) }
             usercode = avatarData?.userCode!!
 
-            CurrentUser.avatarData = avatarData!!
-
             return
         }
 
