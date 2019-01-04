@@ -41,8 +41,7 @@ class AreaData : PacketData {
                 .writeString(floorCode)
                 .writeString(windowCode)
 
-                .writeShort(sizeX)
-                .writeShort(sizeY)
+                .writeShort(sizeX, sizeY)
     }
 
     override fun toString(): String {

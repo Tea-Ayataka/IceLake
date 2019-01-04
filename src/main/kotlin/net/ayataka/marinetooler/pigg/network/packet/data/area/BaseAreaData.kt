@@ -189,6 +189,8 @@ open class BaseAreaData : Packet() {
         }
 
         defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
+
+        dump(buffer.reset().skipHeader().readAllBytes().toHexString())
     }
 
     //TODO: 未完成だから仕上げる
@@ -197,113 +199,104 @@ open class BaseAreaData : Packet() {
 
         buffer.writeInt(placeFurnitures.size)
 
-        for (placeFurniture in placeFurnitures) {
-            buffer.writeString(placeFurniture.characterId)
-            buffer.writeInt(placeFurniture.sequence)
+        placeFurnitures.forEach {
+            buffer.writeString(it.characterId)
+            buffer.writeInt(it.sequence)
 
-            buffer.writeShort(placeFurniture.x)
-            buffer.writeShort(placeFurniture.y)
-            buffer.writeShort(placeFurniture.z)
+            buffer.writeShort(it.x, it.y, it.z)
 
-            buffer.writeByte(placeFurniture.direction)
-            buffer.writeString(placeFurniture.ownerId)
+            buffer.writeByte(it.direction)
+            buffer.writeString(it.ownerId)
         }
 
         buffer.writeInt(defineFurnitures.size)
 
-        for (defineFurniture in defineFurnitures) {
-            buffer.writeShort(defineFurniture.parts.size.toShort())
+        defineFurnitures.forEach {
+            buffer.writeShort(it.parts.size.toShort())
 
-            buffer.writeString(defineFurniture.characterId)
+            buffer.writeString(it.characterId)
 
-            buffer.writeByte(defineFurniture.type)
+            buffer.writeByte(it.type)
 
-            buffer.writeString(defineFurniture.category)
-            buffer.writeString(defineFurniture.name)
-            buffer.writeString(defineFurniture.description)
-            buffer.writeString(defineFurniture.actionCode)
+            buffer.writeString(it.category)
+            buffer.writeString(it.name)
+            buffer.writeString(it.description)
+            buffer.writeString(it.actionCode)
 
-            for (part in defineFurniture.parts) {
-                part.writeTo(buffer)
+            it.parts.forEach {
+                it.writeTo(buffer)
             }
         }
 
         buffer.writeInt(placeAvatars.size)
 
-        for (i in 1..placeAvatars.size) {
-            val placeAvatar = placeAvatars[i - 1]
-            val defineAvatar = defineAvatars[i - 1]
+        placeAvatars.forEachIndexed { index, placeAvatar ->
+            val defineAvatar = defineAvatars[index]
             val avatarData = defineAvatar.data
 
             avatarData.writeTo(buffer)
 
-            buffer.writeShort(placeAvatar.x)
-            buffer.writeShort(placeAvatar.y)
-            buffer.writeShort(placeAvatar.z)
+            buffer.writeShort(placeAvatar.x, placeAvatar.y, placeAvatar.z)
 
-            buffer.writeByte(placeAvatar.direction)
-            buffer.writeByte(placeAvatar.status)
-            buffer.writeByte(placeAvatar.tired)
-            buffer.writeByte(placeAvatar.mode)
+            buffer.writeByte(placeAvatar.direction, placeAvatar.status, placeAvatar.tired, placeAvatar.mode)
         }
 
         buffer.writeInt(definePets.size)
 
-        for (i in 1..definePets.size) {
-            val definePet = definePets[i - 1]
-            val placePet = placePets[i - 1]
+        placePets.forEachIndexed { index, placePet ->
+            val definePet = definePets[index]
 
             definePet.data.writeTo(buffer)
 
-            buffer.writeShort(placePet.x)
-            buffer.writeShort(placePet.y)
-            buffer.writeShort(placePet.z)
+            buffer.writeShort(placePet.x, placePet.y, placePet.z)
 
             buffer.writeByte(placePet.direction)
             buffer.writeBoolean(placePet.sleeping)
-
         }
 
         buffer.writeInt(placeActionItems.size)
 
-        for (placeActionItem in placeActionItems) {
-            if (placeActionItem.mode == 0) {
-                buffer.writeString(placeActionItem.itemType)
-                buffer.writeString(placeActionItem.itemCode)
-                buffer.writeString(placeActionItem.ownerCode)
-                buffer.writeInt(placeActionItem.sequence)
+        placeActionItems.forEach {
+            buffer.writeString(it.itemType, it.itemCode, it.ownerCode)
+            buffer.writeInt(it.sequence)
 
-                buffer.writeByte(placeActionItem.actionItemType)
+            buffer.writeByte(it.actionItemType)
 
-                buffer.writeShort(placeActionItem.x)
-                buffer.writeShort(placeActionItem.y)
-                buffer.writeShort(placeActionItem.z)
-            } else {
-                buffer.writeString(placeActionItem.itemCode)
-                buffer.writeString(placeActionItem.itemType)
-                buffer.writeInt(placeActionItem.sequence)
-                buffer.writeString(placeActionItem.ownerCode)
+            buffer.writeShort(it.x, it.y, it.z)
+        }
 
-                buffer.writeShort(placeActionItem.x)
-                buffer.writeShort(placeActionItem.y)
-                buffer.writeShort(placeActionItem.z)
-            }
+        buffer.writeInt(placeActionItems.count { it.mode == 0 })
+
+        placeActionItems.filter { it.mode == 0 }.forEach {
+            buffer.writeString(it.itemType, it.itemCode, it.ownerCode)
+            buffer.writeInt(it.sequence)
+
+            buffer.writeByte(it.actionItemType)
+
+            buffer.writeShort(it.x, it.y, it.z)
+        }
+
+        buffer.writeInt(placeActionItems.count { it.mode == 1 })
+
+        placeActionItems.filter { it.mode == 1 }.forEach {
+            buffer.writeString(it.itemCode, it.itemType)
+            buffer.writeInt(it.sequence)
+            buffer.writeString(it.ownerCode)
+
+            buffer.writeShort(it.x, it.y, it.z)
         }
 
         buffer.writeInt(meta)
 
         buffer.writeBoolean(isChannelActor)
         buffer.writeDouble(serverTime)
-        buffer.writeBoolean(isRefreshedCosmeItem)
-        buffer.writeBoolean(isAllowRoomChange)
+        buffer.writeBoolean(isRefreshedCosmeItem, isAllowRoomChange)
 
         buffer.writeByte(loc11.size.toByte())
 
-        for (mutableEntry in loc11) {
-            buffer.writeString(mutableEntry.key)
-        }
+        buffer.writeString(*loc11.values.toTypedArray())
 
-        dump("[Write] ${buffer.build().array().toHexString()}")
+        dump(buffer.build().array().toHexString())
 
         return null
     }

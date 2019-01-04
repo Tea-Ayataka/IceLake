@@ -6,6 +6,7 @@ import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.listener.InfoPacketListener
 import net.ayataka.marinetooler.pigg.network.packet.Packet
+import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.proxy.WebSocketProxy
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.getSSLContextFromPFXFile
@@ -18,6 +19,7 @@ object Pigg {
     const val INFO_SERVER_URI = "wss://27.133.213.64:443/command"
     val protocol = Protocol()
     val CERTIFICATE = getSSLContextFromPFXFile("pigg.pfx", "pigg.jks", "nopass")
+    val userEquipments = mutableMapOf<String, AvatarData>()
 
     val proxies = hashMapOf<ServerType, WebSocketProxy>()
 

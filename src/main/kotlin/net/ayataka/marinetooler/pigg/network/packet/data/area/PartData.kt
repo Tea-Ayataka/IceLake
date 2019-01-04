@@ -36,7 +36,6 @@ class PartData(private var hasAttachDirection: Boolean) : PacketData {
         buffer.writeInt(height)
                 .writeBoolean(attachable, sittable, walkable)
                 .writeByte(facing)
-                .writeBoolean(hasAttachDirection)
 
         attachDirection?.let {
             buffer.writeByte(it)

@@ -51,10 +51,7 @@ class AvatarData : PacketData{
 
     override fun writeTo(buffer: ByteBuilder) {
         // 基本データ
-        buffer.writeString(userCode)
-                .writeString(amebaId)
-                .writeString(asUserId)
-                .writeString(nickName)
+        buffer.writeString(userCode, amebaId, asUserId, nickName)
 
         part.writeTo(buffer)
         color.writeTo(buffer)
@@ -67,8 +64,7 @@ class AvatarData : PacketData{
         // コスメ
         buffer.writeByte(cosme.size.toByte())
         cosme.forEach {
-            buffer.writeString(it.itemCode)
-                    .writeString(it.type)
+            buffer.writeString(it.itemCode, it.type)
                     .writeBoolean(it.newParts)
         }
 

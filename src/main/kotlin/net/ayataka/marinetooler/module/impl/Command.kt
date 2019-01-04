@@ -162,10 +162,11 @@ object Command : Module() {
                         petTimer?.cancel()
                     }
                 }
-                "addequip" -> {
-                    val equipment = spitted[1]
-
-                    FakeEquipment.addEquipment(CurrentUser.usercode!!, equipment)
+                "equip" -> {
+                    when(spitted[1]){
+                        "add" -> FakeEquipment.addEquipment(CurrentUser.usercode!!, spitted[2])
+                        "del" -> FakeEquipment.deleteEquipment(CurrentUser.usercode!!, spitted[2])
+                    }
                 }
                 else -> {
                     info("無効なコマンドです")
