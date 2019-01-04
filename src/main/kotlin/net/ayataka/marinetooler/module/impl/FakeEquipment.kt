@@ -79,14 +79,8 @@ object FakeEquipment : Module() {
             }
         }
         else if(packet is BaseAreaData){
-            thread {
-                Thread.sleep(400)
-                Pigg.userEquipments.filter { user -> packet.defineAvatars.any { it.data.userCode == user.key } }.forEach {
-                    Pigg.receive(FinishDressupResult().apply {
-                        this.avatarData = it.value
-                        this.usercode = it.key
-                    })
-                }
+            packet.defineAvatars.filter { Pigg.userEquipments.containsKey(it.data.userCode) }.forEach {
+                it.data = Pigg.userEquipments[it.data.userCode]!!
             }
         }
     }

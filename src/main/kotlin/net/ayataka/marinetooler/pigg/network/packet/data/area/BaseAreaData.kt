@@ -38,6 +38,7 @@ open class BaseAreaData : Packet() {
     var definePets = mutableListOf<DefinePet>()
     var placeActionItems = mutableListOf<PlaceActionItem>()
     var loc11 = mutableMapOf<String, String>()
+    var data = ByteArray(0)
 
     override fun readFrom(buffer: ByteBuilder) {
         // エリアデータ
@@ -190,10 +191,9 @@ open class BaseAreaData : Packet() {
 
         defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
 
-        dump(buffer.reset().skipHeader().readAllBytes().toHexString())
+        data = buffer.readAllBytes()
     }
 
-    //TODO: 未完成だから仕上げる
     override fun writeTo(buffer: ByteBuilder) : ByteBuilder? {
         areaData.writeTo(buffer)
 
@@ -254,17 +254,6 @@ open class BaseAreaData : Packet() {
             buffer.writeBoolean(placePet.sleeping)
         }
 
-        buffer.writeInt(placeActionItems.size)
-
-        placeActionItems.forEach {
-            buffer.writeString(it.itemType, it.itemCode, it.ownerCode)
-            buffer.writeInt(it.sequence)
-
-            buffer.writeByte(it.actionItemType)
-
-            buffer.writeShort(it.x, it.y, it.z)
-        }
-
         buffer.writeInt(placeActionItems.count { it.mode == 0 })
 
         placeActionItems.filter { it.mode == 0 }.forEach {
@@ -296,9 +285,9 @@ open class BaseAreaData : Packet() {
 
         buffer.writeString(*loc11.values.toTypedArray())
 
-        dump(buffer.build().array().toHexString())
+        buffer.writeRawBytes(data)
 
-        return null
+        return buffer
     }
 
     override fun toString(): String {
