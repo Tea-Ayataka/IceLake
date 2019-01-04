@@ -337,6 +337,7 @@ class MainWindow : Initializable {
         NGBypass.enabled = true
         FishMacro.enabled = true
         FakeEquipment.enabled = true
+        ActionModifier.enabled = true
     }
 
     fun openPacketDialog(data: PacketView) {

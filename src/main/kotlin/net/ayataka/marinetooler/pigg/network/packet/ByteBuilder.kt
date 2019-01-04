@@ -15,6 +15,10 @@ open class ByteBuilder() {
         buffer = ByteBuffer.wrap(bytes)
     }
 
+    constructor(size: Int) : this() {
+        buffer = ByteBuffer.allocate(size)
+    }
+
     fun reset(): ByteBuilder {
         buffer.clear()
         return this

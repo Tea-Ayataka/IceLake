@@ -102,6 +102,7 @@ class Protocol {
         register(GetPuzzleUserStatusResult::class)
         register(FinishDressupResult::class)
         register(RoomActionResult::class)
+        register(ListActionResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
