@@ -38,7 +38,7 @@ object FakeEquipment : Module() {
         val packet = event.packet
 
         if(packet is ActionResultPacket){
-            if(!packet.actionCode.contains("hello")){
+            if(!packet.actionCode.contains("hello\u0000equip:")){
                 return
             }
 
