@@ -16,12 +16,12 @@ import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 object FakeEquipment : Module() {
     private val userEquipments = mutableMapOf<String, AvatarData>()
 
-    fun addEquipment(usercode: String, equipment: String) {
-        val avatarData = userEquipments[usercode]?.apply { item.items.add(equipment) }
+    fun addEquipment(usercode: String, vararg equipment: String) {
+        val avatarData = userEquipments[usercode]?.apply { item.items.addAll(equipment) }
                 ?: CurrentUser.areaData.defineAvatars
                         .find { it.data.userCode == usercode }?.data!!
                         .apply {
-                            item.items.add(equipment)
+                            item.items.addAll(equipment)
                             userEquipments[usercode] = this
                         }
 
@@ -35,13 +35,13 @@ object FakeEquipment : Module() {
         }
 
         Pigg.send(ActionPacket().apply {
-            actionId = "hello\u0000equip#$equipment"
+            actionId = "hello\u0000equip $equipment"
         })
     }
 
-    fun deleteEquipment(usercode: String, equipment: String) {
+    fun deleteEquipment(usercode: String, vararg equipment: String) {
         val avatarData = userEquipments[usercode]?.apply {
-            item.items.remove(equipment)
+            item.items.removeAll(equipment)
         } ?: return
 
         Pigg.receive(FinishDressupResult().apply {
@@ -54,7 +54,7 @@ object FakeEquipment : Module() {
         }
 
         Pigg.send(ActionPacket().apply {
-            actionId = "hello\u0000unequip#$equipment"
+            actionId = "hello\u0000unequip $equipment"
         })
     }
 
@@ -69,10 +69,10 @@ object FakeEquipment : Module() {
 
             packet.canceled = true
 
-            val data = packet.actionCode.split("\u0000")[1].split("#")
+            val data = packet.actionCode.split("\u0000")[1].split(" ")
             when (data[0]) {
-                "equip" -> addEquipment(packet.usercode, data[1])
-                "unequip" -> deleteEquipment(packet.usercode, data[1])
+                "equip" -> addEquipment(packet.usercode, *data.drop(1).toTypedArray())
+                "unequip" -> deleteEquipment(packet.usercode, *data.drop(1).toTypedArray())
             }
         }
 

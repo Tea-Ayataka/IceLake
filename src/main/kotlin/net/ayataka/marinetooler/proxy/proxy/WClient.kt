@@ -5,6 +5,7 @@ import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
 import net.ayataka.marinetooler.proxy.WebSocketProxy
 import net.ayataka.marinetooler.utils.info
+import net.ayataka.marinetooler.utils.toHexString
 import net.ayataka.marinetooler.utils.warn
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -39,7 +40,8 @@ class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketC
             return
         }
 
-        println("[WS RECV] : ${message.array().size} bytes")
+        println("[WS RECV] ${message.array().size} bytes")
+        println(message.array().toHexString())
 
         var data: ByteBuffer = message
 

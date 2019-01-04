@@ -31,13 +31,6 @@ object NGBypass : Module() {
 
             packet.text = packet.text.replace("\\n", "\n")
         }
-
-        if (packet is ActionPacket) {
-            if (packet.actionId == "sad") {
-                packet.actionId = "ranaruta\u0000_secret"
-                Pigg.send(SystemActionPacket().apply { actionCode = "ranaruta" })
-            }
-        }
     }
 
     @EventListener
