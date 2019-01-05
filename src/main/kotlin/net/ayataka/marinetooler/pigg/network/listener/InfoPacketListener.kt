@@ -49,7 +49,7 @@ class InfoPacketListener : IPacketListener {
         return event.packet
     }
 
-    private fun onReceive(packet: Packet): Packet {
+    fun onReceive(packet: Packet): Packet {
         EventManager.fire(RecvPacketEvent(packet))
 
         // restart chat proxy
@@ -74,6 +74,8 @@ class InfoPacketListener : IPacketListener {
             CurrentUser.secure = packet.secure
             dump("Secure code: ${packet.secure.toHexString()}")
         }
+
+
 
         return packet
     }

@@ -192,6 +192,7 @@ open class BaseAreaData : Packet() {
         defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
 
         data = buffer.readAllBytes()
+        dump("BaseAreaData: ${data.toHexString()}")
     }
 
     //FIX: 年末年始のエリア（他にもあるかもしれない）に入れないバグを修正する

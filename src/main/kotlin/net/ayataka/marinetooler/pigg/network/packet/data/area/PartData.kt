@@ -43,4 +43,10 @@ class PartData(private var hasAttachDirection: Boolean) : PacketData {
 
         buffer.writeByte(rx, ry)
     }
+
+    override fun toString(): String {
+        return "PartData(hasAttachDirection=$hasAttachDirection, height=$height, walkable=$walkable, sittable=$sittable, attachable=$attachable, attachDirection=$attachDirection, rx=$rx, ry=$ry, index=$index, wall=$wall, facing=$facing)"
+    }
+
+
 }

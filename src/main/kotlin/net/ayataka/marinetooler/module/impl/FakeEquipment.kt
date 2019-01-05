@@ -5,57 +5,41 @@ import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
-import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
-import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
-import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
+import net.ayataka.marinetooler.pigg.network.packet.recv.*
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 
 object FakeEquipment : Module() {
-    private val userEquipments = mutableMapOf<String, AvatarData>()
+    private val customEquipments: MutableList<String> = mutableListOf()
 
     fun addEquipment(usercode: String, vararg equipment: String) {
-        val avatarData = userEquipments[usercode]?.apply { item.items.addAll(equipment) }
-                ?: CurrentUser.areaData.defineAvatars
-                        .find { it.data.userCode == usercode }?.data!!
-                        .apply {
-                            item.items.addAll(equipment)
-                            userEquipments[usercode] = this
-                        }
+        val avatarData = getAvatarData(usercode)?.apply { item.items.addAll(equipment) } ?: return
 
         Pigg.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
         })
 
-        if (usercode != CurrentUser.usercode) {
-            return
+        if (usercode == CurrentUser.usercode) {
+            Pigg.send(ActionPacket().apply {
+                actionId = "hello\u0000equip ${equipment.joinToString(" ")}"
+            })
         }
-
-        Pigg.send(ActionPacket().apply {
-            actionId = "hello\u0000equip $equipment"
-        })
     }
 
     fun deleteEquipment(usercode: String, vararg equipment: String) {
-        val avatarData = userEquipments[usercode]?.apply {
-            item.items.removeAll(equipment)
-        } ?: return
+        val avatarData = getAvatarData(usercode)?.apply { item.items.removeAll(equipment) } ?: return
 
         Pigg.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
         })
 
-        if (usercode != CurrentUser.usercode) {
-            return
+        if (usercode == CurrentUser.usercode) {
+            Pigg.send(ActionPacket().apply {
+                actionId = "hello\u0000unequip ${equipment.joinToString(" ")}"
+            })
         }
-
-        Pigg.send(ActionPacket().apply {
-            actionId = "hello\u0000unequip $equipment"
-        })
     }
 
     @EventListener
@@ -63,7 +47,7 @@ object FakeEquipment : Module() {
         val packet = event.packet
 
         if (packet is ActionResultPacket) {
-            if (packet.usercode == CurrentUser.usercode || !packet.actionCode.startsWith("hello\u0000")) {
+            if (!packet.actionCode.startsWith("hello\u0000")) {
                 return
             }
 
@@ -76,16 +60,19 @@ object FakeEquipment : Module() {
             }
         }
 
-        if (packet is BaseAreaData) {
-            packet.defineAvatars
-                    .filter { userEquipments.containsKey(it.data.userCode) }
-                    .forEach { it.data = userEquipments[it.data.userCode]!! }
+        if (packet is EnterAreaResult || packet is EnterUserRoomResult || packet is EnterUserGardenResult) {
+            val usercode = CurrentUser.usercode ?: return
+            addEquipment(usercode, *customEquipments.toTypedArray())
         }
 
         if (packet is GetUserProfileResultPacket) {
-            userEquipments[packet.usercode]?.let {
+            /*getAvatarData(packet.usercode)?.let {
                 packet.defineAvatar = DefineAvatar().apply { load(it) }
-            }
+            }*/
         }
+    }
+
+    private fun getAvatarData(usercode: String): AvatarData? {
+        return CurrentUser.areaData.defineAvatars.find { it.data.userCode == usercode }?.data
     }
 }

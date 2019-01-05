@@ -1,6 +1,5 @@
 package net.ayataka.marinetooler.pigg.network.packet.recv
 
-import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
@@ -17,13 +16,13 @@ class FinishDressupResult : Packet() {
     var isFinishDressUp = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        if(buffer.array().size <= 13){
+        if (buffer.array().size <= 13) {
             isFinishDressUp = true
 
             return
         }
 
-        if(buffer.readBoolean()){
+        if (buffer.readBoolean()) {
             avatarData = AvatarData().apply { readFrom(buffer) }
             usercode = avatarData?.userCode!!
 
@@ -34,7 +33,7 @@ class FinishDressupResult : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        if(isFinishDressUp){
+        if (isFinishDressUp) {
             isFinishDressUp = !isFinishDressUp
 
             return null

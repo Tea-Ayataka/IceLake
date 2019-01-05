@@ -21,6 +21,8 @@ class LoginChatResultPacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        return null
+        buffer.writeBoolean(success)
+        buffer.writeByte(serverType)
+        return buffer
     }
 }

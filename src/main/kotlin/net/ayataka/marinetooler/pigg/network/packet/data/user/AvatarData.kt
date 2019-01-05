@@ -72,4 +72,8 @@ class AvatarData : PacketData{
         buffer.writeByte(conditions.size.toByte())
         buffer.writeString(*conditions.toTypedArray())
     }
+
+    override fun toString(): String {
+        return "AvatarData(userCode='$userCode', amebaId='$amebaId', nickName='$nickName', asUserId='$asUserId', color=$color, part=$part, position=$position, item=$item, conditions=$conditions, cosme=$cosme)"
+    }
 }

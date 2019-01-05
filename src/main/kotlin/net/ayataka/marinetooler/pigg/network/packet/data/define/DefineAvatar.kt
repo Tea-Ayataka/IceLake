@@ -19,4 +19,8 @@ class DefineAvatar : DefineData() {
 
         this.data = data
     }
+
+    override fun toString(): String {
+        return "DefineAvatar(part=$part, data=$data, friend=$friend)"
+    }
 }

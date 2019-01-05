@@ -6,7 +6,6 @@ import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.listener.InfoPacketListener
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.proxy.WebSocketProxy
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.getSSLContextFromPFXFile

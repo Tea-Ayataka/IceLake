@@ -7,6 +7,8 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.ServerType
+import net.ayataka.marinetooler.pigg.network.listener.InfoPacketListener
+import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
@@ -169,13 +171,24 @@ object Command : Module() {
                         "del" -> FakeEquipment.deleteEquipment(CurrentUser.usercode!!, spitted[2])
                     }
                 }
-                "djmodifer" -> {
+                "play" -> {
                     PlaylistModifer.enabled = true
 
                     PlaylistModifer.videoID = spitted[1]
                     spitted.getOrNull(2)?.let { PlaylistModifer.title = it }
 
                     CurrentUser.showAlert("何でもいいのでプレイリストに追加してください。")
+                }
+                "icearea" -> {
+                    CurrentUser.showAlert("Moving to IceArea!")
+                    val packet = GetAreaResultPacket().apply {
+                        type = "user"
+                        userCode = "c4be9c50d3ff8704"
+                        protocol = "ws"
+                        chatServerUri = "ws://localhost:11451/command"
+                    }
+
+                    Pigg.receive((Pigg.proxies[ServerType.INFO]!!.packetListener!! as InfoPacketListener).onReceive(packet))
                 }
                 else -> {
                     info("無効なコマンドです")

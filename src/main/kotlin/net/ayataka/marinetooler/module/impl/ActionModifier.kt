@@ -14,7 +14,8 @@ object ActionModifier : Module() {
     private val CUSTOM_ACTIONS = listOf(
             "maximum_secret" to "デカマム",
             "bigface_secret" to "ビッグフェイス",
-            "ranaruta" to "メイド・イン・ヘブン"
+            "ranaruta" to "メイド・イン・ヘブン",
+            "hello#equip patrol_symbol_suit patrol_symbol_word" to "ピグパトロールに変身！"
     )
 
     @EventListener
