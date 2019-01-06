@@ -60,6 +60,13 @@ object IceArea {
             conn.send("01 f0 00 00 00 00 00 00 00 00".fromHexToBytes())
         }
 
+        override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {
+            val defineAvatar = avatars.keys.find { it.data.userCode == usercodes[conn] }
+
+            avatars.remove(defineAvatar)
+        }
+
+
         override fun onMessage(socket: WebSocket, buffer: ByteBuffer) {
             //Ping pong
             if(buffer.array().toHexString() == "01 ff 00 00 00 00 00 00 00 00 00 00"){
@@ -92,14 +99,18 @@ object IceArea {
                 info("EnterRoom!")
                 socket.send(EnterAreaResult().apply {
                     areaData = AreaData().apply {
-                        categoryCode = "club"
-                        areaCode = "114514"
+                        categoryCode = "user"
+                        areaCode = "114514810"
                         areaName = iceAreaData.areaData["areaName"]!!
                         wallCode = iceAreaData.areaData["wallCode"]!!
                         windowCode = iceAreaData.areaData["windowCode"]!!
                         floorCode = iceAreaData.areaData["floorCode"]!!
                         sizeX = iceAreaData.areaData["sizeX"]!!.toShort()
                         sizeY = iceAreaData.areaData["sizeY"]!!.toShort()
+                    }
+
+                    if(iceAreaData.opUsers.contains(usercodes[socket])) {
+                        meta = 1
                     }
 
                     avatars.forEach {
@@ -149,7 +160,6 @@ object IceArea {
 
         override fun onStart() {}
         override fun onError(conn: WebSocket, ex: Exception) {}
-        override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {}
         override fun onMessage(conn: WebSocket, message: String) {}
     }
 
