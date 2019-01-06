@@ -35,13 +35,6 @@ class ChannelFloorUpdatePlayListRequest : Packet() {
         duration = buffer.readInt()
         videoSource = buffer.readString()
         data = buffer.readAllBytes()
-
-        println("$userCode $index $videoID $videoTitle $duration $videoSource")
-
-        val fuck = buffer.array()
-
-        dump(String(fuck))
-        dump(fuck.toHexString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

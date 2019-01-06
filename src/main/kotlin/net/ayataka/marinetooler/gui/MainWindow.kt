@@ -338,6 +338,7 @@ class MainWindow : Initializable {
         FishMacro.enabled = true
         FakeEquipment.enabled = true
         ActionModifier.enabled = true
+        IceAreaConnector.enabled = true
     }
 
     fun openPacketDialog(data: PacketView) {

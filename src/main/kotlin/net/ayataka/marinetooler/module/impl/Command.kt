@@ -181,6 +181,9 @@ object Command : Module() {
                 }
                 "icearea" -> {
                     CurrentUser.showAlert("Moving to IceArea!")
+
+                    IceAreaConnector.areaData = CurrentUser.areaData
+
                     val packet = GetAreaResultPacket().apply {
                         type = "user"
                         userCode = "c4be9c50d3ff8704"

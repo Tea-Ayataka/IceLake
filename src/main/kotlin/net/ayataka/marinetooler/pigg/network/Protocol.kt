@@ -73,6 +73,7 @@ class Protocol {
         register(GetPetProfile::class)
         register(SetPetProfile::class)
         register(ChannelFloorUpdatePlayListRequest::class)
+        register(IceAreaPacket::class)
 
         // RECV (Server bound)
         register(CheckBanWordResultPacket::class)
@@ -103,6 +104,8 @@ class Protocol {
         register(FinishDressupResult::class)
         register(RoomActionResult::class)
         register(ListActionResult::class)
+        register(ListClubResult::class)
+        register(ListClubFurnitureResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {

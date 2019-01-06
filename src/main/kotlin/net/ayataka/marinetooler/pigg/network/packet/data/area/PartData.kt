@@ -8,7 +8,7 @@ class PartData(private var hasAttachDirection: Boolean) : PacketData {
     var walkable = false
     var sittable = false
     var attachable = false
-    var attachDirection: Byte? = -1
+    var attachDirection: Byte? = null
     var rx: Byte = 0
     var ry: Byte = 0
     var index: Int = 0

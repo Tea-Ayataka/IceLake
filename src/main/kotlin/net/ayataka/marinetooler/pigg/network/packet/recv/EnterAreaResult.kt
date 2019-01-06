@@ -2,6 +2,7 @@ package net.ayataka.marinetooler.pigg.network.packet.recv
 
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
+import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 
 class EnterAreaResult : BaseAreaData() {

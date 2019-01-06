@@ -5,6 +5,7 @@ import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
@@ -60,7 +61,8 @@ object FakeEquipment : Module() {
             }
         }
 
-        if (packet is EnterAreaResult || packet is EnterUserRoomResult || packet is EnterUserGardenResult) {
+        //BaseAreaDataが送られてきた直後に送っても反映されないからBaseAreaDataのパケットで変えるかスリープを付けたほうがいい
+        if (packet is BaseAreaData) {
             val usercode = CurrentUser.usercode ?: return
             addEquipment(usercode, *customEquipments.toTypedArray())
         }
