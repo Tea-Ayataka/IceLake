@@ -67,8 +67,8 @@ object AutoGoodPigg : Module() {
             start()
         }
 
-        if (!running && packet is AppearUserPacket && !goodpigged.contains(packet.usercode)) {
-            val user = packet.usercode
+        if (!running && packet is AppearUserPacket && !goodpigged.contains(packet.avatarData.userCode)) {
+            val user = packet.avatarData.userCode
 
             Thread {
                 running = true

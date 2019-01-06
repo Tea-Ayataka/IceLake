@@ -57,6 +57,14 @@ object IceArea {
             val defineAvatar = getDefineAvatar(usercodes[conn]!!)
 
             avatars.remove(defineAvatar)
+            usercodes.remove(conn)
+
+            usercodes.forEach {
+                it.key.send(LeaveUser().apply {
+                    areaCode = "114514"
+                    userCode = it.value
+                })
+            }
         }
 
 
@@ -86,6 +94,13 @@ object IceArea {
                     }
                 }
                 avatars[defineAvatar] = null
+
+                usercodes.filterValues { it != packet.avatarData.userCode }.forEach {
+                    it.key.send(AppearUserPacket().apply {
+                        areaCode = "114514"
+                        avatarData = defineAvatar.data
+                    })
+                }
             }
 
             if (packet is EnterRoomPacket) {
@@ -93,7 +108,7 @@ object IceArea {
                 socket.send(EnterAreaResult().apply {
                     areaData = AreaData().apply {
                         categoryCode = "user"
-                        areaCode = "114514810"
+                        areaCode = "114514"
                         areaName = iceAreaData.areaData["areaName"]!!
                         wallCode = iceAreaData.areaData["wallCode"]!!
                         windowCode = iceAreaData.areaData["windowCode"]!!

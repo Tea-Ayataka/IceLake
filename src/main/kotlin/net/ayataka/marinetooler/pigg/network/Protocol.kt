@@ -106,6 +106,7 @@ class Protocol {
         register(ListActionResult::class)
         register(ListClubResult::class)
         register(ListClubFurnitureResult::class)
+        register(LeaveUser::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
