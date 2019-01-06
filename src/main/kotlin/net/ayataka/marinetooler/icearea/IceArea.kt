@@ -1,7 +1,6 @@
 package net.ayataka.marinetooler.icearea
 
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import net.ayataka.marinetooler.IceLake
 import net.ayataka.marinetooler.pigg.network.PacketDirection
 import net.ayataka.marinetooler.pigg.network.Protocol
@@ -11,15 +10,9 @@ import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
-import net.ayataka.marinetooler.pigg.network.packet.data.define.DefinePet
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
-import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
-import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
-import net.ayataka.marinetooler.pigg.network.packet.send.EnterRoomPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.IceAreaPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.LoginChatPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.MovePacket
+import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
@@ -61,7 +54,7 @@ object IceArea {
         }
 
         override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {
-            val defineAvatar = avatars.keys.find { it.data.userCode == usercodes[conn] }
+            val defineAvatar = getDefineAvatar(usercodes[conn]!!)
 
             avatars.remove(defineAvatar)
         }
@@ -136,7 +129,7 @@ object IceArea {
             }
 
             if(packet is MovePacket){
-                val defineAvatar = avatars.keys.find { it.data.userCode == usercodes[socket] }
+                val defineAvatar = getDefineAvatar(usercodes[socket]!!)
 
                 avatars[defineAvatar]?.apply {
                     x = packet.x
@@ -144,19 +137,23 @@ object IceArea {
                     z = packet.z
                 }
 
-                socket.send(MoveResultPacket().apply {
-                    usercode = usercodes[socket]!!
+                usercodes.keys.forEach {
+                    it.send(MoveResultPacket().apply {
+                        usercode = usercodes[socket]!!
 
-                    x = packet.x
-                    y = packet.y
-                    z = packet.z
-                })
+                        x = packet.x
+                        y = packet.y
+                        z = packet.z
+                    })
+                }
             }
         }
 
         private fun WebSocket.send(packet: Packet) {
             send(packet.write(cipherKey)!!)
         }
+
+        private fun getDefineAvatar(userCode: String): DefineAvatar? = avatars.keys.find { it.data.userCode == userCode }
 
         override fun onStart() {}
         override fun onError(conn: WebSocket, ex: Exception) {}
