@@ -159,11 +159,7 @@ object IceArea {
     }
 }
 
-var roomName = "・。・？"
-
 fun main(args: Array<String>) {
-    args.getOrNull(1)?.let { roomName = it }
-
     IceLake()
     IceArea
 }
