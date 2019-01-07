@@ -12,6 +12,7 @@ import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
+import net.ayataka.marinetooler.pigg.network.packet.recv.EnterUserRoomResult
 import net.ayataka.marinetooler.utils.dump
 import net.ayataka.marinetooler.utils.toHexString
 
@@ -191,8 +192,11 @@ open class BaseAreaData : Packet() {
 
         defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
 
-        data = buffer.readAllBytes()
-        dump("BaseAreaData: ${data.toHexString()}")
+        if(this !is EnterUserRoomResult) {
+            data = buffer.readAllBytes()
+
+            dump("BaseAreaData: ${data.toHexString()}")
+        }
     }
 
     //FIX: 年末年始のエリア（他にもあるかもしれない）に入れないバグを修正する
@@ -284,7 +288,9 @@ open class BaseAreaData : Packet() {
 
         buffer.writeString(*loc11.values.toTypedArray())
 
-        buffer.writeRawBytes(data)
+        if(this !is EnterUserRoomResult) {
+            buffer.writeRawBytes(data)
+        }
 
         return buffer
     }

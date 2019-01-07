@@ -5,7 +5,6 @@ import net.ayataka.marinetooler.IceLake
 import net.ayataka.marinetooler.pigg.network.PacketDirection
 import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
@@ -22,7 +21,6 @@ import org.java_websocket.server.WebSocketServer
 import java.io.File
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
-import kotlin.concurrent.thread
 import kotlin.concurrent.timer
 
 object IceArea {
@@ -37,10 +35,13 @@ object IceArea {
         areaData = AreaData().apply {
             categoryCode = "secret"
             areaCode = "icelake_area_001"
+            areaName = "IceArea"
 
             sizeY = 16
             sizeX = 16
             wallCode = "small_basic_wall"
+
+            opUsers.add("4d2b2e102ba85faf")
         }
     }
 
@@ -71,7 +72,7 @@ object IceArea {
 
             usercodes.forEach {
                 it.key.send(LeaveUser().apply {
-                    areaCode = "114514"
+                    areaCode = "icelake_area_001"
                     userCode = it.value
                 })
             }
@@ -107,7 +108,7 @@ object IceArea {
 
                 usercodes.filterValues { it != packet.avatarData.userCode }.forEach {
                     it.key.send(AppearUserPacket().apply {
-                        areaCode = "114514"
+                        areaCode = "icelake_area_001"
                         avatarData = defineAvatar.data
                     })
                 }
@@ -115,7 +116,7 @@ object IceArea {
 
             if (packet is EnterRoomPacket) {
                 info("EnterRoom!")
-                socket.send(EnterAreaResult().apply {
+                socket.send(EnterUserRoomResult().apply {
                     areaData = iceAreaData.areaData
 
                     if(iceAreaData.opUsers.contains(usercodes[socket])) {
@@ -138,13 +139,6 @@ object IceArea {
 
                     placeFurnitures = iceAreaData.placeFurnitures
                     defineFurnitures = iceAreaData.defineFurnitures
-
-                    data = ByteBuilder()
-                            .writeByte(0)
-                            .writeInt(0)
-                            .writeBoolean(false)
-                            .build()
-                            .array()
                 })
             }
 

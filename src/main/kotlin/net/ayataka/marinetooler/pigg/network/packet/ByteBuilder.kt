@@ -119,8 +119,8 @@ open class ByteBuilder() {
         return this
     }
 
-    fun writeDouble(double: Double): ByteBuilder {
-        buffer.putDouble(double)
+    fun writeDouble(vararg values: Double): ByteBuilder {
+        values.forEach { buffer.putDouble(it) }
         return this
     }
 
