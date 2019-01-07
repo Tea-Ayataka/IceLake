@@ -33,7 +33,16 @@ object IceArea {
         }
     }
 
-    val iceAreaData = gson.fromJson(file.readText(), IceAreaData::class.java) ?: IceAreaData()
+    val iceAreaData =  IceAreaData().apply {
+        areaData = AreaData().apply {
+            categoryCode = "secret"
+            areaCode = "icelake_area_001"
+
+            sizeY = 16
+            sizeX = 16
+            wallCode = "small_basic_wall"
+        }
+    }
 
     val server = object : WebSocketServer(InetSocketAddress("localhost", 11451)) {
         val cipherKey = "00 00 00 00 00 00 00 00".fromHexToBytes()
@@ -107,16 +116,7 @@ object IceArea {
             if (packet is EnterRoomPacket) {
                 info("EnterRoom!")
                 socket.send(EnterAreaResult().apply {
-                    areaData = AreaData().apply {
-                        categoryCode = "user"
-                        areaCode = "114514"
-                        areaName = iceAreaData.areaData["areaName"]!!
-                        wallCode = iceAreaData.areaData["wallCode"]!!
-                        windowCode = iceAreaData.areaData["windowCode"]!!
-                        floorCode = iceAreaData.areaData["floorCode"]!!
-                        sizeX = iceAreaData.areaData["sizeX"]!!.toShort()
-                        sizeY = iceAreaData.areaData["sizeY"]!!.toShort()
-                    }
+                    areaData = iceAreaData.areaData
 
                     if(iceAreaData.opUsers.contains(usercodes[socket])) {
                         meta = 1
@@ -143,28 +143,21 @@ object IceArea {
                             .writeByte(0)
                             .writeInt(0)
                             .writeBoolean(false)
-                            .build().array()
+                            .build()
+                            .array()
                 })
             }
 
             if(packet is MovePacket){
-                val defineAvatar = getDefineAvatar(usercodes[socket]!!)
+                val packetToSend = MoveResultPacket().apply {
+                    usercode = usercodes[socket]!!
 
-                avatars[defineAvatar]?.apply {
                     x = packet.x
                     y = packet.y
                     z = packet.z
                 }
 
-                usercodes.keys.forEach {
-                    it.send(MoveResultPacket().apply {
-                        usercode = usercodes[socket]!!
-
-                        x = packet.x
-                        y = packet.y
-                        z = packet.z
-                    })
-                }
+                usercodes.keys.forEach { it.send(packetToSend) }
             }
 
             if(packet is MoveEndPacket){
@@ -178,17 +171,19 @@ object IceArea {
                     direction = packet.dir
                 }
 
-                usercodes.keys.forEach {
-                    it.send(MoveEndResultPacket().apply {
-                        usercode = usercodes[socket]!!
+                val toSend = MoveEndResultPacket().apply {
+                    usercode = usercodes[socket]!!
 
-                        x = packet.x
-                        y = packet.y
-                        z = packet.z
+                    x = packet.x
+                    y = packet.y
+                    z = packet.z
 
-                        dir = packet.dir
-                    })
+                    dir = packet.dir
                 }
+
+                println("MoveEndPacket: $packet, MoveEndResultPacket: $toSend")
+
+                usercodes.keys.forEach { it.send(toSend) }
             }
         }
 

@@ -30,4 +30,8 @@ class MoveEndResultPacket : Packet() {
 
         return buffer
     }
+
+    override fun toString(): String {
+        return "MoveEndResultPacket(server=$server, packetId=$packetId, usercode='$usercode', x=$x, y=$y, z=$z, dir=$dir)"
+    }
 }

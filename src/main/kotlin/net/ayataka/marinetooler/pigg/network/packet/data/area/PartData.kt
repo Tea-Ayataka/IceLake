@@ -1,18 +1,29 @@
 package net.ayataka.marinetooler.pigg.network.packet.data.area
 
+import com.google.gson.annotations.Expose
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 
 class PartData(private var hasAttachDirection: Boolean) : PacketData {
+    @Expose
     var height: Int = 0
+    @Expose
     var walkable = false
+    @Expose
     var sittable = false
+    @Expose
     var attachable = false
+    @Expose
     var attachDirection: Byte? = null
+    @Expose
     var rx: Byte = 0
+    @Expose
     var ry: Byte = 0
+    @Expose
     var index: Int = 0
+    @Expose
     var wall: Wall = Wall.NONE // Read only
+    @Expose
     var facing: Byte = 0
 
     override fun readFrom(buffer: ByteBuilder) {

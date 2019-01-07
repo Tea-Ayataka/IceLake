@@ -5,12 +5,12 @@ class InternetExplorer {
     private var process: Process? = null
 
     init {
-        Thread {
+       /* Thread {
             val builder = ProcessBuilder("Player.exe", "start")
             process = builder.start()
             process?.waitFor()
             System.exit(0)
-        }.start()
+        }.start()*/
     }
 
     fun shutdown() {

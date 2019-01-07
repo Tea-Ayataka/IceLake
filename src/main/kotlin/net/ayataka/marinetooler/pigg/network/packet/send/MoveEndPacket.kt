@@ -31,4 +31,8 @@ class MoveEndPacket : Packet() {
 
         return buffer
     }
+
+    override fun toString(): String {
+        return "MoveEndPacket(x=$x, y=$y, z=$z, dir=$dir)"
+    }
 }
