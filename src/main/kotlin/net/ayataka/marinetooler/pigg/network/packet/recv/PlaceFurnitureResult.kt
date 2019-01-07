@@ -53,7 +53,7 @@ class PlaceFurnitureResult : Packet() {
         buffer.writeByte(placeFurniture.direction)
         buffer.writeString(placeFurniture.ownerId)
 
-        buffer.writeShort(partLength)
+        buffer.writeShort(defineFurniture.parts.size.toShort())
 
         buffer.writeString(defineFurniture.characterId)
         buffer.writeByte(defineFurniture.type)

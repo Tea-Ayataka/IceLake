@@ -7,6 +7,8 @@ import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.StockFurniture
+import net.ayataka.marinetooler.pigg.network.packet.recv.ListClubFurnitureResult
+import net.ayataka.marinetooler.pigg.network.packet.recv.ListUserFurnitureResultPacket
 import java.io.File
 
 object FurnitureGetter : Module() {
@@ -38,6 +40,18 @@ object FurnitureGetter : Module() {
             database.windows.add(packet.areaData.windowCode)
             database.floors.add(packet.areaData.floorCode)
             database.fronts.add(packet.areaData.frontCode)
+
+            file.writeText(gson.toJson(database))
+        }
+
+        if(packet is ListClubFurnitureResult){
+            database.furnitures.addAll(packet.furnitures)
+
+            file.writeText(gson.toJson(database))
+        }
+
+        if(packet is ListUserFurnitureResultPacket){
+            database.furnitures.addAll(packet.furnitures)
 
             file.writeText(gson.toJson(database))
         }

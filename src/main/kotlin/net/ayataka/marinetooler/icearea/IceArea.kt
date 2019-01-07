@@ -8,6 +8,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaOwnerData
+import net.ayataka.marinetooler.pigg.network.packet.data.area.Expansion
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
@@ -142,7 +143,13 @@ object IceArea {
                     placeFurnitures = iceAreaData.placeFurnitures
                     defineFurnitures = iceAreaData.defineFurnitures
 
+                    expansions.add(Expansion().apply {
+                        areaCode = "icelake_area_001"
+                        index = 1
+                    })
+
                     ownerData = AreaOwnerData().apply {
+                        userCode = iceAreaData.opUsers.random()
                         numFootPrintToday = Random.nextInt(5000)
                     }
                 })
@@ -182,6 +189,22 @@ object IceArea {
                 }
 
                 println("MoveEndPacket: $packet, MoveEndResultPacket: $toSend")
+
+                usercodes.keys.forEach { it.send(toSend) }
+            }
+
+            if(packet is TalkPacket){
+                val avatarData = getDefineAvatar(usercodes[socket]!!)?.data!!
+
+                val toSend = TalkResultPacket().apply {
+                    usercode = avatarData.userCode
+                    message = packet.text
+                    ballonColor = packet.balloonColor
+                    color = packet.color
+                    nickName = avatarData.nickName
+                    amebaId = avatarData.amebaId
+                    roomCode = "icelake_area_001"
+                }
 
                 usercodes.keys.forEach { it.send(toSend) }
             }
