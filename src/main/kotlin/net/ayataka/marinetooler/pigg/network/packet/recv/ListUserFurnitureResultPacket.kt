@@ -13,72 +13,72 @@ open class ListUserFurnitureResultPacket : Packet() {
 
     var max = 0
     var furnitures: MutableList<StockFurniture> = mutableListOf()
-    var placedFurnitures: MutableList<String> = mutableListOf()
+    var placedFurnitures = mutableMapOf<String, String>()
+    var roomData = mutableListOf<String>()
     var roomNum = 0
-    var loc2 = 0
-    var loc5 = mutableListOf<Short>()
-    var whatStrings1 = mutableListOf<String>()
-    var whatStrings2 = mutableListOf<MutableList<String>>()
-    var loc10 = mutableListOf<Int>()
 
     override fun readFrom(buffer: ByteBuilder) {
         max = buffer.readInt()
 
-        loc2 = buffer.readInt()
+        (0 until buffer.readInt()).forEach {
+            furnitures.add(StockFurniture().apply {
+                quantity = buffer.readInt()
+                characterId = buffer.readString()
+                type = buffer.readByte()
+                category = buffer.readString()
+                name = buffer.readString()
+                description = buffer.readString()
+                actionCode = buffer.readString()
 
-        for (i in 1..loc2){
-            val furniture = StockFurniture()
+                (0 until buffer.readShort()).forEach {
+                    parts.add(PartData(false).apply { readFrom(buffer) })
+                }
 
-            furniture.quantity = buffer.readInt()
-            furniture.characterId = buffer.readString()
-            furniture.type = buffer.readByte()
-            furniture.category = buffer.readString()
-            furniture.name = buffer.readString()
-            furniture.description = buffer.readString()
-            furniture.actionCode = buffer.readString()
-
-            val loc5 = buffer.readShort()
-
-            //loc5[i - 1] = loc5
-            this.loc5.add(loc5)
-
-            val parts = mutableListOf<PartData>()
-
-            for(i2 in 1..loc5){
-                val part = PartData(false)
-                part.readFrom(buffer)
-
-                parts.add(part)
-            }
-
-            furniture.parts = parts
-            furniture.time = buffer.readDouble()
-
-            furnitures.add(furniture)
+                time = buffer.readDouble()
+            })
         }
 
         roomNum = buffer.readInt()
 
-        for (i in 1..roomNum){
-            val whatString1= buffer.readString()
-            val loc10 = buffer.readInt()
+        (0 until roomNum).forEach {
+            val roomName = buffer.readString()
 
-            //whatStrings1[i - 1] = whatString1
-            //loc10[i - 1] = loc10
+            roomData.add(roomName)
 
-            whatStrings1.add(whatString1)
-            this.loc10.add(loc10)
-
-            for(i2 in 1..loc10){
-                val whatString2 = buffer.readString()
-
-                whatStrings2.add(mutableListOf(whatString2))
-                placedFurnitures.add(buffer.readString())
+            (0 until buffer.readInt()).forEach {
+                placedFurnitures[buffer.readString()] = buffer.readString()
             }
         }
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        return null
+        buffer.writeInt(max, furnitures.size)
+
+        furnitures.forEach {
+            buffer.writeInt(it.quantity)
+                    .writeString(it.characterId)
+                    .writeByte(it.type)
+                    .writeString(it.category, it.name, it.description, it.actionCode)
+                    .writeShort(it.parts.size.toShort())
+
+            it.parts.forEach {
+                it.writeTo(buffer)
+            }
+
+            buffer.writeDouble(it.time)
+        }
+
+        buffer.writeInt(roomNum)
+
+        roomData.forEach {
+            buffer.writeString(it)
+                    .writeInt(placedFurnitures.size)
+
+            placedFurnitures.forEach {
+                buffer.writeString(it.key, it.value)
+            }
+        }
+
+        return buffer
     }
 }

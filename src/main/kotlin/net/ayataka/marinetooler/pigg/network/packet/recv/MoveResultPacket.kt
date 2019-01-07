@@ -23,9 +23,7 @@ class MoveResultPacket : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeRawString(usercode)
-        buffer.writeShort(x)
-        buffer.writeShort(y)
-        buffer.writeShort(z)
+                .writeShort(x, y, z)
         return buffer
     }
 }

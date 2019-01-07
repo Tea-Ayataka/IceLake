@@ -339,6 +339,7 @@ class MainWindow : Initializable {
         FakeEquipment.enabled = true
         ActionModifier.enabled = true
         IceAreaConnector.enabled = true
+        FurnitureGetter.enabled = true
     }
 
     fun openPacketDialog(data: PacketView) {

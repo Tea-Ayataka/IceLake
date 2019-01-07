@@ -22,6 +22,7 @@ import org.java_websocket.server.WebSocketServer
 import java.io.File
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
+import kotlin.concurrent.thread
 import kotlin.concurrent.timer
 
 object IceArea {
@@ -135,6 +136,9 @@ object IceArea {
                         placeAvatars.add(placeAvatar)
                     }
 
+                    placeFurnitures = iceAreaData.placeFurnitures
+                    defineFurnitures = iceAreaData.defineFurnitures
+
                     data = ByteBuilder()
                             .writeByte(0)
                             .writeInt(0)
@@ -159,6 +163,30 @@ object IceArea {
                         x = packet.x
                         y = packet.y
                         z = packet.z
+                    })
+                }
+            }
+
+            if(packet is MoveEndPacket){
+                val defineAvatar = getDefineAvatar(usercodes[socket]!!)
+
+                avatars[defineAvatar]?.apply {
+                    x = packet.x
+                    y = packet.y
+                    z = packet.z
+
+                    direction = packet.dir
+                }
+
+                usercodes.keys.forEach {
+                    it.send(MoveEndResultPacket().apply {
+                        usercode = usercodes[socket]!!
+
+                        x = packet.x
+                        y = packet.y
+                        z = packet.z
+
+                        dir = packet.dir
                     })
                 }
             }

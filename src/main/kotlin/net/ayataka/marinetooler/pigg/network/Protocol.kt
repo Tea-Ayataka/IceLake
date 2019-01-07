@@ -74,6 +74,7 @@ class Protocol {
         register(SetPetProfile::class)
         register(ChannelFloorUpdatePlayListRequest::class)
         register(IceAreaPacket::class)
+        register(ListUserFurniture::class)
 
         // RECV (Server bound)
         register(CheckBanWordResultPacket::class)

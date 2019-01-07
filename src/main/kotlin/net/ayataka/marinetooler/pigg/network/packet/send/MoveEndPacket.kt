@@ -26,10 +26,9 @@ class MoveEndPacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeShort(x)
-        buffer.writeShort(y)
-        buffer.writeShort(z)
-        buffer.writeByte(dir)
+        buffer.writeShort(x, y, z)
+                .writeByte(dir)
+
         return buffer
     }
 }

@@ -18,4 +18,8 @@ class StockFurniture {
     var used: Int = 0
     var time: Double = 0.0
     var canUse = false
+
+    override fun toString(): String {
+        return "StockFurniture(uniqueId=$uniqueId, sequence=$sequence, characterId='$characterId', ownerId='$ownerId', name='$name', description='$description', type=$type, category='$category', actionCode='$actionCode', parts=$parts, using=$using, sizeX=$sizeX, sizeY=$sizeY, quantity=$quantity, used=$used, time=$time, canUse=$canUse)"
+    }
 }
