@@ -6,21 +6,23 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.recv.ErrorPacket
-import net.ayataka.marinetooler.pigg.network.packet.recv.ListUserFurnitureResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.recv.LoginChatResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.ChannelFloorUpdatePlayListRequest
+import net.ayataka.marinetooler.pigg.network.packet.send.GetNoticeBoardMessageOfAreaPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.IceAreaPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.ListUserFurniture
-import net.ayataka.marinetooler.utils.dump
-import kotlin.concurrent.timer
+import net.ayataka.marinetooler.pigg.network.packet.send.NotifyUserRoomEnteredPacket
 
 object IceAreaConnector : Module() {
     var areaData = BaseAreaData()
+
+    @EventListener
+    fun onSendPacket(event: SendPacketEvent){
+        val packet = event.packet
+
+        if((packet is NotifyUserRoomEnteredPacket || packet is GetNoticeBoardMessageOfAreaPacket) && Pigg.proxies.any { it.value.remoteUri.contains("localhost") }){
+            packet.canceled = true
+        }
+    }
 
     @EventListener
     fun onRecvPacket(event: RecvPacketEvent) {

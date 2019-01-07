@@ -7,6 +7,7 @@ import net.ayataka.marinetooler.pigg.network.Protocol
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaData
+import net.ayataka.marinetooler.pigg.network.packet.data.area.AreaOwnerData
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineAvatar
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceAvatar
@@ -22,6 +23,7 @@ import java.io.File
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import kotlin.concurrent.timer
+import kotlin.random.Random
 
 object IceArea {
     private val gson = Gson()
@@ -33,9 +35,9 @@ object IceArea {
 
     val iceAreaData =  IceAreaData().apply {
         areaData = AreaData().apply {
-            categoryCode = "secret"
+            categoryCode = "user"
             areaCode = "icelake_area_001"
-            areaName = "IceArea"
+            areaName = "IceAreaのお部屋"
 
             sizeY = 16
             sizeX = 16
@@ -139,6 +141,10 @@ object IceArea {
 
                     placeFurnitures = iceAreaData.placeFurnitures
                     defineFurnitures = iceAreaData.defineFurnitures
+
+                    ownerData = AreaOwnerData().apply {
+                        numFootPrintToday = Random.nextInt(5000)
+                    }
                 })
             }
 
