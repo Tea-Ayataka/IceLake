@@ -33,7 +33,7 @@ class Protocol {
         register(OneMessageSavePacket::class)
         register(LoginPacket::class)
         register(MoveFurniture::class)
-        register(PlaceFurniture::class)
+        register(PlaceFurniturePacket::class)
         register(PlayGachaStepupPacket::class)
         register(GetPiggShopCategory::class)
         register(TravelBundlePacket::class)
@@ -73,7 +73,6 @@ class Protocol {
         register(GetPetProfile::class)
         register(SetPetProfile::class)
         register(ChannelFloorUpdatePlayListRequest::class)
-        register(IceAreaPacket::class)
         register(ListUserFurniture::class)
         register(BuyGiftItem::class)
 
@@ -108,7 +107,8 @@ class Protocol {
         register(ListActionResult::class)
         register(ListClubResult::class)
         register(ListClubFurnitureResult::class)
-        register(LeaveUser::class)
+        register(LeaveUserPacket::class)
+        register(PlaceFurnitureResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {

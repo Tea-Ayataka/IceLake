@@ -2,7 +2,6 @@ package net.ayataka.marinetooler.pigg
 
 import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
 import net.ayataka.marinetooler.utils.fromHexToBytes
@@ -38,7 +37,7 @@ object CurrentUser {
         packet.x = x.toShort()
         packet.y = y.toShort()
         packet.z = z.toShort()
-        packet.dir = direction
+        packet.direction = direction
         Pigg.send(packet)
     }
 

@@ -93,8 +93,7 @@ open class BaseAreaData : Packet() {
             val avatarData = AvatarData()
             avatarData.readFrom(buffer)
 
-            val defineAvatar = DefineAvatar()
-            defineAvatar.load(avatarData)
+            val defineAvatar = DefineAvatar(avatarData)
 
             val placeAvatar = PlaceAvatar()
             placeAvatar.characterId = defineAvatar.characterId

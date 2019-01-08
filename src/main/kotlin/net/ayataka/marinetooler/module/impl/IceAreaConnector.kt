@@ -6,21 +6,33 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.recv.AlertResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.GetNoticeBoardMessageOfAreaPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.IceAreaPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.LoginChatPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.NotifyUserRoomEnteredPacket
 
 object IceAreaConnector : Module() {
     var areaData = BaseAreaData()
 
     @EventListener
-    fun onSendPacket(event: SendPacketEvent){
+    fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
 
-        if((packet is NotifyUserRoomEnteredPacket || packet is GetNoticeBoardMessageOfAreaPacket) && Pigg.proxies.any { it.value.remoteUri.contains("localhost") }){
+        if ((packet is NotifyUserRoomEnteredPacket || packet is GetNoticeBoardMessageOfAreaPacket) && isConnectingToIceArea()) {
             packet.canceled = true
+        }
+
+        if (packet is LoginChatPacket && isConnectingToIceArea()) {
+            packet.data = ByteBuilder()
+                    .apply {
+                        areaData.defineAvatars
+                                .find { it.data.userCode == CurrentUser.usercode }
+                                ?.data
+                                ?.writeTo(this)
+                    }
+                    .build()
+                    .array()
         }
     }
 
@@ -28,15 +40,7 @@ object IceAreaConnector : Module() {
     fun onRecvPacket(event: RecvPacketEvent) {
         val packet = event.packet
 
-        if (packet is AlertResultPacket && packet.message == "810") {
-            packet.canceled = true
-
-            Pigg.send(IceAreaPacket().apply {
-                avatarData = areaData.defineAvatars.find { it.data.userCode == CurrentUser.usercode }?.data!!
-            })
-        }
-
-        if(packet is BaseAreaData){
+        if (packet is BaseAreaData) {
             println(packet.placeFurnitures)
             println(packet.defineFurnitures)
         }
@@ -66,4 +70,6 @@ E
             }
         }*/
     }
+
+    fun isConnectingToIceArea() = Pigg.proxies.any { it.value.remoteUri.contains("localhost") }
 }

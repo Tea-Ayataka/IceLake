@@ -7,6 +7,7 @@ import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
+import net.ayataka.marinetooler.utils.dump
 
 class PlaceFurnitureResult : Packet() {
     override val server = ServerType.CHAT
@@ -42,6 +43,8 @@ class PlaceFurnitureResult : Packet() {
 
             defineFurniture.parts.add(partData)
         }
+
+        dump(toString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
@@ -67,5 +70,9 @@ class PlaceFurnitureResult : Packet() {
         }
 
         return buffer
+    }
+
+    override fun toString(): String {
+        return "PlaceFurnitureResult(placeFurniture=$placeFurniture, defineFurniture=$defineFurniture, partLength=$partLength)"
     }
 }

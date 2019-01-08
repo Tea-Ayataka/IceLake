@@ -143,7 +143,7 @@ class GetUserProfileResultPacket : Packet() {
         allowOpenFavoriteList = buffer.readBoolean()
         isBlock = buffer.readBoolean()
 
-        defineAvatar.load(AvatarData().apply { readFrom(buffer) })
+        defineAvatar = DefineAvatar(AvatarData().apply { readFrom(buffer) })
 
         myBestRankingTitle = buffer.readString()
         myBest1 = buffer.readString()

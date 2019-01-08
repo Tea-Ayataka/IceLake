@@ -16,11 +16,16 @@ class LoginChatPacket : Packet() {
     var userCode = ""
     var secure: ByteArray = byteArrayOf()
     var connectionId = 0
+    var data: ByteArray? = null
 
     override fun readFrom(buffer: ByteBuilder) {
         userCode = buffer.readString()
         secure = buffer.readBytes(8)
         connectionId = buffer.readInt()
+
+        if (buffer.array().size - buffer.getPos() > 0) {
+            data = buffer.readBytes(buffer.array().size - buffer.getPos())
+        }
 
         dump("LoginChatPacket userCode: $userCode, secure: ${secure.toHexString()}, connectionId: $connectionId")
     }
@@ -29,6 +34,7 @@ class LoginChatPacket : Packet() {
         buffer.writeString(userCode)
         buffer.writeRawBytes(secure)
         buffer.writeInt(connectionId)
+        data?.let { buffer.writeRawBytes(it) }
         return buffer
     }
 

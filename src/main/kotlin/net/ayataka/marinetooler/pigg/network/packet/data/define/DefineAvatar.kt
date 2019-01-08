@@ -3,21 +3,23 @@ package net.ayataka.marinetooler.pigg.network.packet.data.define
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 
-class DefineAvatar : DefineData() {
+class DefineAvatar(data: AvatarData? = null) : DefineData() {
     var part = PartData(false)
     var data = AvatarData()
     var friend = false
 
-    fun load(data: AvatarData) {
-        characterId = data.userCode
+    init {
+        if (data != null) {
+            characterId = data.userCode
 
-        name = if (data.amebaId.isEmpty()) {
-            data.nickName
-        } else {
-            data.amebaId
+            name = if (data.amebaId.isEmpty()) {
+                data.nickName
+            } else {
+                data.amebaId
+            }
+
+            this.data = data
         }
-
-        this.data = data
     }
 
     override fun toString(): String {

@@ -6,7 +6,7 @@ import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.dump
 
-class PlaceFurniture : Packet() {
+class PlaceFurniturePacket : Packet() {
     override val server = ServerType.CHAT
     override val packetId = ChatPacketID.PLACE_FURNITURE.id
     override val encrypted = true
@@ -26,7 +26,7 @@ class PlaceFurniture : Packet() {
         z = buffer.readInt()
         isFinishTutorial = buffer.readBoolean()
 
-        dump("Code: ${code}, Direction: ${direction}, Pos: ${x} ${y} ${z}, isFinishTutorial: ${isFinishTutorial}")
+        dump("Code: $code, Direction: $direction, Pos: $x $y $z, isFinishTutorial: $isFinishTutorial")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

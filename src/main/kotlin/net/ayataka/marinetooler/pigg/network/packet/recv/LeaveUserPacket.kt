@@ -5,7 +5,7 @@ import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 
-class LeaveUser : Packet() {
+class LeaveUserPacket : Packet() {
     override val server = ServerType.CHAT
     override val packetId = ChatPacketID.LEAVE_USER.id
 

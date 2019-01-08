@@ -26,6 +26,8 @@ class EnterAreaResult : BaseAreaData() {
             return null
         }
 
+        super.writeTo(buffer)
+
         buffer.writeByte(areaGameId)
                 .writeInt(loc2)
                 .writeBoolean(isPiggDomeOpen)
