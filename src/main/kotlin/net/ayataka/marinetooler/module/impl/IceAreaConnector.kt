@@ -36,6 +36,11 @@ object IceAreaConnector : Module() {
             })
         }
 
+        if(packet is BaseAreaData){
+            println(packet.placeFurnitures)
+            println(packet.defineFurnitures)
+        }
+
         /*if(packet is BaseAreaData && packet.areaData.areaCode == "114514"){
             println("buriburi")
 
@@ -52,7 +57,7 @@ object IceAreaConnector : Module() {
 
             packet.apply {
                 furnitures.add(FurnitureGetter.furnitures.last().apply { time = furnitures[2].time } )
-
+E
                 furnitures.remove(furnitures[2])
 
                 furnitures.forEach {

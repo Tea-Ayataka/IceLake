@@ -75,6 +75,7 @@ class Protocol {
         register(ChannelFloorUpdatePlayListRequest::class)
         register(IceAreaPacket::class)
         register(ListUserFurniture::class)
+        register(BuyGiftItem::class)
 
         // RECV (Server bound)
         register(CheckBanWordResultPacket::class)

@@ -35,6 +35,8 @@ class EnterUserRoomResult : BaseAreaData() {
     var allowMannequinDetail: Byte = 0
     var mannequinSize: Byte = 0
 
+    var mannequinData = ByteArray(0)
+
     override fun readFrom(buffer: ByteBuilder) {
         super.readFrom(buffer)
 
@@ -93,6 +95,8 @@ class EnterUserRoomResult : BaseAreaData() {
         allowMannequinDetail = buffer.readByte()
 
         mannequinSize = buffer.readByte()
+
+        mannequinData = buffer.readAllBytes()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
@@ -135,6 +139,7 @@ class EnterUserRoomResult : BaseAreaData() {
         buffer.writeBoolean(enablePetSolveFurniture)
                 .writeByte(allowMannequinDetail)
                 .writeByte(mannequinSize)
+                .writeRawBytes(mannequinData)
 
         return buffer
     }

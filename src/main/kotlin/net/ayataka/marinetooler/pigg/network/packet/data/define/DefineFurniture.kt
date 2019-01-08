@@ -16,6 +16,6 @@ class DefineFurniture : DefineData() {
     var actionCode = ""
 
     override fun toString(): String {
-        return "DefineFurniture(category='$category', description='$description')"
+        return "DefineFurniture(category='$category', description='$description', characterId='$characterId')"
     }
 }
