@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.concurrent.timer
 
 object ClickTP : Module() {
-    var meme = true
+    var meme = false
 
     var pos: Vec3i = CurrentUser.location.clone()
     var moving = false
@@ -37,7 +37,9 @@ object ClickTP : Module() {
                 end.x = packet.x
                 end.y = packet.y
                 end.z = packet.z
-                event.packet = end
+                event.packet.canceled = true
+                Pigg.send(end)
+               // Pigg.send(SystemActionPacket().apply { actionCode = "stop" })
             }
         }
     }

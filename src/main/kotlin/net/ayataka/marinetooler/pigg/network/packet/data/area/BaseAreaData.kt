@@ -200,6 +200,7 @@ open class BaseAreaData : Packet() {
 
     //FIX: 年末年始のエリア（他にもあるかもしれない）に入れないバグを修正する
     override fun writeTo(buffer: ByteBuilder) : ByteBuilder? {
+        return null
         areaData.writeTo(buffer)
 
         buffer.writeInt(placeFurnitures.size)

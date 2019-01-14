@@ -11,6 +11,7 @@ import javafx.stage.Stage
 import net.ayataka.marinetooler.browser.InternetExplorer
 import net.ayataka.marinetooler.gui.MainWindow
 import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.proxy.http.HttpProxy
 import net.ayataka.marinetooler.utils.info
 import java.net.URL
 
@@ -52,6 +53,9 @@ class IceLake : Application() {
 
         // Initialize Pigg instance
         Pigg
+
+        // Start Http Proxy
+        HttpProxy(8080, true).start()
 
         // Start chromium browser
         browser = InternetExplorer()

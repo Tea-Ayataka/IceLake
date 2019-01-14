@@ -100,6 +100,7 @@ class EnterUserRoomResult : BaseAreaData() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
+        return null
         super.writeTo(buffer)
 
         buffer.writeInt(roomIndex, expansions.filter { it.type == 0 }.size)

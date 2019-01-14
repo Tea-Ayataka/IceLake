@@ -14,7 +14,7 @@ import java.nio.ByteBuffer
 
 object Pigg {
     const val PROXY_IP = "127.0.0.1"
-    const val INFO_SERVER_PORT = 19190
+    const val INFO_SERVER_PORT = 443
     const val INFO_SERVER_URI = "wss://27.133.213.64:443/command"
     val protocol = Protocol()
     val CERTIFICATE = getSSLContextFromPFXFile("pigg.pfx", "pigg.jks", "nopass")

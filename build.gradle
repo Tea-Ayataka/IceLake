@@ -9,9 +9,8 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://jitpack.io'
-    }
+    maven { url 'https://jitpack.io' }
+    maven { url 'http://maven.teamdev.com/repository/products' }
     flatDir {
         dirs 'libs'
     }
@@ -20,12 +19,15 @@ repositories {
 dependencies {
     compile name: 'swfedit-1.0'
     compile name: 'EventAPI-1.0-SNAPSHOT'
+    compile name: 'license'
 
+    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.6'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.jetbrains.kotlin:kotlin-reflect"
     compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.3.7'
     compile 'org.controlsfx:controlsfx:8.40.14'
     compile 'com.google.code.gson:gson:2.8.5'
+    compile "com.teamdev.jxbrowser:jxbrowser-win:6.20"
 }
 
 jar {

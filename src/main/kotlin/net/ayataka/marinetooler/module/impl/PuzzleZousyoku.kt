@@ -13,7 +13,7 @@ object PuzzleZousyoku : Module() {
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
         if (packet is ProgressPuzzlePacket) {
-            packet.point *= 50
+            packet.point = amount
         }
     }
 }

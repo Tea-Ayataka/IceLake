@@ -20,20 +20,31 @@ class WebSocketProxy(
     var server: WServer
     var client: WClient? = null
 
+    var pServer: PolicyServer? = null
+
     init {
-        server = WServer(ip, port, this) { startServer() }
+        server = WServer(ip, port, this) { startPolicyServer() }
         server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
-        server.start()
+
+        // PolicyServerを起動する
+        pServer = PolicyServer {
+            server.start()
+        }
     }
 
-    private fun startServer() {
+    // サーバーの接続が切断された時、PolicyServerに切り替える。
+    private fun startPolicyServer() {
         // HAX: BugFix
         timer(initialDelay = 200, period = Long.MAX_VALUE) {
             this.cancel()
             server.stop()
-            server = WServer(ip, port, this@WebSocketProxy) { startServer() }
-            server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
-            server.start()
+
+            // PolicyServerを起動する
+            pServer = PolicyServer {
+                server = WServer(ip, port, this@WebSocketProxy) { startPolicyServer() }
+                server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
+                server.start()
+            }
         }
     }
 

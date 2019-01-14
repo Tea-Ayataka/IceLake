@@ -22,6 +22,7 @@ class EnterAreaResult : BaseAreaData() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
+        return null
         if(loc2 != 0){
             return null
         }
