@@ -1,5 +1,6 @@
 package net.ayataka.marinetooler.icearea
 
+/*
 import net.ayataka.marinetooler.IceLake
 import net.ayataka.marinetooler.icearea.area.IceArea
 import net.ayataka.marinetooler.icearea.area.IceAreaData
@@ -24,7 +25,7 @@ import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 
 object IceAreaServer {
-    val cipherKey = "00 00 00 00 00 00 00 00".fromHexToBytes()
+   /* val cipherKey = "00 00 00 00 00 00 00 00".fromHexToBytes()
     val protocol = Protocol()
 
     val connections = mutableListOf<Connection>()
@@ -47,7 +48,7 @@ object IceAreaServer {
         }
 
         override fun onClose(socket: WebSocket, code: Int, reason: String, remote: Boolean) {
-            val connection = connections.find { it.socket == socket } ?: return
+            val connection = connections.find { it. == socket } ?: return
             val area = areaList.find { it.iceAreaData.areaCode == connection.areaCode } ?: return
 
             area.onLeave(connection)
@@ -134,3 +135,4 @@ fun main(args: Array<String>) {
     IceLake()
     IceAreaServer
 }
+        */

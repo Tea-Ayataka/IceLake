@@ -1,15 +1,15 @@
 package net.ayataka.marinetooler.pigg.network.packet
 
 import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.error
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.toHexString
+import net.ayataka.marinetooler.utils.trace
 import java.nio.ByteBuffer
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 abstract class Packet {
-    var canceled = false
     open val encrypted = false
 
     abstract val server: ServerType
@@ -31,7 +31,12 @@ abstract class Packet {
     }
 
     fun write(key: ByteArray?): ByteBuffer? {
-        return format(writeTo(ByteBuilder()), key)
+        try {
+            return format(writeTo(ByteBuilder()), key)
+        } catch (ex: Exception) {
+            error("Packet serialization failed", ex)
+            return null
+        }
     }
 
     private fun format(buffer: ByteBuilder?, key: ByteArray?): ByteBuffer? {
@@ -46,8 +51,8 @@ abstract class Packet {
         writeHeader(formatted)
 
         // Write encrypted body with length
-        dump("UNCRYPTED BUILT PACKET (${body.size} bytes)")
-        dump(body.toHexString())
+        trace("UNCRYPTED BUILT PACKET (${body.size} bytes)")
+        trace(body.toHexString())
         if (encrypted) {
             body = encrypt(body, key!!)
         }
@@ -56,9 +61,9 @@ abstract class Packet {
         formatted.writeRawBytes(body)
 
         val debug = formatted.build()
-        dump("BUILT PACKET (${debug.array().size} bytes)")
-        dump(debug.array().toHexString())
-        dump(String(debug.array()))
+        trace("BUILT PACKET (${debug.array().size} bytes)")
+        trace(debug.array().toHexString())
+        trace(String(debug.array()))
         return debug
     }
 

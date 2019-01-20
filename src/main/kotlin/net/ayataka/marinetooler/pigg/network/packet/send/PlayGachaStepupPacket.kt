@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class PlayGachaStepupPacket : Packet() {
     override val server = ServerType.INFO
@@ -25,7 +25,7 @@ class PlayGachaStepupPacket : Packet() {
         categoryType = buffer.readInt()
         playType = buffer.readByte()
 
-        dump("GachaOpen Code: ${gachaCode} useCoupon: ${useCoupon} useFreeAcc: ${useFreeAccount} playType: ${playType} spendTime: ${spendType} categoryType: ${categoryType}")
+        trace("GachaOpen Code: ${gachaCode} useCoupon: ${useCoupon} useFreeAcc: ${useFreeAccount} playType: ${playType} spendTime: ${spendType} categoryType: ${categoryType}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

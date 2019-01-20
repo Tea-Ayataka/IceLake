@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class ProgressPuzzlePacket : Packet() {
     override val server = ServerType.INFO
@@ -30,7 +30,7 @@ class ProgressPuzzlePacket : Packet() {
         this.arrowGummyCreateCount = buffer.readInt()
         this.isDecrementMoveCount = buffer.readBoolean()
 
-        dump("BoardData: $boardData")
+        trace("BoardData: $boardData")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

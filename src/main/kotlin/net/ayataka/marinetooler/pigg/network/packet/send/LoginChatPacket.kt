@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.toHexString
 import java.util.*
 
@@ -27,7 +27,7 @@ class LoginChatPacket : Packet() {
             data = buffer.readBytes(buffer.array().size - buffer.getPos())
         }
 
-        dump("LoginChatPacket userCode: $userCode, secure: ${secure.toHexString()}, connectionId: $connectionId")
+        trace("LoginChatPacket userCode: $userCode, secure: ${secure.toHexString()}, connectionId: $connectionId")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

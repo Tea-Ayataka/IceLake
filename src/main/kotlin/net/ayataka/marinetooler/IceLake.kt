@@ -1,5 +1,6 @@
 package net.ayataka.marinetooler
 
+import com.google.gson.Gson
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.fxml.FXMLLoader
@@ -8,19 +9,23 @@ import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import net.ayataka.marinetooler.browser.InternetExplorer
 import net.ayataka.marinetooler.gui.MainWindow
+import net.ayataka.marinetooler.gui.browser
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.proxy.http.HttpProxy
+import net.ayataka.marinetooler.utils.IceLakeApi
 import net.ayataka.marinetooler.utils.info
-import java.net.URL
+import java.io.File
 
 // Singleton
 lateinit var ICE_LAKE: IceLake
 
 class IceLake : Application() {
+    private val configFile = File("config.json").apply { if (!exists()) createNewFile() }
+    val config = Gson().fromJson(configFile.readText(), Config::class.java) ?: Config()
+
+    val actions = hashMapOf<String, String>()
+    val shops = hashMapOf<String, String>()
     val oldAreas = hashMapOf<String, String>()
-    var browser: InternetExplorer? = null
 
     @Volatile
     var mainWindow: MainWindow? = null
@@ -33,56 +38,73 @@ class IceLake : Application() {
     }
 
     override fun start(stage: Stage) {
-        info("Starting IceLake")
+        try {
+            info("Starting IceLake")
 
-        // Show main window
-        val scene = Scene(FXMLLoader.load(javaClass.classLoader.getResource("MainWindow.fxml")))
-        //scene.stylesheets.add("modena_dark.css")
-        stage.scene = scene
-        stage.title = "IceLake (BETA)"
-        stage.isResizable = false
-        stage.height = 390.toDouble()
-        stage.width = 600.toDouble()
-        stage.isAlwaysOnTop = true
-        stage.icons.add(Image("icon.png"))
-        stage.setOnHidden {
-            browser?.shutdown()
-            System.exit(0)
-        }
-        stage.show()
+            // Show main window
+            val scene = Scene(FXMLLoader.load(javaClass.classLoader.getResource("MainWindow.fxml")))
+            //scene.stylesheets.add("modena_dark.css")
+            stage.scene = scene
+            stage.title = "IceLake (BETA)"
+            stage.isResizable = false
+            stage.height = 390.toDouble()
+            stage.width = 600.toDouble()
+            stage.isAlwaysOnTop = true
+            stage.icons.add(Image("icon.png"))
+            stage.setOnHidden {
+                Thread {
+                    browser.dispose()
+                    System.exit(0)
+                }.start()
+            }
+            stage.show()
 
-        // Initialize Pigg instance
-        Pigg
+            // Initialize Pigg instance
+            Pigg
 
-        // Start Http Proxy
-        HttpProxy(8080, true).start()
+            // Start chromium browser
+            try {
+                val resource = javaClass.classLoader.getResource("BrowserWindow.fxml")
+                val browserScene = Scene(FXMLLoader.load(resource))
+                browserScene.stylesheets.add("flatsharp.css")
 
-        // Start chromium browser
-        browser = InternetExplorer()
+                Stage().apply {
+                    setScene(browserScene)
+                    title = "IceLake Player"
 
-        Thread {
-            for (line in URL("https://www.dropbox.com/s/pw0thqb8ak118c3/areacode.txt?dl=1").readText(Charsets.UTF_8).lines()) {
-                try {
-                    val name = line.split(":")[0]
-                    val code = line.split(":")[1]
+                    setOnHidden {
+                        Thread {
+                            browser.dispose()
+                            System.exit(0)
+                        }.start()
+                    }
+                }.show()
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
 
-                    oldAreas[name] = code
-                } catch (ex: IndexOutOfBoundsException) {
-                    ex.printStackTrace()
-                    println(line)
+            Thread {
+                oldAreas.putAll(IceLakeApi.getAreas())
+                actions.putAll(IceLakeApi.getActions())
+
+                while (mainWindow == null) {
+                    Thread.sleep(100)
                 }
-            }
 
-            while (mainWindow == null) {
-                Thread.sleep(100)
-            }
+                Platform.runLater {
+                    mainWindow?.areaList?.items?.clear()
+                    mainWindow?.areaList?.items?.addAll(oldAreas.values)
+                    mainWindow?.areaList?.items?.sort()
+                }
+            }.start()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            showError("エラー: ${ex.message}")
+        }
+    }
 
-            Platform.runLater {
-                mainWindow?.areaList?.items?.clear()
-                mainWindow?.areaList?.items?.addAll(oldAreas.keys)
-                mainWindow?.areaList?.items?.sort()
-            }
-        }.start()
+    fun saveConfig() {
+        configFile.writeText(Gson().toJson(config))
     }
 
     fun showError(msg: String) {

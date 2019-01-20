@@ -4,12 +4,12 @@ import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 
 object ActionGhost : Module() {
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent) {
+    fun onRecvPacket(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (packet is ActionResultPacket) {

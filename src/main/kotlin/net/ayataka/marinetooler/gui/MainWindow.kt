@@ -10,8 +10,6 @@ import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.Clipboard
-import javafx.scene.input.DataFormat
 import javafx.scene.input.KeyCode
 import javafx.stage.Stage
 import net.ayataka.eventapi.EventListener
@@ -22,20 +20,17 @@ import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
 import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.PacketDirection
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.LoginChatResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.ClickPiggShopItemPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.MoveEndPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TravelBundlePacket
 import net.ayataka.marinetooler.utils.toHexString
 import org.controlsfx.control.StatusBar
 import org.controlsfx.control.ToggleSwitch
-import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -99,14 +94,6 @@ class MainWindow : Initializable {
     @FXML
     lateinit var freeGacha: Button
     @FXML
-    lateinit var actionList: ListView<String>
-    @FXML
-    lateinit var runAction: MenuItem
-    @FXML
-    lateinit var copyAction: MenuItem
-    @FXML
-    lateinit var delAction: MenuItem
-    @FXML
     lateinit var command: TextField
     @FXML
     lateinit var instantDonate: CheckBox
@@ -161,13 +148,6 @@ class MainWindow : Initializable {
         gumiAmount.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100_000)
         gumiAmount.valueFactory.value = 100_000
 
-        val file = File("action")
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-
-        actionList.items.addAll(file.readLines())
-
         // TODO: Refactor
         command.setOnKeyPressed {
             if (it.code != KeyCode.ENTER)
@@ -177,18 +157,6 @@ class MainWindow : Initializable {
             Command.doCommand(text)
             logBox.appendText("> $text\n")
             (it.source as TextField).text = ""
-        }
-
-        runAction.setOnAction {
-            CurrentUser.playAction(actionList.selectionModel.selectedItems.first())
-        }
-
-        copyAction.setOnAction {
-            Clipboard.getSystemClipboard().setContent(mapOf(Pair(DataFormat.PLAIN_TEXT, actionList.selectionModel.selectedItems.first())))
-        }
-
-        delAction.setOnAction {
-            actionList.items.remove(actionList.selectionModel.selectedItems.first())
         }
 
         skipTutorial.setOnAction {
@@ -317,7 +285,7 @@ class MainWindow : Initializable {
         // old area
         areaJumpButton.setOnAction {
             val name = areaList.selectionModel.selectedItem
-            val code = ICE_LAKE.oldAreas[name] ?: return@setOnAction
+            val code = ICE_LAKE.oldAreas.keys.find { ICE_LAKE.oldAreas[it] == name } ?: return@setOnAction
 
             Pigg.send(TravelBundlePacket().apply {
                 categoryCode = code.split(" ")[0]
@@ -327,7 +295,7 @@ class MainWindow : Initializable {
 
         areaSearchTextField.textProperty().addListener { _, _, newValue ->
             areaList.items.clear()
-            areaList.items.addAll(ICE_LAKE.oldAreas.keys.filter { newValue in it })
+            areaList.items.addAll(ICE_LAKE.oldAreas.values.filter { newValue in it })
             areaList.items.sort()
         }
 
@@ -340,6 +308,7 @@ class MainWindow : Initializable {
         ActionModifier.enabled = true
         IceAreaConnector.enabled = true
         FurnitureGetter.enabled = true
+        Analytics.enabled = true
     }
 
     fun openPacketDialog(data: PacketView) {
@@ -375,7 +344,7 @@ class MainWindow : Initializable {
     }
 
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent) = Platform.runLater {
+    fun onRecvPacket(event: ReceivePacketEvent) = Platform.runLater {
         val packet = event.packet
 
         if (packet is LoginChatResultPacket) {
@@ -402,11 +371,6 @@ class MainWindow : Initializable {
             areaSize.text = "サイズ        ：　${packet.areaData.sizeX} x ${packet.areaData.sizeY}"
             areaCode.text = "エリアコード ：　${packet.areaData.categoryCode}/${packet.areaData.areaCode}"
         }
-
-        // Collect action
-        if (packet is ActionResultPacket) {
-            addAction(packet.actionCode.takeWhile { it != '\u0000' })
-        }
     }
 
     @EventListener
@@ -416,33 +380,9 @@ class MainWindow : Initializable {
         if (packet is MoveEndPacket) {
             areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
         }
-
-        if (packet is ClickPiggShopItemPacket && packet.itemType == "action") {
-            addAction(packet.itemCode.takeWhile { it != '\u0000' })
-        }
     }
 
-    private fun addAction(code: String) {
-        try {
-            val file = File("action")
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-            var actions = file.readText()
-            if (!actions.contains(code)) {
-                actions += code + "\n"
-            }
-            file.writeText(actions)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-
-        if (!actionList.items.contains(code)) {
-            actionList.items.add(code)
-        }
-    }
-
-    fun recordPacket(direction: PacketDirection, server: String, id: String, data: ByteArray) {
+    fun recordPacket(direction: PacketDirection, server: String, id: String, data: ByteArray) = Platform.runLater {
         if (recordButton.isSelected) {
             if (direction == PacketDirection.SEND && recordSendCheckBox.isSelected) {
                 packetTable.items.add(PacketView(server, id, data.toHexString(), direction.name))

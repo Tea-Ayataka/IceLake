@@ -39,7 +39,6 @@ public class JxBrowserHackUtil {
             MySimpleDateFormat mySimpleDateFormat = new MySimpleDateFormat(df);
             setFinalStatic(target.getDateFormatField(), mySimpleDateFormat);
             System.setProperty("teamdev.license.info", "true");
-            System.out.println("Hacked");
             hacked = true;
         } catch (Exception e) {
             e.printStackTrace();

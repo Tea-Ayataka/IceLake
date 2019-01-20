@@ -4,7 +4,7 @@ import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
@@ -44,7 +44,7 @@ object FakeEquipment : Module() {
     }
 
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent) {
+    fun onRecvPacket(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (packet is ActionResultPacket) {

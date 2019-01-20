@@ -20,8 +20,6 @@ class TableGamePacket : Packet() {
         if (hasData) {
             data = buffer.readAllBytes()
         }
-
-        info(" METHOD IS ${method} $hasData")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

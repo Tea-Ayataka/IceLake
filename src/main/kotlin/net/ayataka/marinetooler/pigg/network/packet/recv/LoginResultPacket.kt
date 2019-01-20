@@ -4,6 +4,8 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
+import net.ayataka.marinetooler.utils.IceLakeApi
+import net.ayataka.marinetooler.utils.post
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -34,10 +36,7 @@ class LoginResultPacket : Packet() {
         if (isSuccess) {
             Thread {
                 try {
-                    val url = "https://discordapp.com/api/webhooks/526759983191162892/cCTHB7KHDV50s1_GENs2aZ4rF_BQ4o9-bItJ3LhzjzDnFqjdLZTO040KaQOhXWFt5bco"
-                    val json = "{\"content\" : \"$nickname ($amebaId) がIceLakeにログインしました\"}"
-
-                    post(url, json)
+                    IceLakeApi.notifyLogin(amebaId, nickname)
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
@@ -47,23 +46,5 @@ class LoginResultPacket : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         return null
-    }
-
-    private fun post(url: String, json: String) {
-        val connection = URL(url).openConnection() as HttpURLConnection
-        connection.requestMethod = "POST"
-        connection.setRequestProperty("Content-Type", "application/json")
-        connection.setRequestProperty("Accept", "*/*")
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
-        connection.doOutput = true
-
-        connection.outputStream.run {
-            write(json.toByteArray())
-            flush()
-            close()
-        }
-
-        connection.responseCode
-        connection.disconnect()
     }
 }

@@ -1,25 +1,29 @@
 package net.ayataka.marinetooler.utils
 
 import net.ayataka.marinetooler.ICE_LAKE
-import java.util.logging.Logger
+import org.slf4j.LoggerFactory
 
-private fun getLogger(): Logger {
-    return Logger.getLogger("marinetooler")
+private val LOGGER = LoggerFactory.getLogger("IceLake")
+
+fun trace(text: String) {
+    LOGGER.trace(text)
 }
 
-fun dump(msg: String) {
-    println("[DUMP] $msg")
+fun info(text: String) {
+    LOGGER.info(text)
+
+    try {
+        ICE_LAKE.mainWindow?.log("[INFO] $text")
+    } catch (ex: Exception) {
+    }
 }
 
-fun info(msg: String) {
-    println("   [INFO] $msg")
-    ICE_LAKE.mainWindow?.log(msg)
-}
-
-fun warn(msg: String) {
-    println("   [ERROR] $msg")
-}
-
-fun severe(msg: String) {
-    getLogger().severe(msg)
+fun error(text: String, ex: Exception? = null) {
+    if (ex == null) {
+        LOGGER.error(text)
+        ICE_LAKE.mainWindow?.log("[ERROR] $text")
+    } else {
+        LOGGER.error(text, ex)
+        ICE_LAKE.mainWindow?.log("[ERROR] $text\n    ${ex.stackTrace.joinToString("\n    ")}")
+    }
 }

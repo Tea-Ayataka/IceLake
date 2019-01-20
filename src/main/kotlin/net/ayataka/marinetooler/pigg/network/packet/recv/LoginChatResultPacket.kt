@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class LoginChatResultPacket : Packet() {
     override val server = ServerType.CHAT
@@ -17,7 +17,7 @@ class LoginChatResultPacket : Packet() {
         success = buffer.readBoolean()
         serverType = buffer.readByte()
 
-        dump("LoginChatResult: success: $success, serverType: $serverType")
+        trace("LoginChatResult: success: $success, serverType: $serverType")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

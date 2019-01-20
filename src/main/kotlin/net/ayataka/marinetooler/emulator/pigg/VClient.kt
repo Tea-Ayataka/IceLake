@@ -5,7 +5,7 @@ import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
-import net.ayataka.marinetooler.utils.warn
+import net.ayataka.marinetooler.utils.error
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
 
 open class VClient(remoteUri: String) : WebSocketClient(URI(remoteUri)) {
     override fun onOpen(handshake: ServerHandshake?) {
-        println("[VWS CLIENT] Client Connected to $uri")
+        println("[VWS CLIENT] Client connected to $uri")
         EventManager.fire(ConnectEvent())
     }
 
@@ -43,7 +43,7 @@ open class VClient(remoteUri: String) : WebSocketClient(URI(remoteUri)) {
     }
 
     override fun onError(ex: Exception?) {
-        warn("[VWS CLIENT] An error occurred on connection : $ex")
+        error("[VWS CLIENT] An error occurred on connection : $ex")
         ex?.printStackTrace()
     }
 

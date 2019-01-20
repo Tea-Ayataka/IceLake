@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import org.controlsfx.control.StatusBar?>
 <?import org.controlsfx.control.ToggleSwitch?>
+
 <AnchorPane fx:id="root" prefHeight="359.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ayataka.marinetooler.gui.MainWindow">
    <children>
       <TabPane prefHeight="329.0" prefWidth="596.0" style="-fx-tab-min-width: 70;" tabClosingPolicy="UNAVAILABLE">
@@ -131,24 +145,6 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="アクション">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView fx:id="actionList" layoutX="14.0" layoutY="14.0" prefHeight="273.0" prefWidth="567.0">
-                           <contextMenu>
-                              <ContextMenu>
-                                <items>
-                                  <MenuItem fx:id="runAction" mnemonicParsing="false" text="実行" />
-                                    <MenuItem fx:id="copyAction" mnemonicParsing="false" text="コピー" />
-                                    <MenuItem fx:id="delAction" mnemonicParsing="false" text="削除" />
-                                </items>
-                              </ContextMenu>
-                           </contextMenu>
-                        </ListView>
-                     </children></AnchorPane>
-               </content>
-            </Tab>
             <Tab text="パケット">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -179,11 +175,19 @@
                      </children></AnchorPane>
                </content>
             </Tab>
+            <Tab text="ショップ">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="284.0" layoutY="142.0" text="WIP" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
             <Tab text="ログ">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="logBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="243.0" prefWidth="567.0" text="" />
+                        <TextArea fx:id="logBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="243.0" prefWidth="567.0" />
                         <TextField fx:id="command" layoutX="14.0" layoutY="261.0" prefHeight="25.0" prefWidth="567.0" promptText="Command..." />
                      </children>
                   </AnchorPane>

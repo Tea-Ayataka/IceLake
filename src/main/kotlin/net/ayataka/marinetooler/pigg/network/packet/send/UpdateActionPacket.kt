@@ -1,29 +1,27 @@
-package net.ayataka.marinetooler.pigg.network.packet.recv
+package net.ayataka.marinetooler.pigg.network.packet.send
 
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.action.ActionData
 import net.ayataka.marinetooler.utils.compress
 import net.ayataka.marinetooler.utils.decompress
 import net.ayataka.marinetooler.utils.trace
 
-class ListActionResult : Packet() {
+class UpdateActionPacket : Packet() {
     override val server = ServerType.INFO
-    override val packetId = InfoPacketID.LIST_ACTION_RESULT.id
+    override val packetId = InfoPacketID.UPDATE_ACTION.id
 
-    var actions: List<ActionData> = listOf()
+    var actions: List<String> = listOf()
 
     override fun readFrom(buffer: ByteBuilder) {
         val size = buffer.readInt()
-        buffer.skip(4) // skip unused data
 
         @Suppress("NAME_SHADOWING")
         val buffer = buffer.readAllBytes().decompress()
 
         actions = (0 until size).map {
-            ActionData().apply { readFrom(buffer) }
+            buffer.readString()
         }
 
         trace("Actions (${actions.size}):")
@@ -34,11 +32,10 @@ class ListActionResult : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeInt(actions.size)
-        buffer.skip(2)
 
         val toCompress = ByteBuilder()
         actions.forEach {
-            it.writeTo(toCompress)
+            buffer.writeString(it)
         }
 
         buffer.writeBytes(toCompress.compress())

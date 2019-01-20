@@ -13,7 +13,7 @@ import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.EnterUserRoomResult
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.toHexString
 
 open class BaseAreaData : Packet() {
@@ -194,7 +194,7 @@ open class BaseAreaData : Packet() {
         if(this !is EnterUserRoomResult) {
             data = buffer.readAllBytes()
 
-            dump("BaseAreaData: ${data.toHexString()}")
+            trace("BaseAreaData: ${data.toHexString()}")
         }
     }
 

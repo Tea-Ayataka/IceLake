@@ -4,6 +4,7 @@ import net.ayataka.marinetooler.proxy.proxy.WClient
 import net.ayataka.marinetooler.proxy.proxy.WServer
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
+import net.ayataka.marinetooler.utils.trace
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory
 import java.nio.ByteBuffer
 import javax.net.ssl.SSLContext
@@ -13,9 +14,10 @@ class WebSocketProxy(
         private val ip: String,
         val port: Int,
         val remoteUri: String,
-        val packetListener: IPacketListener?,
         val ssl: SSLContext,
-        val fireEvents: Boolean = false
+        val onSend: (ByteBuffer) -> ByteBuffer?,
+        val onReceive: (ByteBuffer) -> ByteBuffer?,
+        usePolicyServer: Boolean
 ) {
     var server: WServer
     var client: WClient? = null
@@ -23,11 +25,17 @@ class WebSocketProxy(
     var pServer: PolicyServer? = null
 
     init {
-        server = WServer(ip, port, this) { startPolicyServer() }
-        server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
+        if (usePolicyServer) {
+            server = WServer(ip, port, this) { startPolicyServer() }
+            server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
 
-        // PolicyServerを起動する
-        pServer = PolicyServer {
+            // PolicyServerを起動する
+            pServer = PolicyServer {
+                server.start()
+            }
+        } else {
+            server = WServer(ip, port, this)
+            server.setWebSocketFactory(DefaultSSLWebSocketServerFactory(ssl))
             server.start()
         }
     }
@@ -51,20 +59,20 @@ class WebSocketProxy(
     fun stop() {
         client?.close()
 
-        server.connections().forEach { it.close(2000, "Disconnect") }
+        server.connections.forEach { it.close(2000, "Disconnect") }
         //server.stop()
         info("Disconnected Clients")
     }
 
     fun send(data: ByteBuffer) {
-        println("[WS SEND (FORCED)] ${data.array().size} bytes")
-        println(data.array().toHexString())
+        trace("[WS SEND (FORCED)] ${data.array().size} bytes")
+        trace(data.array().toHexString())
         client?.send(data.array())
     }
 
     fun receive(data: ByteBuffer) {
-        println("[WS RECV (FORCED)] ${data.array().size} bytes")
-        println(data.array().toHexString())
+        trace("[WS RECV (FORCED)] ${data.array().size} bytes")
+        trace(data.array().toHexString())
         server.broadcast(data.array())
     }
 }

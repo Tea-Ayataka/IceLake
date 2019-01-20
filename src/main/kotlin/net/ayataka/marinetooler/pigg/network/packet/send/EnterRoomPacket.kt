@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class EnterRoomPacket : Packet() {
     override val server = ServerType.CHAT
@@ -22,7 +22,7 @@ class EnterRoomPacket : Packet() {
         queue = buffer.readBoolean()
         fromMove = buffer.readInt()
 
-        dump("EnterRoomPacket category: $category, code: $code, queue: $queue, fromMove: $fromMove")
+        trace("EnterRoomPacket category: $category, code: $code, queue: $queue, fromMove: $fromMove")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

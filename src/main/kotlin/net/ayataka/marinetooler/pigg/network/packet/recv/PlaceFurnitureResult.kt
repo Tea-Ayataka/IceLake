@@ -7,7 +7,7 @@ import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.area.PartData
 import net.ayataka.marinetooler.pigg.network.packet.data.define.DefineFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class PlaceFurnitureResult : Packet() {
     override val server = ServerType.CHAT
@@ -44,7 +44,7 @@ class PlaceFurnitureResult : Packet() {
             defineFurniture.parts.add(partData)
         }
 
-        dump(toString())
+        trace(toString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

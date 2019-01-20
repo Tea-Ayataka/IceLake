@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class MoveFurniture : Packet() {
     override val server = ServerType.CHAT
@@ -24,7 +24,7 @@ class MoveFurniture : Packet() {
         y = buffer.readInt()
         z = buffer.readInt()
 
-        dump("Sequence: ${sequence}, Direction: ${direction}, Pos: ${x} ${y} ${z}")
+        trace("Sequence: ${sequence}, Direction: ${direction}, Pos: ${x} ${y} ${z}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

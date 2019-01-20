@@ -5,7 +5,7 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.puzzle.PuzzleUserItemData
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.fromHexToBytes
 
 class GetPuzzleUserStatusResult : Packet() {
@@ -39,13 +39,13 @@ class GetPuzzleUserStatusResult : Packet() {
         equippedScoreItemCategory = buffer.readString()
 
         val scoreItemCount = buffer.readInt()
-        dump("ScoreItems: $scoreItemCount")
+        trace("ScoreItems: $scoreItemCount")
         scoreItems = (0 until scoreItemCount).map {
             PuzzleUserItemData().apply { readFrom(buffer) }
         }
 
         val cheatItemCount = buffer.readInt()
-        dump("CheatItems: $cheatItemCount")
+        trace("CheatItems: $cheatItemCount")
         cheatItems = (0 until cheatItemCount).map {
             PuzzleUserItemData().apply { readFrom(buffer, false) }
         }
@@ -75,7 +75,7 @@ class GetPuzzleUserStatusResult : Packet() {
             progressCount = buffer.readInt()
         }
 
-        dump(toString())
+        trace(toString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
@@ -103,7 +103,7 @@ class GetPuzzleUserStatusResult : Packet() {
             buffer.writeString(boardUUID)
             buffer.writeString(boardBaseData)
             buffer.writeString(modify(boardData))
-            dump("Modified BoardData: ${modify(boardData)}")
+            trace("Modified BoardData: ${modify(boardData)}")
             buffer.writeInt(boardPoint)
             buffer.writeInt(boardRemainingMoveCount)
             buffer.writeBoolean(isScoreItemUsing)

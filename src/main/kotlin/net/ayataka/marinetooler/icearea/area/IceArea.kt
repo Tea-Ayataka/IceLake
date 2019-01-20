@@ -1,5 +1,6 @@
 package net.ayataka.marinetooler.icearea.area
 
+/*
 import net.ayataka.marinetooler.icearea.Connection
 import net.ayataka.marinetooler.icearea.IceAreaServer
 import net.ayataka.marinetooler.pigg.network.packet.Packet
@@ -118,3 +119,4 @@ class IceArea(val iceAreaData: IceAreaData) {
         IceAreaServer.sendPacket(connection, packet)
     }
 }
+*/

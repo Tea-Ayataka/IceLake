@@ -4,7 +4,7 @@ import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ErrorPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetPiggShopCategory
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetPiggShopGachaResultPacket
@@ -25,7 +25,7 @@ object MuryouGatyaZenkaihou : Module() {
     }
 
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent) {
+    fun onRecvPacket(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (packet is ErrorPacket) {

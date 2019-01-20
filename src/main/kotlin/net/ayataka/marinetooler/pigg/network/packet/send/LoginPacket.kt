@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class LoginPacket : Packet() {
     override val server = ServerType.INFO
@@ -34,9 +34,9 @@ class LoginPacket : Packet() {
         p = buffer.readString()
         ph = buffer.readString()
 
-        dump("wtf? ${buffer.readAllBytes().size}")
+        trace("wtf? ${buffer.readAllBytes().size}")
 
-        dump(" Huh? Ticket: $ticket amebaId: $amebaId password: $password fromAndroid: $fromAndroid  Agent: $agent flashPlayerVersion: $flashplayerVersion amebaAuthTicket: $amebaAuthTicket frmId: $frmId p: $p ph: $ph")
+        trace(" Huh? Ticket: $ticket amebaId: $amebaId password: $password fromAndroid: $fromAndroid  Agent: $agent flashPlayerVersion: $flashplayerVersion amebaAuthTicket: $amebaAuthTicket frmId: $frmId p: $p ph: $ph")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

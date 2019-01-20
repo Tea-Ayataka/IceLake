@@ -8,9 +8,9 @@ import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
 import net.ayataka.marinetooler.pigg.network.packet.send.*
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.error
 import net.ayataka.marinetooler.utils.toHexString
-import net.ayataka.marinetooler.utils.warn
+import net.ayataka.marinetooler.utils.trace
 import java.nio.ByteBuffer
 import kotlin.reflect.KClass
 
@@ -75,6 +75,8 @@ class Protocol {
         register(ChannelFloorUpdatePlayListRequest::class)
         register(ListUserFurniture::class)
         register(BuyGiftItem::class)
+        register(UpdateActionPacket::class)
+        register(GetShopResultPacket::class)
 
         // RECV (Server bound)
         register(CheckBanWordResultPacket::class)
@@ -109,6 +111,8 @@ class Protocol {
         register(ListClubFurnitureResult::class)
         register(LeaveUserPacket::class)
         register(PlaceFurnitureResult::class)
+        register(ClickPiggShopItemResultPacket::class)
+        register(GetPiggShopCategoryResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
@@ -142,17 +146,21 @@ class Protocol {
         }
 
         if (packetID == null) {
-            dump("UNKNOWN PACKET ID : $id")
-            dump(rawBuffer.array().toHexString())
-            dump(String(rawBuffer.array()))
+            trace("UNKNOWN PACKET ID : $id")
+            trace(rawBuffer.array().toHexString())
+            trace(String(rawBuffer.array()))
             return null
         }
 
         // Dump data
-        dump("PACKET ID : $packetID ($type)")
-        dump(String(rawBuffer.array()))
+        trace("PACKET ID : $packetID ($type)")
+        trace(String(rawBuffer.array()))
 
-        ICE_LAKE.mainWindow?.recordPacket(direction, type.name, packetID.name, rawBuffer.array())
+        try {
+            ICE_LAKE.mainWindow?.recordPacket(direction, type.name, packetID.name, rawBuffer.array())
+        } catch (ex: Exception) {
+            trace("Failed to add an item to the packet list")
+        }
 
         // Find packet handler
         val packet = packets[type]!![id]?.java?.newInstance() ?: return null
@@ -160,12 +168,11 @@ class Protocol {
         try {
             packet.read(buffer, cipherKey[type])
         } catch (ex: Exception) {
-            warn("FAILED TO CONVERT PACKET!")
-            ex.printStackTrace()
+            error("Packet deserialization failed", ex)
             return null
         }
 
-        dump("PACKET IS ${packet::class.java.simpleName}")
+        trace("PACKET IS ${packet::class.java.simpleName}")
         return packet
     }
 
@@ -173,7 +180,7 @@ class Protocol {
         if (header == HeaderID.CIPHER_KEY.id) {
             connectionId[type] = buffer.readInt()
             cipherKey[type] = buffer.pos(buffer.getPos() - 4).skip(4).readBytes(4).plus(buffer.reset().skip(2).readBytes(4))
-            dump("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}, Connection ID: ${connectionId[type]}")
+            trace("$type SERVER Decrypt key : ${cipherKey[type]?.toHexString()}, Connection ID: ${connectionId[type]}")
         }
     }
 }

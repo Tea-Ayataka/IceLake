@@ -4,13 +4,13 @@ import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.TalkResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
 
 object ChatGhost : Module() {
     @EventListener
-    fun onRecvPacket(event: RecvPacketEvent) {
+    fun onRecvPacket(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (packet is TalkResultPacket) {

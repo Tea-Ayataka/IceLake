@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class PlaceFurniturePacket : Packet() {
     override val server = ServerType.CHAT
@@ -26,7 +26,7 @@ class PlaceFurniturePacket : Packet() {
         z = buffer.readInt()
         isFinishTutorial = buffer.readBoolean()
 
-        dump("Code: $code, Direction: $direction, Pos: $x $y $z, isFinishTutorial: $isFinishTutorial")
+        trace("Code: $code, Direction: $direction, Pos: $x $y $z, isFinishTutorial: $isFinishTutorial")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

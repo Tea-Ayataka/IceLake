@@ -25,9 +25,6 @@ class RoomActionPacket : Packet() {
         }
 
         isAdminRequest = buffer.readBoolean()
-
-        info(" ROOM ACTION ID IS ${actionCode}")
-        info(" AND DATA IS ${data.toHexString()} [${String(data)}]")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

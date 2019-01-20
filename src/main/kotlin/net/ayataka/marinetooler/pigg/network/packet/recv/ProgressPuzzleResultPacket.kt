@@ -5,7 +5,7 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.puzzle.PuzzleIncentiveItemData
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class ProgressPuzzleResultPacket : Packet() {
     override val server = ServerType.INFO
@@ -64,7 +64,7 @@ class ProgressPuzzleResultPacket : Packet() {
             }
         }
 
-        dump(toString())
+        trace(toString())
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

@@ -4,7 +4,7 @@ import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
@@ -127,7 +127,7 @@ object FishMacro : Module() {
     }
 
     @EventListener
-    fun onPacketReceive(event: RecvPacketEvent) {
+    fun onPacketReceive(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (task != null && packet is AreaGamePlayResult) {
