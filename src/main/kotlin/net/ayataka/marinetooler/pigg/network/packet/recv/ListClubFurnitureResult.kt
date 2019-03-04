@@ -29,7 +29,7 @@ class ListClubFurnitureResult : Packet() {
         isEnabledRoomChange = buffer.readBoolean()
         existsContribution = buffer.readBoolean()
 
-        if(!isEnabledRoomChange){
+        if (!isEnabledRoomChange) {
             return
         }
 
@@ -62,7 +62,7 @@ class ListClubFurnitureResult : Packet() {
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeBoolean(isEnableInvite, isEnabledRoomChange, existsContribution)
 
-        if(!isEnabledRoomChange){
+        if (!isEnabledRoomChange) {
             return buffer
         }
 

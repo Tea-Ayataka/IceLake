@@ -2,6 +2,7 @@ package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.send.AddClubMessagePacket
 import net.ayataka.marinetooler.pigg.network.packet.send.CheckContributeClubFurniturePacket
@@ -20,11 +21,12 @@ object InstantDonator : Module() {
             donatePacket.furnitureId = packet.furnitureId
             donatePacket.message = message
 
-            event.packet = donatePacket
+            event.canceled = true
+            PiggProxy.send(donatePacket)
+
             // Pigg.receive(CheckContributeClubFurnitureResult())
-        }
-        else if(packet is AddClubMessagePacket){
-            packet.canceled = true
+        } else if (packet is AddClubMessagePacket) {
+            event.canceled = true
 
             message = packet.msg
         }

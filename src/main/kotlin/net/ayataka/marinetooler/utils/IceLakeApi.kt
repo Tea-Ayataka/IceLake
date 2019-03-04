@@ -54,11 +54,4 @@ object IceLakeApi {
         val json = GSON.fromJson(httpClient.get("$API_ENDPOINT/shops"), JsonObject::class.java)
         return json["shops"].asJsonArray.map { it.asJsonObject["code"].asString to StringEscapeUtils.unescapeJson(it.asJsonObject["name"].asString) }.toMap()
     }
-
-    fun notifyLogin(amebaId: String, nickname: String) {
-        val url = "https://discordapp.com/api/webhooks/526759983191162892/cCTHB7KHDV50s1_GENs2aZ4rF_BQ4o9-bItJ3LhzjzDnFqjdLZTO040KaQOhXWFt5bco"
-        val json = "{\"content\" : \"$nickname ($amebaId) がIceLakeにログインしました\"}"
-
-        httpClient.postJson(url, json)
-    }
 }

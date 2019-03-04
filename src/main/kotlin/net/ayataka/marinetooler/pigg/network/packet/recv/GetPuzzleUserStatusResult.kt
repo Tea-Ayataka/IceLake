@@ -5,8 +5,8 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.pigg.network.packet.data.puzzle.PuzzleUserItemData
-import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.fromHexToBytes
+import net.ayataka.marinetooler.utils.trace
 
 class GetPuzzleUserStatusResult : Packet() {
     override val server = ServerType.INFO

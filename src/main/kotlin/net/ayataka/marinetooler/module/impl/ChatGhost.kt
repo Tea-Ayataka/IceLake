@@ -3,7 +3,7 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.TalkResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
@@ -23,6 +23,6 @@ object ChatGhost : Module() {
     private fun talk(msg: String) {
         val packet = TalkPacket()
         packet.text = msg
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 }

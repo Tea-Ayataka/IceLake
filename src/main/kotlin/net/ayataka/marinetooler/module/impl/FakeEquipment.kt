@@ -3,11 +3,13 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
-import net.ayataka.marinetooler.pigg.network.packet.recv.*
+import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
+import net.ayataka.marinetooler.pigg.network.packet.recv.FinishDressupResult
+import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.ActionPacket
 
 object FakeEquipment : Module() {
@@ -16,13 +18,13 @@ object FakeEquipment : Module() {
     fun addEquipment(usercode: String, vararg equipment: String) {
         val avatarData = getAvatarData(usercode)?.apply { item.items.addAll(equipment) } ?: return
 
-        Pigg.receive(FinishDressupResult().apply {
+        PiggProxy.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
         })
 
         if (usercode == CurrentUser.usercode) {
-            Pigg.send(ActionPacket().apply {
+            PiggProxy.send(ActionPacket().apply {
                 actionId = "hello\u0000equip ${equipment.joinToString(" ")}"
             })
         }
@@ -31,13 +33,13 @@ object FakeEquipment : Module() {
     fun deleteEquipment(usercode: String, vararg equipment: String) {
         val avatarData = getAvatarData(usercode)?.apply { item.items.removeAll(equipment) } ?: return
 
-        Pigg.receive(FinishDressupResult().apply {
+        PiggProxy.receive(FinishDressupResult().apply {
             this.avatarData = avatarData
             this.usercode = usercode
         })
 
         if (usercode == CurrentUser.usercode) {
-            Pigg.send(ActionPacket().apply {
+            PiggProxy.send(ActionPacket().apply {
                 actionId = "hello\u0000unequip ${equipment.joinToString(" ")}"
             })
         }
@@ -52,7 +54,7 @@ object FakeEquipment : Module() {
                 return
             }
 
-            packet.canceled = true
+            event.canceled = true
 
             val data = packet.actionCode.split("\u0000")[1].split(" ")
             when (data[0]) {

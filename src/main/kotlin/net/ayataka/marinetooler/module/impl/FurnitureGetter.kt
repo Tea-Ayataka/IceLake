@@ -44,13 +44,13 @@ object FurnitureGetter : Module() {
             file.writeText(gson.toJson(database))
         }
 
-        if(packet is ListClubFurnitureResult){
+        if (packet is ListClubFurnitureResult) {
             database.furnitures.addAll(packet.furnitures)
 
             file.writeText(gson.toJson(database))
         }
 
-        if(packet is ListUserFurnitureResultPacket){
+        if (packet is ListUserFurnitureResultPacket) {
             database.furnitures.addAll(packet.furnitures)
 
             file.writeText(gson.toJson(database))

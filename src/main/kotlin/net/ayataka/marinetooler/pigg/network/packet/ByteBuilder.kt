@@ -146,8 +146,7 @@ open class ByteBuilder() {
     }
 
     fun readAllBytes(): ByteArray {
-        val length = buffer.limit() - buffer.position()
-        return readBytes(length)
+        return readBytes(buffer.remaining())
     }
 
     fun readBoolean(): Boolean {

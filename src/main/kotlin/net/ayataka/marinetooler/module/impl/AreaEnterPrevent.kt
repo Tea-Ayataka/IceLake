@@ -2,7 +2,7 @@ package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.Protocol
@@ -25,8 +25,8 @@ object AreaEnterPrevent : Module() {
         val packet = event.packet
 
         if (packet is GetAreaResultPacket && lastGetAreaPacket != null) {
-            event.packet.canceled = true
-            Pigg.receive(GetAreaResultPacket())
+            event.canceled = true
+            PiggProxy.receive(GetAreaResultPacket())
 
             // Simulate
             /*object : VClient(packet.chatServerUri) {

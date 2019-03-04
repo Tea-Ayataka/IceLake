@@ -17,7 +17,7 @@ import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.impl.*
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
@@ -80,6 +80,8 @@ class MainWindow : Initializable {
     @FXML
     lateinit var colorChatColor: ColorPicker
     @FXML
+    lateinit var colorChatRainbow: CheckBox
+    @FXML
     lateinit var chatGhost: CheckBox
     @FXML
     lateinit var actionGhost: CheckBox
@@ -138,7 +140,7 @@ class MainWindow : Initializable {
         EventManager.register(this)
     }
 
-    override fun initialize(location: URL?, resources: ResourceBundle?) {
+    override fun initialize(location: URL?, resources: ResourceBundle?) = Platform.runLater {
         ICE_LAKE.mainWindow = this
 
         tpX.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
@@ -193,10 +195,22 @@ class MainWindow : Initializable {
 
         colorChat.setOnAction {
             ColorChat.enabled = (it.source as CheckBox).isSelected
+
+            colorChatColor.isDisable = !(it.source as CheckBox).isSelected
+            colorChatRainbow.isDisable = !(it.source as CheckBox).isSelected
+
+            if (colorChatRainbow.isSelected) {
+                colorChatColor.isDisable = true
+            }
         }
 
         colorChatColor.setOnAction {
             ColorChat.color = (it.source as ColorPicker).value
+        }
+
+        colorChatRainbow.setOnAction {
+            colorChatColor.isDisable = (it.source as CheckBox).isSelected
+            ColorChat.rainbowMode = (it.source as CheckBox).isSelected
         }
 
         clickTPChk.setOnAction {
@@ -287,7 +301,7 @@ class MainWindow : Initializable {
             val name = areaList.selectionModel.selectedItem
             val code = ICE_LAKE.oldAreas.keys.find { ICE_LAKE.oldAreas[it] == name } ?: return@setOnAction
 
-            Pigg.send(TravelBundlePacket().apply {
+            PiggProxy.send(TravelBundlePacket().apply {
                 categoryCode = code.split(" ")[0]
                 areaCode = code.split(" ")[1]
             })
@@ -311,7 +325,7 @@ class MainWindow : Initializable {
         Analytics.enabled = true
     }
 
-    fun openPacketDialog(data: PacketView) {
+    fun openPacketDialog(data: PacketView) = Platform.runLater {
         val loader = FXMLLoader(javaClass.classLoader.getResource("PacketDialog.fxml"))
         val parent = loader.load<Parent>()
 

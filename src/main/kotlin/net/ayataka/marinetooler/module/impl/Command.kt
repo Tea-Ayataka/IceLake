@@ -3,16 +3,12 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.listener.InfoPacketListener
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.*
-import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.math.Vec3i
-import java.nio.ByteBuffer
 import java.security.SecureRandom
 import java.util.*
 import kotlin.concurrent.timer
@@ -27,8 +23,9 @@ object Command : Module() {
             val text = packet.text
 
             if (text.startsWith(".")) {
-                event.packet = CancelTypingPacket()
                 doCommand(text.substring(1))
+                event.canceled = true
+                PiggProxy.send(CancelTypingPacket())
             }
         }
     }
@@ -53,18 +50,18 @@ object Command : Module() {
                     val packet = GetAreaPacket()
                     packet.category = spitted[1].split("/")[0]
                     packet.code = spitted[1].split("/")[1]
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "travel" -> {
                     val packet = TravelBundlePacket()
                     packet.categoryCode = spitted[1]
                     packet.areaCode = spitted[2]
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "shop" -> {
                     val packet = GetShopPacket()
                     packet.shopCode = spitted[1]
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "addfish" -> {
                     AquariumSpammer.addFish(spitted[1])
@@ -75,7 +72,7 @@ object Command : Module() {
                     packet.x = 10
                     packet.y = 10
 
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "spam" -> {
                     NoticeSpammer.enabled = !NoticeSpammer.enabled
@@ -89,26 +86,11 @@ object Command : Module() {
                 "del" -> {
                     FurnitureExploiter.remove(spitted[1].toInt())
                 }
-                "sendpacket" -> {
-                    if (spitted[1] == "info") {
-                        Pigg.proxies[ServerType.INFO]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
-                    } else if (spitted[1] == "chat") {
-                        Pigg.proxies[ServerType.CHAT]?.send(ByteBuffer.wrap(spitted.drop(2).joinToString(" ").fromHexToBytes()))
-                    }
-                }
-                "rod" -> {
-                    Thread {
-                        repeat(1000) {
-                            Pigg.proxies[ServerType.INFO]?.send(ByteBuffer.wrap("00 10 00 00 00 00 18 05 00 00 00 3c 01 00 09 69 6e 63 65 6e 74 69 76 65 00 07 6f 6e 53 74 61 72 74 00 03 72 6f 64 00 1c 69 73 68 69 6b 61 72 69 67 61 77 61 5f 66 69 73 68 69 6e 67 5f 72 6f 64 30 31 5f 70 00 00 00 03".fromHexToBytes()))
-                            Thread.sleep(50)
-                        }
-                    }.start()
-                }
                 "areadata" -> {
                     info(CurrentUser.areaData.toString())
                 }
                 "'" -> {
-                    Pigg.send(TravelBundlePacket().apply { categoryCode = "event"; areaCode = "event$eventNumber" })
+                    PiggProxy.send(TravelBundlePacket().apply { categoryCode = "event"; areaCode = "event$eventNumber" })
                     info("event event$eventNumber")
                     eventNumber++
                 }
@@ -137,16 +119,16 @@ object Command : Module() {
                 "onemsg" -> {
                     val packet = OneMessageSavePacket()
                     packet.text = spitted[1].replace("\\n", "\n")
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "roomact" -> {
                     val packet = RoomActionPacket()
                     packet.actionCode = spitted[1]
 
-                    Pigg.send(packet)
+                    PiggProxy.send(packet)
                 }
                 "listaction" -> {
-                    Pigg.send(ListActionPacket())
+                    PiggProxy.send(ListActionPacket())
                 }
                 "hackpet" -> {
                     HackPet.enabled = !HackPet.enabled
@@ -184,7 +166,7 @@ object Command : Module() {
                 "icearea" -> {
                     CurrentUser.showAlert("Moving to IceArea!")
 
-                    IceAreaConnector.areaData = CurrentUser.areaData
+                    //IceAreaConnector.areaData = CurrentUser.areaData
 
                     val packet = GetAreaResultPacket().apply {
                         type = "secret"
@@ -193,7 +175,7 @@ object Command : Module() {
                         chatServerUri = "ws://localhost:11451/command"
                     }
 
-                    Pigg.receive((Pigg.proxies[ServerType.INFO]!!.packetListener!! as InfoPacketListener).onReceive(packet))
+                    //Pigg.receive((Pigg.proxies[ServerType.INFO]!!.packetListener!! as InfoPacketListener).onReceive(packet))
                 }
                 else -> {
                     info("無効なコマンドです")

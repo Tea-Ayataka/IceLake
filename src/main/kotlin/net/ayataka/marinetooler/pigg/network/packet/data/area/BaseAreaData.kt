@@ -13,8 +13,8 @@ import net.ayataka.marinetooler.pigg.network.packet.data.place.PlaceFurniture
 import net.ayataka.marinetooler.pigg.network.packet.data.place.PlacePet
 import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 import net.ayataka.marinetooler.pigg.network.packet.recv.EnterUserRoomResult
-import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.toHexString
+import net.ayataka.marinetooler.utils.trace
 
 open class BaseAreaData : Packet() {
     override val server = ServerType.CHAT
@@ -191,7 +191,7 @@ open class BaseAreaData : Packet() {
 
         defineAvatars.filter { loc11[it.characterId] != null }.forEach { it.friend = true }
 
-        if(this !is EnterUserRoomResult) {
+        if (this !is EnterUserRoomResult) {
             data = buffer.readAllBytes()
 
             trace("BaseAreaData: ${data.toHexString()}")
@@ -199,7 +199,7 @@ open class BaseAreaData : Packet() {
     }
 
     //FIX: 年末年始のエリア（他にもあるかもしれない）に入れないバグを修正する
-    override fun writeTo(buffer: ByteBuilder) : ByteBuilder? {
+    override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         return null
         areaData.writeTo(buffer)
 
@@ -288,7 +288,7 @@ open class BaseAreaData : Packet() {
 
         buffer.writeString(*loc11.values.toTypedArray())
 
-        if(this !is EnterUserRoomResult) {
+        if (this !is EnterUserRoomResult) {
             buffer.writeRawBytes(data)
         }
 

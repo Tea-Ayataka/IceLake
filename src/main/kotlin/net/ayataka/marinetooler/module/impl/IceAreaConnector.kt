@@ -1,18 +1,9 @@
 package net.ayataka.marinetooler.module.impl
 
-import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
-import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
-import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.send.GetNoticeBoardMessageOfAreaPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.LoginChatPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.NotifyUserRoomEnteredPacket
 
 object IceAreaConnector : Module() {
+    /*
     var areaData = BaseAreaData()
 
     @EventListener
@@ -20,7 +11,7 @@ object IceAreaConnector : Module() {
         val packet = event.packet
 
         if ((packet is NotifyUserRoomEnteredPacket || packet is GetNoticeBoardMessageOfAreaPacket) && isConnectingToIceArea()) {
-            packet.canceled = true
+            event.canceled = true
         }
 
         if (packet is LoginChatPacket && isConnectingToIceArea()) {
@@ -45,7 +36,7 @@ object IceAreaConnector : Module() {
             println(packet.defineFurnitures)
         }
 
-        /*if(packet is BaseAreaData && packet.areaData.areaCode == "114514"){
+        if(packet is BaseAreaData && packet.areaData.areaCode == "114514"){
             println("buriburi")
 
             Pigg.send(ListUserFurniture())
@@ -68,8 +59,7 @@ E
                     it.quantity = 999
                 }
             }
-        }*/
+        }
     }
-
-    fun isConnectingToIceArea() = Pigg.proxies.any { it.value.remoteUri.contains("localhost") }
+    */
 }

@@ -16,14 +16,12 @@ class ListActionResult : Packet() {
     var actions: List<ActionData> = listOf()
 
     override fun readFrom(buffer: ByteBuilder) {
-        val size = buffer.readInt()
-        buffer.skip(4) // skip unused data
+        val count = buffer.readInt()
+        val length = buffer.readInt()
 
-        @Suppress("NAME_SHADOWING")
-        val buffer = buffer.readAllBytes().decompress()
-
-        actions = (0 until size).map {
-            ActionData().apply { readFrom(buffer) }
+        val decompressed = buffer.readBytes(length).decompress()
+        actions = (0 until count).map {
+            ActionData().apply { readFrom(decompressed) }
         }
 
         trace("Actions (${actions.size}):")
@@ -34,14 +32,11 @@ class ListActionResult : Packet() {
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeInt(actions.size)
-        buffer.skip(2)
 
-        val toCompress = ByteBuilder()
-        actions.forEach {
-            it.writeTo(toCompress)
-        }
+        val compressed = ByteBuilder().apply { actions.forEach { it.writeTo(this) } }.compress()
+        buffer.writeInt(compressed.size)
+        buffer.writeRawBytes(compressed)
 
-        buffer.writeBytes(toCompress.compress())
         return buffer
     }
 }

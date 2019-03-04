@@ -5,10 +5,6 @@ import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.info
-import java.io.ByteArrayOutputStream
-import java.util.zip.Deflater
-import java.util.zip.DeflaterOutputStream
-import java.util.zip.Inflater
 
 class TableGameResultPacket : Packet() {
     override val server = ServerType.CHAT
@@ -24,7 +20,7 @@ class TableGameResultPacket : Packet() {
 
         val hasData = buffer.readBoolean()
 
-        if(hasData){
+        if (hasData) {
             data = buffer.readAllBytes()
         }
 
@@ -42,33 +38,5 @@ class TableGameResultPacket : Packet() {
         data?.let { buffer.writeRawBytes(it) }
 
         return buffer
-    }
-
-    private fun compress(byteArray: ByteArray): ByteArray{
-        val compresser = Deflater()
-        compresser.setLevel(Deflater.BEST_COMPRESSION)
-        val compos = ByteArrayOutputStream()
-        val dos = DeflaterOutputStream(compos, compresser)
-
-        dos.write(byteArray)
-
-        dos.finish()
-
-        return compos.toByteArray()
-    }
-
-    private fun uncompress(byteArray: ByteArray): ByteArray{
-        val decompresser = Inflater()
-
-        decompresser.setInput(byteArray)
-        val decompos = ByteArrayOutputStream()
-
-        while (!decompresser.finished()) {
-            val buf = ByteArray(1024)
-            val count = decompresser.inflate(buf)
-            decompos.write(buf, 0, count)
-        }
-
-        return decompos.toByteArray()
     }
 }

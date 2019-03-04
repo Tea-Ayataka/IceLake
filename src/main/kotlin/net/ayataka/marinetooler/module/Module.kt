@@ -10,7 +10,7 @@ open class Module {
                 EventManager.register(this)
                 onEnable()
                 info("Enabled ${javaClass.simpleName}")
-            } else if(!value && field) {
+            } else if (!value && field) {
                 EventManager.unregister(this)
                 onDisable()
                 info("Disabled ${javaClass.simpleName}")

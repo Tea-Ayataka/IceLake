@@ -16,14 +16,14 @@ class EnterAreaResult : BaseAreaData() {
     override fun readFrom(buffer: ByteBuilder) {
         super.readFrom(buffer)
 
-        areaGameId = buffer.readByte()
-        loc2 = buffer.readInt()
-        isPiggDomeOpen = buffer.readBoolean()
+       // areaGameId = buffer.readByte()
+       // loc2 = buffer.readInt()
+       // isPiggDomeOpen = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         return null
-        if(loc2 != 0){
+        if (loc2 != 0) {
             return null
         }
 

@@ -4,7 +4,7 @@ import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.network.PacketDirection
 import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
@@ -106,11 +106,11 @@ class PacketDialog : Initializable {
             thread = Thread {
                 repeat(amount) {
                     if (direction == PacketDirection.RECEIVE) {
-                        Pigg.proxies[server]?.receive(ByteBuffer.wrap(data))
+                        PiggProxy.receive(server, data)
                     }
 
                     if (direction == PacketDirection.SEND) {
-                        Pigg.proxies[server]?.send(ByteBuffer.wrap(data))
+                        PiggProxy.send(server, data)
                     }
 
                     Platform.runLater {
@@ -154,7 +154,7 @@ class PacketDialog : Initializable {
 
             println("Header: ${header.toHexString()}")
             println("Body: ${before.toHexString()}")
-            val decrypted = header + bodySize + decrypt(before, Pigg.protocol.cipherKey[server]!!)
+            val decrypted = header + bodySize + decrypt(before, PiggProxy.getCipherKey(server)!!)
 
             rawTextArea.text = decrypted.toHexString()
             textTextArea.text = String(decrypted)
@@ -176,7 +176,7 @@ class PacketDialog : Initializable {
         println("Header: ${header.toHexString()}")
         println("Body: ${body.toHexString()}")
 
-        return ByteBuilder().writeRawBytes(header).writeBytes(encrypt(body, Pigg.protocol.cipherKey[server]!!)).build().array()
+        return ByteBuilder().writeRawBytes(header).writeBytes(encrypt(body, PiggProxy.getCipherKey(server)!!)).build().array()
     }
 
     private fun decrypt(source: ByteArray, key: ByteArray): ByteArray {

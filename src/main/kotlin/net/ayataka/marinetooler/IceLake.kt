@@ -11,7 +11,7 @@ import javafx.scene.image.Image
 import javafx.stage.Stage
 import net.ayataka.marinetooler.gui.MainWindow
 import net.ayataka.marinetooler.gui.browser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.utils.IceLakeApi
 import net.ayataka.marinetooler.utils.info
 import java.io.File
@@ -59,8 +59,8 @@ class IceLake : Application() {
             }
             stage.show()
 
-            // Initialize Pigg instance
-            Pigg
+            // Initialize Pigg proxy instance
+            PiggProxy
 
             // Start chromium browser
             try {

@@ -71,6 +71,7 @@ class BrowserWindow : Initializable {
                 val password = it.split(":")[1]
 
                 accounts[amebaId] = password
+                println("ID: $amebaId, Password: $password")
             }
         }
     }
@@ -163,13 +164,8 @@ class BrowserWindow : Initializable {
                 trace("N: $N")
                 trace("pigg: $pigg")
 
-                if (N == null || pigg == null) {
-                    Platform.runLater { loginButton.isDisable = false }
-                    return@Thread
-                }
-
-                browser.cookieStorage.setSessionCookie("http://ameba.jp", "N", N, ".ameba.jp", "/", false, false)
-                browser.cookieStorage.setSessionCookie("http://pigg.ameba.jp", "pigg", pigg, ".pigg.ameba.jp", "/", false, false)
+                browser.cookieStorage.setSessionCookie("http://ameba.jp", "N", N ?: "", ".ameba.jp", "/", false, false)
+                browser.cookieStorage.setSessionCookie("http://pigg.ameba.jp", "pigg", pigg ?: "", ".pigg.ameba.jp", "/", false, false)
 
                 Platform.runLater {
                     loginButton.isDisable = false

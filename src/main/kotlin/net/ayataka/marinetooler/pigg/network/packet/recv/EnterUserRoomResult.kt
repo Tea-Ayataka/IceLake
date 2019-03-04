@@ -69,7 +69,7 @@ class EnterUserRoomResult : BaseAreaData() {
         canMoveGarden = buffer.readBoolean()
         oneMessage = buffer.readString()
 
-        if(buffer.readBoolean()){
+        if (buffer.readBoolean()) {
             eventArrowData = EventArrowData().apply {
                 readFrom(buffer)
             }
@@ -81,7 +81,7 @@ class EnterUserRoomResult : BaseAreaData() {
 
         diaryRoomData.readFrom(buffer)
 
-        if(buffer.readBoolean()){
+        if (buffer.readBoolean()) {
             contestCode = buffer.readString()
         }
 

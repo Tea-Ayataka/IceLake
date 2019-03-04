@@ -2,7 +2,6 @@ package net.ayataka.marinetooler.pigg.swf
 
 import com.flagstone.transform.DoABC
 import com.flagstone.transform.Movie
-import com.flagstone.transform.MovieHeader
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.toHexString
 import java.io.ByteArrayOutputStream

@@ -3,7 +3,7 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.*
@@ -48,7 +48,7 @@ object AutoGoodPigg : Module() {
         info("GOOD PIGG $userCode")
         val profile = GoodPiggPacket()
         profile.usercode = userCode
-        Pigg.send(profile)
+        PiggProxy.send(profile)
     }
 
     @EventListener
@@ -56,10 +56,10 @@ object AutoGoodPigg : Module() {
         val packet = event.packet
         if (running) {
             if (packet is GetUserProfileResultPacket) {
-                packet.canceled = true
+                event.canceled = true
             }
             if (packet is ErrorPacket) {
-                packet.canceled = true
+                event.canceled = true
             }
         }
 

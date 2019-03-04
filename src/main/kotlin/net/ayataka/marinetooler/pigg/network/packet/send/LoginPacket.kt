@@ -40,10 +40,7 @@ class LoginPacket : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(ticket, amebaId, password)
-        buffer.writeBoolean(fromAndroid)
-        buffer.writeString(agent, flashplayerVersion, amebaAuthTicket, frmId, p, ph)
-        return buffer
+        return null
     }
 
     /*fun fuck() {

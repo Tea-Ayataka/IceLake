@@ -32,7 +32,7 @@ class PuzzleUserItemData {
         buffer.writeDouble(itemExpireTime)
         buffer.writeInt(itemQuantity)
 
-        if(magnification) {
+        if (magnification) {
             buffer.writeInt(itemMagnification)
         }
     }

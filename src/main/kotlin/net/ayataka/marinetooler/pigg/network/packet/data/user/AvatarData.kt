@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.data.PacketData
 import net.ayataka.marinetooler.pigg.network.packet.data.cosme.CosmeDressUpItemData
 
-class AvatarData : PacketData{
+class AvatarData : PacketData {
     companion object {
         var COSME_CONTACT_IGNORE_INDEXES = arrayOf(71)
         var COSME_EYELASH_IGNORE_INDEXES = arrayOf(67, 70, 71, 77, 80, 82)

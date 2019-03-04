@@ -6,7 +6,7 @@ import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.compress
 import net.ayataka.marinetooler.utils.decompress
-import net.ayataka.marinetooler.utils.trace
+import net.ayataka.marinetooler.utils.info
 
 class UpdateActionPacket : Packet() {
     override val server = ServerType.INFO
@@ -15,30 +15,23 @@ class UpdateActionPacket : Packet() {
     var actions: List<String> = listOf()
 
     override fun readFrom(buffer: ByteBuilder) {
-        val size = buffer.readInt()
+        val count = buffer.readInt()
+        val decompressed = buffer.readAllBytes().decompress()
 
-        @Suppress("NAME_SHADOWING")
-        val buffer = buffer.readAllBytes().decompress()
+        actions = (0 until count).map { decompressed.readString() }
 
-        actions = (0 until size).map {
-            buffer.readString()
-        }
-
-        trace("Actions (${actions.size}):")
+        info("Actions (${actions.size}):")
         actions.forEach {
-            trace(it.toString())
+            info(it)
         }
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
         buffer.writeInt(actions.size)
 
-        val toCompress = ByteBuilder()
-        actions.forEach {
-            buffer.writeString(it)
-        }
+        val compressed = ByteBuilder().apply { actions.forEach { writeString(it) } }.compress()
+        buffer.writeRawBytes(compressed)
 
-        buffer.writeBytes(toCompress.compress())
         return buffer
     }
 }

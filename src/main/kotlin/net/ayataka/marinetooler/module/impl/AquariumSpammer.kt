@@ -1,12 +1,12 @@
 package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.send.ChangeWindowAquariumPacket
 
 object AquariumSpammer : Module() {
-    fun addFish(fishName: String){
+    fun addFish(fishName: String) {
         val packet = ChangeWindowAquariumPacket()
 
         packet.method = "onUpdateWindowFish"
@@ -18,10 +18,10 @@ object AquariumSpammer : Module() {
 
         packet.data = data
 
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
-    fun delFish(fishName: String){
+    fun delFish(fishName: String) {
         val packet = ChangeWindowAquariumPacket()
 
         packet.method = "onUpdateWindowFish"
@@ -33,6 +33,6 @@ object AquariumSpammer : Module() {
 
         packet.data = data
 
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 }

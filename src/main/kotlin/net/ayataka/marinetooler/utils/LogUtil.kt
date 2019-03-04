@@ -24,6 +24,6 @@ fun error(text: String, ex: Exception? = null) {
         ICE_LAKE.mainWindow?.log("[ERROR] $text")
     } else {
         LOGGER.error(text, ex)
-        ICE_LAKE.mainWindow?.log("[ERROR] $text\n    ${ex.stackTrace.joinToString("\n    ")}")
+        ICE_LAKE.mainWindow?.log("[ERROR] $text : ${ex.message} ${ex.javaClass.name}\n    ${ex.stackTrace.joinToString("\n    ")}")
     }
 }

@@ -12,26 +12,27 @@ import net.ayataka.marinetooler.utils.error
 import net.ayataka.marinetooler.utils.toHexString
 import net.ayataka.marinetooler.utils.trace
 import java.nio.ByteBuffer
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
 // Piggプロトコルの実装
 // ByteArray -> Packet へ変換する。必要であれば複合化も行う。
 class Protocol {
     // PacketID:PacketClass
-    private val packets = HashMap<ServerType, HashMap<Short, KClass<out Packet>>>()
+    private val packets = ConcurrentHashMap<ServerType, ConcurrentHashMap<Short, KClass<out Packet>>>()
 
     // Packet Cipher Keys
     val connectionId = HashMap<ServerType, Int>()
     val cipherKey = HashMap<ServerType, ByteArray>()
 
     init {
-        ServerType.values().forEach { packets[it] = HashMap() } // Init HashMap
+        ServerType.values().forEach { packets[it] = ConcurrentHashMap() } // Init HashMap
 
         // Register packets
         // SEND (Client bound)
         register(PlaceActionItem::class)
         register(OneMessageSavePacket::class)
-        register(LoginPacket::class)
+        //register(LoginPacket::class)
         register(MoveFurniture::class)
         register(PlaceFurniturePacket::class)
         register(PlayGachaStepupPacket::class)
@@ -106,13 +107,13 @@ class Protocol {
         register(GetPuzzleUserStatusResult::class)
         register(FinishDressupResult::class)
         register(RoomActionResult::class)
-        register(ListActionResult::class)
         register(ListClubResult::class)
         register(ListClubFurnitureResult::class)
         register(LeaveUserPacket::class)
         register(PlaceFurnitureResult::class)
         register(ClickPiggShopItemResultPacket::class)
         register(GetPiggShopCategoryResult::class)
+        register(ListActionResult::class)
     }
 
     private fun register(clazz: KClass<out Packet>) {
@@ -137,12 +138,8 @@ class Protocol {
         val id = buffer.skip(4).readShort()
 
         val packetID = when (type) {
-            ServerType.INFO -> {
-                InfoPacketID.values().find { it.id == id }
-            }
-            ServerType.CHAT -> {
-                ChatPacketID.values().find { it.id == id }
-            }
+            ServerType.INFO -> InfoPacketID.values().find { it.id == id }
+            ServerType.CHAT -> ChatPacketID.values().find { it.id == id }
         }
 
         if (packetID == null) {
@@ -172,7 +169,7 @@ class Protocol {
             return null
         }
 
-        trace("PACKET IS ${packet::class.java.simpleName}")
+        trace("Packet class is ${packet::class.java.simpleName}")
         return packet
     }
 

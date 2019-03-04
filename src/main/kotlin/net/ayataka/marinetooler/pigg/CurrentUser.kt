@@ -21,7 +21,7 @@ object CurrentUser {
     fun showAlert(msg: String) {
         val packet = AlertResultPacket()
         packet.message = "# Marine Tooler #\n$msg\n\n\n"
-        Pigg.receive(packet)
+        PiggProxy.receive(packet)
     }
 
     fun move(x: Int, y: Int, z: Int) {
@@ -29,7 +29,7 @@ object CurrentUser {
         packet.x = x.toShort()
         packet.y = y.toShort()
         packet.z = z.toShort()
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
     fun teleport(x: Int, y: Int, z: Int, direction: Byte) {
@@ -38,35 +38,35 @@ object CurrentUser {
         packet.y = y.toShort()
         packet.z = z.toShort()
         packet.direction = direction
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
     fun playAction(actionCode: String) {
         val packet = ActionPacket()
         packet.actionId = "$actionCode\u0000_secret"
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
     fun playSystemAction(actionCode: String) {
-        Pigg.send(SystemActionPacket().apply { this.actionCode = actionCode })
+        PiggProxy.send(SystemActionPacket().apply { this.actionCode = actionCode })
     }
 
     fun giveGood(ucode: String) {
         val profile = GetUserProfilePacket()
         profile.usercode = ucode
-        Pigg.send(profile)
+        PiggProxy.send(profile)
 
         Thread.sleep(300)
 
         val goodPigg = GoodPiggPacket()
         goodPigg.usercode = ucode
-        Pigg.send(goodPigg)
+        PiggProxy.send(goodPigg)
     }
 
     fun spinSlot() {
         val packet = TableGamePacket()
         packet.method = "spin"
         packet.data = "00 00 00 14 00 00 00 05 ".fromHexToBytes()
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 }

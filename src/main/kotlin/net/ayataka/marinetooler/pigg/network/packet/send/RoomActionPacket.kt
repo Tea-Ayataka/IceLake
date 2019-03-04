@@ -4,8 +4,6 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.info
-import net.ayataka.marinetooler.utils.toHexString
 
 class RoomActionPacket : Packet() {
     override val server = ServerType.CHAT

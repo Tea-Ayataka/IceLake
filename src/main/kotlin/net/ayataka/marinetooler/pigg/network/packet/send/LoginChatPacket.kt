@@ -4,8 +4,8 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.trace
 import net.ayataka.marinetooler.utils.toHexString
+import net.ayataka.marinetooler.utils.trace
 import java.util.*
 
 class LoginChatPacket : Packet() {

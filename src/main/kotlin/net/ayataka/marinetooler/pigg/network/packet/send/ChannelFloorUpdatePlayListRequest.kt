@@ -22,7 +22,7 @@ class ChannelFloorUpdatePlayListRequest : Packet() {
     override fun readFrom(buffer: ByteBuilder) {
         type = buffer.readInt()
 
-        if(type != 1){
+        if (type != 1) {
             return
         }
 
@@ -36,7 +36,7 @@ class ChannelFloorUpdatePlayListRequest : Packet() {
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        if(type != 1){
+        if (type != 1) {
             return null
         }
 

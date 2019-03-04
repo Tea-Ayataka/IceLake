@@ -13,22 +13,26 @@ import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetAreaResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.MoveEndResultPacket
 import net.ayataka.marinetooler.proxy.WebSocketProxy
-import net.ayataka.marinetooler.utils.*
+import net.ayataka.marinetooler.utils.getSSLContextFromPFXFile
+import net.ayataka.marinetooler.utils.getUnusedPort
+import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.math.Vec3i
+import net.ayataka.marinetooler.utils.trace
 import java.nio.ByteBuffer
+import kotlin.collections.set
 
-object Pigg {
-    const val PROXY_IP = "127.0.0.1"
-    const val INFO_SERVER_PORT = 443
-    const val INFO_SERVER_URI = "wss://27.133.213.64:443/command"
+object PiggProxy {
+    private const val LISTEN_HOST = "127.0.0.1"
+    private const val INFO_SERVER_PORT = 443
+    private const val INFO_SERVER_URI = "wss://27.133.213.64:443/command"
 
-    val protocol = Protocol()
-    val CERTIFICATE = getSSLContextFromPFXFile("pigg.pfx", "pigg.jks", "nopass")
-    val proxies = hashMapOf<ServerType, WebSocketProxy>()
+    private val protocol = Protocol()
+    private val CERTIFICATE = getSSLContextFromPFXFile("pigg.pfx", "pigg.jks", "nopass")
+    private val proxies = hashMapOf<ServerType, WebSocketProxy>()
 
     init {
         // Start info server proxy
-        proxies[ServerType.INFO] = WebSocketProxy(PROXY_IP, INFO_SERVER_PORT, INFO_SERVER_URI, CERTIFICATE, ::onSendInfo, ::onReceiveInfo, true)
+        proxies[ServerType.INFO] = WebSocketProxy(LISTEN_HOST, INFO_SERVER_PORT, INFO_SERVER_URI, CERTIFICATE, ::onSendInfo, ::onReceiveInfo, true)
     }
 
     private fun onSendInfo(buffer: ByteBuffer): ByteBuffer? {
@@ -49,11 +53,11 @@ object Pigg {
             CurrentUser.areaData = BaseAreaData() // Reset area data
 
             val port = getUnusedPort()
-            packet.chatServerUri = "wss://${Pigg.PROXY_IP}:$port/command"
 
-            Pigg.proxies[ServerType.CHAT] = WebSocketProxy(Pigg.PROXY_IP, port, packet.chatServerUri, CERTIFICATE, ::onSendChat, ::onReceiveChat, false)
+            proxies[ServerType.CHAT] = WebSocketProxy(PiggProxy.LISTEN_HOST, port, packet.chatServerUri, CERTIFICATE, ::onSendChat, ::onReceiveChat, false)
+            packet.chatServerUri = "wss://${PiggProxy.LISTEN_HOST}:$port/command"
 
-            trace("The requested chat server uri has modified to ${packet.chatServerUri}")
+            trace("The chat server uri has modified to ${packet.chatServerUri}")
         }
 
         val event = ReceivePacketEvent(packet)
@@ -93,26 +97,23 @@ object Pigg {
 
     fun send(packet: Packet) {
         packet.write(protocol.cipherKey[packet.server])?.let {
-            proxies[packet.server]?.send(it)
+            send(packet.server, it.array())
         }
     }
 
     fun receive(packet: Packet) {
         packet.write(protocol.cipherKey[packet.server])?.let {
-            proxies[packet.server]?.receive(it)
+            receive(packet.server, it.array())
         }
     }
 
-    fun sendChunk(packets: Collection<Packet>) {
-        ServerType.values().forEach { type ->
-            val key = protocol.cipherKey[type] ?: return@forEach
-            val toSend = packets
-                    .filter { it.server == type }
-                    .mapNotNull { it.write(key)?.array()?.toHexString() }
-                    .joinToString(separator = " ")
-                    .fromHexToBytes()
-
-            proxies[type]?.send(ByteBuffer.wrap(toSend))
-        }
+    fun send(server: ServerType, data: ByteArray) {
+        proxies[server]?.send(data)
     }
+
+    fun receive(server: ServerType, data: ByteArray) {
+        proxies[server]?.receive(data)
+    }
+
+    fun getCipherKey(server: ServerType) = protocol.cipherKey[server]
 }

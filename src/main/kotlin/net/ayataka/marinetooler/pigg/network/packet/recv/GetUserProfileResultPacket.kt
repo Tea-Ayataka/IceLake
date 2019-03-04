@@ -125,7 +125,7 @@ class GetUserProfileResultPacket : Packet() {
         beginnerRemainingCount = buffer.readInt()
         joinedContest = buffer.readBoolean()
 
-        if(joinedContest){
+        if (joinedContest) {
             contestCode = buffer.readString()
         }
 

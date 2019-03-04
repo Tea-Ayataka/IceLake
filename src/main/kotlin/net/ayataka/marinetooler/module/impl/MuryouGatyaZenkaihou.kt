@@ -3,7 +3,7 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
 import net.ayataka.marinetooler.pigg.CurrentUser
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.ErrorPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetPiggShopCategory
@@ -21,7 +21,7 @@ object MuryouGatyaZenkaihou : Module() {
         packet.type = "gacha"
         packet.category = "all"
 
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
     @EventListener
@@ -29,7 +29,7 @@ object MuryouGatyaZenkaihou : Module() {
         val packet = event.packet
 
         if (packet is ErrorPacket) {
-            packet.canceled = true
+            event.canceled = true
         }
 
         if (packet is GetPiggShopGachaResultPacket) {
@@ -39,7 +39,7 @@ object MuryouGatyaZenkaihou : Module() {
             info("Amount ${packet.items.filter { it.remainingFreePlayCount < 1 }.size}")
             info("Amount ${packet.items.filter { it.remainingFreePlayCount > 0 }.size}")
 
-            queue.addAll(packet.items.filter { it.remainingFreePlayCount > 0 && it.freePlayCountLabelState == 1.toByte()}.map { it.code })
+            queue.addAll(packet.items.filter { it.remainingFreePlayCount > 0 && it.freePlayCountLabelState == 1.toByte() }.map { it.code })
 
             timer(period = 1100) {
                 if (queue.isEmpty()) {
@@ -65,7 +65,7 @@ object MuryouGatyaZenkaihou : Module() {
         packet.playType = 0
         packet.spendType = 0
 
-        Pigg.send(packet)
+        PiggProxy.send(packet)
         info("Play! $code")
     }
 }

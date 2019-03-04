@@ -2,7 +2,7 @@ package net.ayataka.marinetooler.module.impl
 
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.network.packet.send.NotifyUserRoomEnteredPacket
 import java.util.*
 import kotlin.concurrent.timer
@@ -14,7 +14,7 @@ object NoticeSpammer : Module() {
         timer?.cancel()
 
         timer = timer(period = 100) {
-            Pigg.send(NotifyUserRoomEnteredPacket().apply { userCode = ICE_LAKE.targetUser })
+            PiggProxy.send(NotifyUserRoomEnteredPacket().apply { userCode = ICE_LAKE.targetUser })
         }
     }
 

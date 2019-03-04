@@ -1,10 +1,7 @@
 package net.ayataka.marinetooler.proxy.proxy
 
 import net.ayataka.marinetooler.proxy.WebSocketProxy
-import net.ayataka.marinetooler.utils.error
-import net.ayataka.marinetooler.utils.info
-import net.ayataka.marinetooler.utils.toHexString
-import net.ayataka.marinetooler.utils.trace
+import net.ayataka.marinetooler.utils.*
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
@@ -15,40 +12,32 @@ class WClient(remoteUri: String, private val proxy: WebSocketProxy) : WebSocketC
         connectionLostTimeout = 0
     }
 
-    override fun onOpen(handshake: ServerHandshake?) {
+    override fun onOpen(handshake: ServerHandshake?) = proxy.start {
         info("[WS CLIENT] Client connected to $uri")
     }
 
-    override fun onClose(code: Int, reason: String?, remote: Boolean) {
+    override fun onClose(code: Int, reason: String?, remote: Boolean) = proxy.start {
         info("[WS CLIENT] Disconnected from remote server (code: $code, reason: $reason, remote: $remote)")
-        proxy.server.connections.forEach { it.close(code, reason) }
+        proxy.server.connections().forEach { it.close(code, reason) }
         proxy.server.stop()
     }
 
-    override fun onMessage(message: String?) {
+    override fun onMessage(message: String?) = proxy.start {
         trace("[WS RECV] : $message")
 
         proxy.server.broadcast(message)
     }
 
-    override fun onMessage(message: ByteBuffer?) {
-        if (message == null) {
-            return
-        }
+    override fun onMessage(message: ByteBuffer) = proxy.start {
+        val modified = proxy.onReceive(message) ?: return@start
 
-        trace("[WS RECV] ${message.array().size} bytes")
-        trace(message.array().toHexString())
+        trace("[WS RECV] ${modified.array().size} bytes\n${modified.array().toHexString()}")
 
-        val modified = proxy.onReceive(message) ?: return
         proxy.server.broadcast(modified.array())
     }
 
-    override fun onError(ex: Exception?) {
+    override fun onError(ex: Exception?) = proxy.start {
         error("[WS CLIENT] An error occurred on connection : $ex")
         ex?.printStackTrace()
-    }
-
-    init {
-        info("[WS CLIENT] Initialized")
     }
 }

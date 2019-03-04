@@ -3,7 +3,7 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.ServerType
@@ -15,7 +15,6 @@ import net.ayataka.marinetooler.pigg.network.packet.send.AreaGamePlayPacket
 import net.ayataka.marinetooler.utils.fromHexToBytes
 import net.ayataka.marinetooler.utils.info
 import net.ayataka.marinetooler.utils.toHexString
-import java.nio.ByteBuffer
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -42,11 +41,11 @@ object FishMacro : Module() {
             while (true) {
                 // 投げる
                 info("投げる")
-                Pigg.send(AreaGamePlayPacket().apply { id = 308; data = "02".fromHexToBytes() })
-                Pigg.send(AreaGamePlayPacket().apply { id = 156; data = "00".fromHexToBytes() })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 308; data = "02".fromHexToBytes() })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 156; data = "00".fromHexToBytes() })
 
                 if (ICE_LAKE.mainWindow?.autoUoUo?.isSelected == true) {
-                    Pigg.proxies[ServerType.CHAT]?.send(ByteBuffer.wrap("00 10 00 00 00 00 30 08 00 00 00 05 00 00 01 0d 01".fromHexToBytes()))
+                    PiggProxy.send(ServerType.CHAT, "00 10 00 00 00 00 30 08 00 00 00 05 00 00 01 0d 01".fromHexToBytes())
                 }
 
                 Thread.sleep(5000)
@@ -54,8 +53,8 @@ object FishMacro : Module() {
                 // 魚が来る
                 while (!kita) {
                     info("魚が来る")
-                    Pigg.send(AreaGamePlayPacket().apply { id = 308; data = "03".fromHexToBytes() })
-                    Pigg.send(AreaGamePlayPacket().apply { id = 260 })
+                    PiggProxy.send(AreaGamePlayPacket().apply { id = 308; data = "03".fromHexToBytes() })
+                    PiggProxy.send(AreaGamePlayPacket().apply { id = 260 })
 
                     Thread.sleep(500)
                 }
@@ -66,8 +65,8 @@ object FishMacro : Module() {
 
                 // 釣る
                 info("釣る")
-                Pigg.send(AreaGamePlayPacket().apply { id = 308; data = "04".fromHexToBytes() })
-                Pigg.send(AreaGamePlayPacket().apply { id = 268; data = "00 00 00 00".fromHexToBytes() })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 308; data = "04".fromHexToBytes() })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 268; data = "00 00 00 00".fromHexToBytes() })
 
                 Thread.sleep(2000)
 
@@ -78,8 +77,8 @@ object FishMacro : Module() {
 
                 // 釣り上げ
                 info("釣り上げ")
-                Pigg.send(AreaGamePlayPacket().apply { id = 308; data = "05".fromHexToBytes() })
-                Pigg.send(AreaGamePlayPacket().apply {
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 308; data = "05".fromHexToBytes() })
+                PiggProxy.send(AreaGamePlayPacket().apply {
                     id = 272
                     data = ByteBuilder().apply {
                         writeString("TEST")
@@ -95,8 +94,8 @@ object FishMacro : Module() {
 
                 // リセット
                 info("リセット")
-                Pigg.send(AreaGamePlayPacket().apply { id = 256 })
-                Pigg.send(AreaGamePlayPacket().apply { id = 312 })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 256 })
+                PiggProxy.send(AreaGamePlayPacket().apply { id = 312 })
 
                 Thread.sleep(1000)
             }
@@ -122,7 +121,7 @@ object FishMacro : Module() {
         }
 
         if (task != null && event.packet is AreaGamePlayPacket) {
-            event.packet.canceled = true
+            event.canceled = true
         }
     }
 

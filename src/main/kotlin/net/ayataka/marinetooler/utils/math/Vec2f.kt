@@ -1,6 +1,6 @@
 package net.ayataka.marinetooler.utils.math
 
-class Vec2f(var x: Float = 0f, var y: Float = 0f){
+class Vec2f(var x: Float = 0f, var y: Float = 0f) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

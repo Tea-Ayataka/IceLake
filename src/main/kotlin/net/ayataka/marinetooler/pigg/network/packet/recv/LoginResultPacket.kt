@@ -5,9 +5,6 @@ import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
 import net.ayataka.marinetooler.utils.IceLakeApi
-import net.ayataka.marinetooler.utils.post
-import java.net.HttpURLConnection
-import java.net.URL
 
 
 class LoginResultPacket : Packet() {
@@ -32,16 +29,6 @@ class LoginResultPacket : Packet() {
         secure = buffer.readBytes(8)
 
         println("isSuccess: $isSuccess ticket: $ticket amebaId: $amebaId asUserId: $asUserId nickname: $nickname code: $code")
-
-        if (isSuccess) {
-            Thread {
-                try {
-                    IceLakeApi.notifyLogin(amebaId, nickname)
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                }
-            }.start()
-        }
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {

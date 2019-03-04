@@ -3,7 +3,7 @@ package net.ayataka.marinetooler.module.impl
 import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.data.action.ActionData
@@ -22,7 +22,7 @@ object ActionModifier : Module() {
         val packet = event.packet
 
         if (packet is ListActionResult) {
-            packet.canceled = true
+            event.canceled = true
             defaultActions = packet.actions
             loadActions()
         }
@@ -36,12 +36,12 @@ object ActionModifier : Module() {
             packet.actionId = packet.actionId.replace("#", "\u0000")
 
             if ("ranaruta" in packet.actionId) {
-                Pigg.send(SystemActionPacket().apply { actionCode = "ranaruta" })
+                PiggProxy.send(SystemActionPacket().apply { actionCode = "ranaruta" })
             }
         }
 
         if (packet is UpdateActionPacket) {
-            packet.canceled = true
+            event.canceled = true
 
             packet.actions.forEach {
                 ICE_LAKE.config.actionOrders[it.removeSuffix("#_secret")] = packet.actions.indexOf(it)
@@ -54,8 +54,6 @@ object ActionModifier : Module() {
     }
 
     private fun loadActions() {
-        info("Loading actions")
-
         val actions = defaultActions.toMutableList()
         actions.forEach { it.order = -1 }
 
@@ -67,7 +65,7 @@ object ActionModifier : Module() {
                     actions.add(ActionData().apply {
                         code = it.first + "#_secret"
                         title = it.second.ifEmpty { it.first }
-
+                        order = Int.MAX_VALUE
                         trace("Adding action: ${it.first}")
                     })
                 }
@@ -78,8 +76,10 @@ object ActionModifier : Module() {
             }
         }
 
-        Pigg.receive(ListActionResult().apply {
+        PiggProxy.receive(ListActionResult().apply {
             this.actions = actions.sortedBy { it.order }
         })
+
+        info("Loaded ${actions.size} actions")
     }
 }

@@ -92,9 +92,10 @@
                                  <children>
                                     <CheckBox fx:id="colorChat" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="カラーチャット" />
                                     <Label layoutX="40.0" layoutY="60.0" />
-                                    <ColorPicker fx:id="colorChatColor" layoutX="126.0" layoutY="10.0" prefHeight="25.0" prefWidth="42.0" />
-                                    <CheckBox fx:id="chatGhost" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" text="チャットゴースト" />
-                                    <CheckBox fx:id="ngBypass" layoutX="14.0" layoutY="66.0" mnemonicParsing="false" selected="true" text="NG回避" />
+                                    <ColorPicker fx:id="colorChatColor" disable="true" layoutX="33.0" layoutY="39.0" prefHeight="25.0" prefWidth="42.0" />
+                                    <CheckBox fx:id="chatGhost" layoutX="14.0" layoutY="75.0" mnemonicParsing="false" text="チャットゴースト" />
+                                    <CheckBox fx:id="ngBypass" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" selected="true" text="NG回避" />
+                                    <CheckBox fx:id="colorChatRainbow" disable="true" layoutX="91.0" layoutY="43.0" mnemonicParsing="false" text="虹色" />
                                  </children>
                               </AnchorPane>
                            </content>
