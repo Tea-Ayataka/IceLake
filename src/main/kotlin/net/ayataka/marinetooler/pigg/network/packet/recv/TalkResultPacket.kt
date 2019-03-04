@@ -11,13 +11,31 @@ class TalkResultPacket : Packet() {
 
     var usercode = ""
     var message = ""
+    var nickName = ""
+    var color = 0xFFFFFF
+    var amebaId = ""
+    var ballonColor = 0xFFFFFF
+    var roomCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString(16)
-        this.message = buffer.readString()
+        usercode = buffer.readString(16)
+        message = buffer.readString()
+        color = buffer.readInt()
+        amebaId = buffer.readString()
+        nickName = buffer.readString()
+        ballonColor = buffer.readInt()
+        roomCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        return null
+        buffer.writeRawString(usercode)
+                .writeString(message)
+                .writeInt(color)
+                .writeString(amebaId)
+                .writeString(nickName)
+                .writeInt(ballonColor)
+                .writeString(roomCode)
+
+        return buffer
     }
 }

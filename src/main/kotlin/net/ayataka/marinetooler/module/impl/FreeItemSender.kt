@@ -1,11 +1,11 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
-import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
-import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.eventapi.EventListener
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.network.packet.data.UserItemData
+import net.ayataka.marinetooler.pigg.PiggProxy
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
+import net.ayataka.marinetooler.pigg.event.SendPacketEvent
+import net.ayataka.marinetooler.pigg.network.packet.data.shop.UserItemData
 import net.ayataka.marinetooler.pigg.network.packet.send.PresentMyItemGiftPacket
 
 object FreeItemSender : Module() {
@@ -15,21 +15,21 @@ object FreeItemSender : Module() {
         packet.message = "fack you"
         packet.items
 
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 
-    @EventTarget
-    fun onRecvPacket(event: RecvPacketEvent) {
+    @EventListener
+    fun onRecvPacket(event: ReceivePacketEvent) {
 
     }
 
-    @EventTarget
+    @EventListener
     fun onSendPacket(event: SendPacketEvent) {
         val packet = event.packet
 
         if (packet is PresentMyItemGiftPacket) {
             packet.items.add(UserItemData("casino_shopitem141017_escargot_1410", "item", 0, 1))
-            event.packet = packet
+            //event.packet = packet
         }
     }
 }

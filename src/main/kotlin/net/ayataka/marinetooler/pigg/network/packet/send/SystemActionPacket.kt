@@ -13,11 +13,11 @@ class SystemActionPacket : Packet() {
     var actionCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.actionCode = buffer.readString()
+        actionCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.actionCode)
+        buffer.writeString(actionCode)
         return buffer
     }
 }

@@ -5,44 +5,48 @@ import java.nio.ByteOrder
 
 open class ByteBuilder() {
     // This may throws BufferOverflowException
-    private var buffer: ByteBuffer = ByteBuffer.allocate(1024 * 128)
+    private var buffer: ByteBuffer = ByteBuffer.allocate(1024 * 1024)
 
     constructor(buf: ByteBuffer) : this() {
-        this.buffer = ByteBuffer.wrap(buf.array()) // Clone buffer
+        buffer = ByteBuffer.wrap(buf.array()) // Clone buffer
     }
 
     constructor(bytes: ByteArray) : this() {
-        this.buffer = ByteBuffer.wrap(bytes)
+        buffer = ByteBuffer.wrap(bytes)
+    }
+
+    constructor(size: Int) : this() {
+        buffer = ByteBuffer.allocate(size)
     }
 
     fun reset(): ByteBuilder {
-        this.buffer.clear()
+        buffer.clear()
         return this
     }
 
     fun array(): ByteArray {
-        return this.buffer.array()
+        return buffer.array()
     }
 
-    fun skip(index: Int): ByteBuilder {
-        this.buffer.position(this.buffer.position() + index)
+    fun skip(length: Int): ByteBuilder {
+        buffer.position(buffer.position() + length)
         return this
     }
 
     fun pos(index: Int): ByteBuilder {
-        this.buffer.position(index)
+        buffer.position(index)
         return this
     }
 
     fun getPos(): Int {
-        return this.buffer.position()
+        return buffer.position()
     }
 
     fun build(): ByteBuffer {
-        val length = this.buffer.position()
-        this.buffer.flip()
+        val length = buffer.position()
+        buffer.flip()
         val result = ByteBuffer.allocate(length)
-        result.put(this.buffer.array(), 0, length)
+        result.put(buffer.array(), 0, length)
         result.flip()
         return result
     }
@@ -50,130 +54,143 @@ open class ByteBuilder() {
     // Raw
     // Readers
     fun readByte(): Byte {
-        return this.buffer.get()
+        return buffer.get()
+    }
+
+    fun readDouble(): Double {
+        return buffer.double
     }
 
     fun readShort(): Short {
-        return this.buffer.short
+        return buffer.short
     }
 
     fun readInt(): Int {
-        return this.buffer.int
+        return buffer.int
     }
 
     fun readIntLE(): Int {
-        val buf = ByteBuffer.wrap(this.readRawBytes(4))
+        val buf = ByteBuffer.wrap(readBytes(4))
         buf.order(ByteOrder.LITTLE_ENDIAN)
         return buf.int
     }
 
     fun readRawLong(): Long {
-        return this.buffer.long
+        return buffer.long
     }
 
-    fun readRawBytes(length: Int): ByteArray {
+    fun readBytes(length: Int): ByteArray {
         val result = ByteArray(length)
-        this.buffer.get(result, 0, length)
+        buffer.get(result, 0, length)
         return result
     }
 
+    fun readFloat(): Float {
+        return buffer.float
+    }
+
     // Writers
-    fun writeRawByte(byte: Byte): ByteBuilder {
-        this.buffer.put(byte)
+    fun writeByte(vararg bytes: Byte): ByteBuilder {
+        bytes.forEach {
+            buffer.put(it)
+        }
         return this
     }
 
     fun writeRawBytes(byteArray: ByteArray): ByteBuilder {
-        this.buffer.put(byteArray, 0, byteArray.size)
+        buffer.put(byteArray, 0, byteArray.size)
         return this
     }
 
-    fun writeRawShort(short: Short): ByteBuilder {
-        this.buffer.putShort(short)
+    fun writeShort(vararg shorts: Short): ByteBuilder {
+        shorts.forEach {
+            buffer.putShort(it)
+        }
         return this
     }
 
-    fun writeRawInt(int: Int): ByteBuilder {
-        this.buffer.putInt(int)
+    fun writeInt(vararg values: Int): ByteBuilder {
+        values.forEach { buffer.putInt(it) }
         return this
     }
 
-    fun writeRawLong(long: Long): ByteBuilder {
-        this.buffer.putLong(long)
+    fun writeLong(long: Long): ByteBuilder {
+        buffer.putLong(long)
         return this
     }
 
-    fun writeRawDouble(double: Double): ByteBuilder {
-        this.buffer.putDouble(double)
+    fun writeDouble(vararg values: Double): ByteBuilder {
+        values.forEach { buffer.putDouble(it) }
         return this
     }
 
     // PIGG Protocol
     fun skipHeader(): ByteBuilder {
-        this.buffer.position(12)
+        buffer.position(12)
         return this
     }
 
     // Readers
     fun readString(): String {
-        val length = this.readShort()
-        return String(this.readRawBytes(length.toInt()))
+        val length = readShort()
+        return String(readBytes(length.toInt()))
     }
 
     fun readString(length: Int): String {
-        return String(this.readRawBytes(length))
+        return String(readBytes(length))
     }
 
     fun readBytes(): ByteArray {
-        val length = this.readShort()
-        return this.readRawBytes(length.toInt())
+        val length = readShort()
+        return readBytes(length.toInt())
     }
 
     fun readAllBytes(): ByteArray {
-        val length = this.buffer.limit() - this.buffer.position()
-        return this.readRawBytes(length)
+        return readBytes(buffer.remaining())
     }
 
     fun readBoolean(): Boolean {
-        return this.buffer.get().toInt() > 0
+        return buffer.get().toInt() > 0
     }
 
     // Writers
-    fun writeString(text: String): ByteBuilder {
-        this.writeRawShort(text.toByteArray().size.toShort())
+    fun writeString(vararg texts: String): ByteBuilder {
+        texts.forEach {
+            writeShort(it.toByteArray().size.toShort())
+            writeRawBytes(it.toByteArray())
+        }
 
-        if(text.toByteArray().isEmpty()){
-            this.writeRawByte(0)
-        }
-        else {
-            this.writeRawBytes(text.toByteArray())
-        }
         return this
     }
 
-    fun writeRawString(usercode: String): ByteBuilder {
-        this.writeRawBytes(usercode.toByteArray())
+    fun writeRawString(value: String): ByteBuilder {
+        writeRawBytes(value.toByteArray())
         return this
     }
 
     fun writeBytes(array: ByteArray): ByteBuilder {
-        this.writeRawShort(array.size.toShort())
-        this.writeRawBytes(array)
+        writeShort(array.size.toShort())
+        writeRawBytes(array)
         return this
     }
 
     fun writeTimeStamp(): ByteBuilder {
-        this.writeRawLong(System.currentTimeMillis())
+        writeLong(System.currentTimeMillis())
         return this
     }
 
     fun writeDoubleTimeStamp(): ByteBuilder {
-        this.writeRawDouble(System.currentTimeMillis().toDouble())
+        writeDouble(System.currentTimeMillis().toDouble())
         return this
     }
 
-    fun writeBoolean(value: Boolean): ByteBuilder {
-        this.buffer.put((if (value) 1 else 0).toByte())
+    fun writeBoolean(vararg values: Boolean): ByteBuilder {
+        values.forEach { buffer.put((if (it) 1 else 0).toByte()) }
+        return this
+    }
+
+    fun writeFloat(vararg values: Float): ByteBuilder {
+        values.forEach { buffer.putFloat(it) }
         return this
     }
 }

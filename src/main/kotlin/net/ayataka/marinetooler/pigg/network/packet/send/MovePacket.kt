@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class MovePacket : Packet() {
     override val server = ServerType.CHAT
@@ -16,17 +16,17 @@ class MovePacket : Packet() {
     var z: Short = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
 
-        dump("X: ${this.x} Y: ${this.y} Z: ${this.z}")
+        trace("X: ${x} Y: ${y} Z: ${z}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawShort(this.x)
-        buffer.writeRawShort(this.y)
-        buffer.writeRawShort(this.z)
+        buffer.writeShort(x)
+        buffer.writeShort(y)
+        buffer.writeShort(z)
         return buffer
     }
 }

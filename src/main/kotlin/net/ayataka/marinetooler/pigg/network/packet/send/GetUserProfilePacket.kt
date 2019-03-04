@@ -12,11 +12,11 @@ class GetUserProfilePacket : Packet() {
     var usercode = String()
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
+        usercode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.usercode)
+        buffer.writeString(usercode)
         return buffer
     }
 }

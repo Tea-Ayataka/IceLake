@@ -4,19 +4,24 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
+import net.ayataka.marinetooler.pigg.network.packet.data.user.AvatarData
 
 class AppearUserPacket : Packet() {
     override val server = ServerType.CHAT
     override val packetId = ChatPacketID.APPEAR_USER.id
 
-    var usercode = ""
+    var avatarData = AvatarData()
+    var areaCode = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
+        avatarData.readFrom(buffer)
+        areaCode = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        // Not implemented
-        return null
+        avatarData.writeTo(buffer)
+        buffer.writeString(areaCode)
+
+        return buffer
     }
 }

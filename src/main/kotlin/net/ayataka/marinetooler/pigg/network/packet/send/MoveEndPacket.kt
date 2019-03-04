@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
+import net.ayataka.marinetooler.utils.trace
 
 class MoveEndPacket : Packet() {
     override val server = ServerType.CHAT
@@ -14,22 +14,25 @@ class MoveEndPacket : Packet() {
     var x: Short = 0
     var y: Short = 0
     var z: Short = 0
-    var dir: Byte = 0
+    var direction: Byte = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
-        this.dir = buffer.readByte()
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
+        direction = buffer.readByte()
 
-        dump("MOVE END X: ${this.x} Y: ${this.y} Z: ${this.z} DIR: ${this.dir}")
+        trace("MOVE END X: ${x} Y: ${y} Z: ${z} DIR: ${direction}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawShort(this.x)
-        buffer.writeRawShort(this.y)
-        buffer.writeRawShort(this.z)
-        buffer.writeRawByte(this.dir)
+        buffer.writeShort(x, y, z)
+                .writeByte(direction)
+
         return buffer
+    }
+
+    override fun toString(): String {
+        return "MoveEndPacket(x=$x, y=$y, z=$z, direction=$direction)"
     }
 }

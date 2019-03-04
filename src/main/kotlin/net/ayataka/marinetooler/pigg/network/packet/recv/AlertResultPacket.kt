@@ -12,11 +12,11 @@ class AlertResultPacket : Packet() {
     var message = ""
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.message = buffer.readString()
+        message = buffer.readString()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.message)
+        buffer.writeString(message)
         return buffer
     }
 }

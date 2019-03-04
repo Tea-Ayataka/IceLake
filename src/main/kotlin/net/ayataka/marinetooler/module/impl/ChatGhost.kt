@@ -1,21 +1,21 @@
 package net.ayataka.marinetooler.module.impl
 
-import com.darkmagician6.eventapi.EventTarget
-import net.ayataka.marinetooler.Tooler
+import net.ayataka.eventapi.EventListener
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.Module
-import net.ayataka.marinetooler.pigg.Pigg
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.PiggProxy
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.network.packet.recv.TalkResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.TalkPacket
 
 object ChatGhost : Module() {
-    @EventTarget
-    fun onRecvPacket(event: RecvPacketEvent) {
+    @EventListener
+    fun onRecvPacket(event: ReceivePacketEvent) {
         val packet = event.packet
 
         if (packet is TalkResultPacket) {
-            if (packet.usercode == Tooler.targetUser) {
-                this.talk(packet.message)
+            if (packet.usercode == ICE_LAKE.targetUser) {
+                talk(packet.message)
             }
         }
     }
@@ -23,6 +23,6 @@ object ChatGhost : Module() {
     private fun talk(msg: String) {
         val packet = TalkPacket()
         packet.text = msg
-        Pigg.send(packet)
+        PiggProxy.send(packet)
     }
 }

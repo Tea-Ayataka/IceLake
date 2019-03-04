@@ -4,7 +4,6 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.info
 
 class RoomActionPacket : Packet() {
     override val server = ServerType.CHAT
@@ -16,28 +15,26 @@ class RoomActionPacket : Packet() {
     var isAdminRequest = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.actionCode = buffer.readString()
+        actionCode = buffer.readString()
         val length = buffer.readShort()
 
         if (length > 0) {
-            this.data = buffer.readRawBytes(length.toInt())
+            data = buffer.readBytes(length.toInt())
         }
 
-        this.isAdminRequest = buffer.readBoolean()
-
-        info(" ROOM ACTION ID IS ${this.actionCode}")
+        isAdminRequest = buffer.readBoolean()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.actionCode)
+        buffer.writeString(actionCode)
 
-        if (this.data.isEmpty()) {
-            buffer.writeRawShort(-1)
+        if (data.isEmpty()) {
+            buffer.writeShort(-1)
         } else {
-            buffer.writeBytes(this.data)
+            buffer.writeBytes(data)
         }
 
-        buffer.writeBoolean(this.isAdminRequest)
+        buffer.writeBoolean(isAdminRequest)
         return buffer
     }
 }

@@ -15,15 +15,15 @@ class GetShopPacket : Packet() {
     var isAdminRequest = false
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.shopCode = buffer.readString()
-        this.isAdminRequest = buffer.readBoolean()
+        shopCode = buffer.readString()
+        isAdminRequest = buffer.readBoolean()
 
-        info("SHOPCODE IS ${this.shopCode}")
+        info("SHOPCODE IS ${shopCode}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.shopCode)
-        buffer.writeBoolean(this.isAdminRequest)
+        buffer.writeString(shopCode)
+        buffer.writeBoolean(isAdminRequest)
         return buffer
     }
 }

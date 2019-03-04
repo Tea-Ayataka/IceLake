@@ -1,31 +1,36 @@
 package net.ayataka.marinetooler.gui
 
-import com.darkmagician6.eventapi.EventManager
-import com.darkmagician6.eventapi.EventTarget
 import javafx.application.Platform
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.Clipboard
-import javafx.scene.input.DataFormat
 import javafx.scene.input.KeyCode
-import net.ayataka.marinetooler.Tooler
+import javafx.stage.Stage
+import net.ayataka.eventapi.EventListener
+import net.ayataka.eventapi.EventManager
+import net.ayataka.marinetooler.ICE_LAKE
 import net.ayataka.marinetooler.module.impl.*
 import net.ayataka.marinetooler.pigg.CurrentUser
+import net.ayataka.marinetooler.pigg.PiggProxy
 import net.ayataka.marinetooler.pigg.event.ConnectEvent
 import net.ayataka.marinetooler.pigg.event.DisconnectEvent
-import net.ayataka.marinetooler.pigg.event.RecvPacketEvent
+import net.ayataka.marinetooler.pigg.event.ReceivePacketEvent
 import net.ayataka.marinetooler.pigg.event.SendPacketEvent
-import net.ayataka.marinetooler.pigg.network.packet.data.BaseAreaData
-import net.ayataka.marinetooler.pigg.network.packet.recv.ActionResultPacket
+import net.ayataka.marinetooler.pigg.network.PacketDirection
+import net.ayataka.marinetooler.pigg.network.packet.data.area.BaseAreaData
 import net.ayataka.marinetooler.pigg.network.packet.recv.GetUserProfileResultPacket
 import net.ayataka.marinetooler.pigg.network.packet.recv.LoginChatResultPacket
-import net.ayataka.marinetooler.pigg.network.packet.send.ClickPiggShopItemPacket
 import net.ayataka.marinetooler.pigg.network.packet.send.MoveEndPacket
+import net.ayataka.marinetooler.pigg.network.packet.send.TravelBundlePacket
+import net.ayataka.marinetooler.utils.toHexString
 import org.controlsfx.control.StatusBar
-import java.io.File
+import org.controlsfx.control.ToggleSwitch
 import java.net.URL
 import java.util.*
 
@@ -75,6 +80,8 @@ class MainWindow : Initializable {
     @FXML
     lateinit var colorChatColor: ColorPicker
     @FXML
+    lateinit var colorChatRainbow: CheckBox
+    @FXML
     lateinit var chatGhost: CheckBox
     @FXML
     lateinit var actionGhost: CheckBox
@@ -87,197 +94,318 @@ class MainWindow : Initializable {
     @FXML
     lateinit var skipTutorial: Button
     @FXML
-    lateinit var actionList: ListView<String>
-    @FXML
-    lateinit var runAction: MenuItem
-    @FXML
-    lateinit var copyAction: MenuItem
-    @FXML
-    lateinit var delAction: MenuItem
+    lateinit var freeGacha: Button
     @FXML
     lateinit var command: TextField
+    @FXML
+    lateinit var instantDonate: CheckBox
+    @FXML
+    lateinit var gumiPoint: CheckBox
+    @FXML
+    lateinit var fishMacroButton: Button
+    @FXML
+    lateinit var autoUoUo: CheckBox
+    @FXML
+    lateinit var gumiAmount: Spinner<Int>
+
+    // Packet table
+    @FXML
+    lateinit var recordButton: ToggleSwitch
+    @FXML
+    lateinit var recordSendCheckBox: CheckBox
+    @FXML
+    lateinit var recordRecvCheckBox: CheckBox
+    @FXML
+    lateinit var packetClearButton: Button
+    @FXML
+    lateinit var packetTable: TableView<PacketView>
+    @FXML
+    lateinit var serverCol: TableColumn<PacketView, String>
+    @FXML
+    lateinit var idCol: TableColumn<PacketView, String>
+    @FXML
+    lateinit var dataCol: TableColumn<PacketView, String>
+    @FXML
+    lateinit var preventAreaEntering: CheckBox
+
+    // Old Area
+    @FXML
+    lateinit var areaList: ListView<String>
+    @FXML
+    lateinit var areaJumpButton: Button
+    @FXML
+    lateinit var areaSearchTextField: TextField
 
     init {
         EventManager.register(this)
     }
 
-    override fun initialize(location: URL?, resources: ResourceBundle?) {
-        Tooler.mainWindow = this
+    override fun initialize(location: URL?, resources: ResourceBundle?) = Platform.runLater {
+        ICE_LAKE.mainWindow = this
 
-        this.tpX.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
-        this.tpY.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
-        this.tpZ.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpX.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpY.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
+        tpZ.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000)
 
-        //this.actionList.items.addAll(File("action").readLines())
+        gumiAmount.valueFactory = SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100_000)
+        gumiAmount.valueFactory.value = 100_000
 
         // TODO: Refactor
-        this.command.setOnKeyPressed {
-            if(it.code != KeyCode.ENTER)
+        command.setOnKeyPressed {
+            if (it.code != KeyCode.ENTER)
                 return@setOnKeyPressed
 
             val text = (it.source as TextField).text
             Command.doCommand(text)
-            this.logBox.appendText("> $text\n")
+            logBox.appendText("> $text\n")
             (it.source as TextField).text = ""
         }
 
-        this.runAction.setOnAction {
-            CurrentUser.playAction(this.actionList.selectionModel.selectedItems.first())
-        }
-
-        this.copyAction.setOnAction {
-            Clipboard.getSystemClipboard().setContent(mapOf(Pair(DataFormat.PLAIN_TEXT, this.actionList.selectionModel.selectedItems.first())))
-        }
-
-        this.delAction.setOnAction {
-            this.actionList.items.remove(this.actionList.selectionModel.selectedItems.first())
-        }
-
-        this.skipTutorial.setOnAction {
+        skipTutorial.setOnAction {
             SkipTutorial.skip()
         }
 
-        this.autoGoodPigg.setOnAction {
+        autoGoodPigg.setOnAction {
             AutoGoodPigg.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.slotMacro.setOnAction {
+        slotMacro.setOnAction {
             SlotMacro.enabled = (it.source as ToggleButton).isSelected
         }
 
-        this.ngBypass.setOnAction {
+        ngBypass.setOnAction {
             NGBypass.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.moveGhost.setOnAction {
+        moveGhost.setOnAction {
             MoveGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.chatGhost.setOnAction {
+        chatGhost.setOnAction {
             ChatGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.chatGhost.setOnAction {
+        chatGhost.setOnAction {
             ChatGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.actionGhost.setOnAction {
+        actionGhost.setOnAction {
             ActionGhost.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.colorChat.setOnAction {
+        colorChat.setOnAction {
             ColorChat.enabled = (it.source as CheckBox).isSelected
+
+            colorChatColor.isDisable = !(it.source as CheckBox).isSelected
+            colorChatRainbow.isDisable = !(it.source as CheckBox).isSelected
+
+            if (colorChatRainbow.isSelected) {
+                colorChatColor.isDisable = true
+            }
         }
 
-        this.colorChatColor.setOnAction {
+        colorChatColor.setOnAction {
             ColorChat.color = (it.source as ColorPicker).value
         }
 
-        this.clickTPChk.setOnAction {
+        colorChatRainbow.setOnAction {
+            colorChatColor.isDisable = (it.source as CheckBox).isSelected
+            ColorChat.rainbowMode = (it.source as CheckBox).isSelected
+        }
+
+        clickTPChk.setOnAction {
             ClickTP.enabled = (it.source as CheckBox).isSelected
         }
 
-        this.skeetChk.setOnAction {
+        skeetChk.setOnAction {
             Skeet.enabled = (it.source as CheckBox).isSelected
         }
 
+        freeGacha.setOnAction {
+            MuryouGatyaZenkaihou.enabled = true
+        }
+
+        instantDonate.setOnAction {
+            InstantDonator.enabled = (it.source as CheckBox).isSelected
+        }
+
+        gumiPoint.setOnAction {
+            PuzzleZousyoku.enabled = (it.source as CheckBox).isSelected
+            gumiAmount.isDisable = !(it.source as CheckBox).isSelected
+        }
+
+        gumiAmount.valueFactory.valueProperty().addListener { _, _, new ->
+            PuzzleZousyoku.amount = new
+        }
+
+        gumiAmount.focusedProperty().addListener { _, _, newValue ->
+            if (!newValue) {
+                gumiAmount.increment(0)
+            }
+        }
+
+        fishMacroButton.setOnAction {
+            if (FishMacro.task != null) {
+                FishMacro.stop()
+                (it.source as Button).text = "スタート"
+                return@setOnAction
+            }
+
+            if (!FishMacro.ready) {
+                ICE_LAKE.showMessage("釣り台に立ってから実行してください。")
+                return@setOnAction
+            }
+
+            FishMacro.start()
+            (it.source as Button).text = "ストップ"
+        }
+
+        packetClearButton.setOnAction {
+            packetTable.items.clear()
+        }
+
+        preventAreaEntering.setOnAction {
+            AreaEnterPrevent.enabled = (it.source as CheckBox).isSelected
+        }
+
         // Instant teleport
-        this.tpX.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(new.toShort(), this.tpY.value.toShort(), this.tpZ.value.toShort(), 0)
+        tpX.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(new, tpY.value, tpZ.value, 0)
         }
-        this.tpY.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value.toShort(), new.toShort(), this.tpZ.value.toShort(), 0)
+        tpY.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(tpX.value, new, tpZ.value, 0)
         }
-        this.tpZ.valueFactory.valueProperty().addListener { _, _, new ->
-            CurrentUser.teleport(this.tpX.value.toShort(), this.tpY.value.toShort(), new.toShort(), 0)
+        tpZ.valueFactory.valueProperty().addListener { _, _, new ->
+            CurrentUser.teleport(tpX.value, tpY.value, new, 0)
+        }
+
+        // packet table
+        serverCol.cellValueFactory = PropertyValueFactory<PacketView, String>("server")
+        idCol.cellValueFactory = PropertyValueFactory<PacketView, String>("id")
+        dataCol.cellValueFactory = PropertyValueFactory<PacketView, String>("data")
+
+        packetTable.setOnMousePressed {
+            if (it.isPrimaryButtonDown && it.clickCount == 2) {
+                openPacketDialog(packetTable.selectionModel.selectedItem)
+            }
+        }
+
+        packetTable.setOnKeyPressed {
+            if (it.code == KeyCode.ENTER) {
+                openPacketDialog(packetTable.selectionModel.selectedItem)
+            }
+        }
+
+        // old area
+        areaJumpButton.setOnAction {
+            val name = areaList.selectionModel.selectedItem
+            val code = ICE_LAKE.oldAreas.keys.find { ICE_LAKE.oldAreas[it] == name } ?: return@setOnAction
+
+            PiggProxy.send(TravelBundlePacket().apply {
+                categoryCode = code.split(" ")[0]
+                areaCode = code.split(" ")[1]
+            })
+        }
+
+        areaSearchTextField.textProperty().addListener { _, _, newValue ->
+            areaList.items.clear()
+            areaList.items.addAll(ICE_LAKE.oldAreas.values.filter { newValue in it })
+            areaList.items.sort()
         }
 
         // Enable default modules
         Command.enabled = true
         AutoGoodPigg.enabled = true
         NGBypass.enabled = true
+        FishMacro.enabled = true
+        FakeEquipment.enabled = true
+        ActionModifier.enabled = true
+        IceAreaConnector.enabled = true
+        FurnitureGetter.enabled = true
+        Analytics.enabled = true
     }
 
-    fun log(msg: String) {
-        Platform.runLater({
-            this.logBox.appendText(msg + "\n")
-        })
+    fun openPacketDialog(data: PacketView) = Platform.runLater {
+        val loader = FXMLLoader(javaClass.classLoader.getResource("PacketDialog.fxml"))
+        val parent = loader.load<Parent>()
+
+        loader.getController<PacketDialog>().load(data)
+
+        Stage().run {
+            title = "Packet Editor"
+            scene = Scene(parent)
+            isAlwaysOnTop = true
+            show()
+        }
     }
 
-    @EventTarget
-    fun onConnect(event: ConnectEvent){
-        Platform.runLater({
-            this.statusBar.text = "  Connecting..."
-        })
+    fun log(msg: String) = Platform.runLater {
+        logBox.appendText(msg + "\n")
+        val lines = logBox.text.lines()
+        if (lines.size > 1000) {
+            logBox.deleteText(0, lines.first().length + 1)
+        }
     }
 
-    @EventTarget
-    fun onDisconnect(event: DisconnectEvent){
-        Platform.runLater({
-            this.statusBar.text = "  Disconnected."
-        })
+    @EventListener
+    fun onConnect(event: ConnectEvent) = Platform.runLater {
+        statusBar.text = "  Connecting..."
     }
 
-    @EventTarget
-    fun onRecvPacket(event: RecvPacketEvent) {
+    @EventListener
+    fun onDisconnect(event: DisconnectEvent) = Platform.runLater {
+        statusBar.text = "  Disconnected."
+    }
+
+    @EventListener
+    fun onRecvPacket(event: ReceivePacketEvent) = Platform.runLater {
         val packet = event.packet
 
-        Platform.runLater({
-            if (packet is LoginChatResultPacket) {
-                this.statusBar.text = "  Connected."
+        if (packet is LoginChatResultPacket) {
+            statusBar.text = "  Connected."
+        }
+
+        if (targetSet.isSelected && packet is GetUserProfileResultPacket) {
+            targetSet.isSelected = false
+
+            ICE_LAKE.targetUser = packet.usercode
+            targetNick.text = "ニックネーム  ：　${packet.nickName}"
+            targetUsercode.text = "ユーザーコード：　${packet.usercode}"
+            if (packet.amebaId.isEmpty()) {
+                targetId.text = "アメーバID    ：　<未設定>"
+                targetPic.image = Image("default-pigg.png")
+            } else {
+                targetId.text = "アメーバID    ：　${packet.amebaId}"
+                targetPic.image = Image("http://origin.contents.pigg.ameba.jp/api/84/user/${packet.amebaId}/image?type=png")
             }
+        }
 
-            if (this.targetSet.isSelected && packet is GetUserProfileResultPacket) {
-                this.targetSet.isSelected = false
-
-                Tooler.targetUser = packet.usercode
-                this.targetNick.text = "ニックネーム  ：　${packet.nickName}"
-                this.targetUsercode.text = "ユーザーコード：　${packet.usercode}"
-                if (packet.amebaId.isEmpty()) {
-                    this.targetId.text = "アメーバID    ：　<未設定>"
-                    this.targetPic.image = Image("default-pigg.png")
-                } else {
-                    this.targetId.text = "アメーバID    ：　${packet.amebaId}"
-                    this.targetPic.image = Image("http://origin.contents.pigg.ameba.jp/api/84/user/${packet.amebaId}/image?type=png")
-                }
-            }
-
-            if (packet is BaseAreaData) {
-                this.areaName.text = "名前         ：　${packet.areaName}"
-                this.areaSize.text = "サイズ        ：　${packet.sizeX} x ${packet.sizeY}"
-                this.areaCode.text = "エリアコード ：　${packet.categoryCode}/${packet.areaCode}"
-            }
-
-            // Collect action
-            if(packet is ActionResultPacket && !packet.actionCode.contains("\u0000")) {
-              /*  val file = File("action")
-                var actions = file.readText()
-                if (!actions.contains(packet.actionCode)) {
-                    actions += packet.actionCode + "\n"
-                }
-                file.writeText(actions)*/
-
-                if(!this.actionList.items.contains(packet.actionCode)) {
-                    this.actionList.items.add(packet.actionCode)
-                }
-            }
-        })
+        if (packet is BaseAreaData) {
+            areaName.text = "名前         ：　${packet.areaData.areaName}"
+            areaSize.text = "サイズ        ：　${packet.areaData.sizeX} x ${packet.areaData.sizeY}"
+            areaCode.text = "エリアコード ：　${packet.areaData.categoryCode}/${packet.areaData.areaCode}"
+        }
     }
 
-    @EventTarget
-    fun onSendPacket(event: SendPacketEvent) {
+    @EventListener
+    fun onSendPacket(event: SendPacketEvent) = Platform.runLater {
         val packet = event.packet
 
-        Platform.runLater({
-            if (packet is MoveEndPacket) {
-                this.areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
-            }
+        if (packet is MoveEndPacket) {
+            areaPos.text = "座標         ：　X${packet.x} Y${packet.y} Z${packet.z}"
+        }
+    }
 
-            if(packet is ClickPiggShopItemPacket && packet.itemType == "action") {
-                if(!this.actionList.items.contains(packet.itemCode)) {
-                    this.actionList.items.add(packet.itemCode)
-                }
+    fun recordPacket(direction: PacketDirection, server: String, id: String, data: ByteArray) = Platform.runLater {
+        if (recordButton.isSelected) {
+            if (direction == PacketDirection.SEND && recordSendCheckBox.isSelected) {
+                packetTable.items.add(PacketView(server, id, data.toHexString(), direction.name))
             }
-        })
+            if (direction == PacketDirection.RECEIVE && recordRecvCheckBox.isSelected) {
+                packetTable.items.add(PacketView(server, id, data.toHexString(), direction.name))
+            }
+        }
     }
 }
+
+class PacketView(val server: String, val id: String, val data: String, val direction: String)

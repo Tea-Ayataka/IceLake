@@ -4,7 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.pigg.network.packet.data.UserItemData
+import net.ayataka.marinetooler.pigg.network.packet.data.shop.UserItemData
 
 class PresentMyItemGiftPacket : Packet() {
     override val server = ServerType.INFO
@@ -16,25 +16,25 @@ class PresentMyItemGiftPacket : Packet() {
     var items = arrayListOf<UserItemData>()
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString()
-        this.message = buffer.readString()
+        usercode = buffer.readString()
+        message = buffer.readString()
         val itemsLength = buffer.readInt()
 
         for (i in 0 until itemsLength) {
-            this.items.add(UserItemData(buffer.readString(), buffer.readString(), buffer.readInt(), buffer.readInt()))
+            items.add(UserItemData(buffer.readString(), buffer.readString(), buffer.readInt(), buffer.readInt()))
         }
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.usercode)
-        buffer.writeString(this.message)
-        buffer.writeRawInt(this.items.size)
+        buffer.writeString(usercode)
+        buffer.writeString(message)
+        buffer.writeInt(items.size)
 
-        this.items.forEach {
+        items.forEach {
             buffer.writeString(it.item)
             buffer.writeString(it.type)
-            buffer.writeRawInt(it.id)
-            buffer.writeRawInt(it.flag)
+            buffer.writeInt(it.id)
+            buffer.writeInt(it.flag)
         }
 
         buffer.writeDoubleTimeStamp()

@@ -1,19 +1,19 @@
 package net.ayataka.marinetooler.module
 
-import com.darkmagician6.eventapi.EventManager
+import net.ayataka.eventapi.EventManager
 import net.ayataka.marinetooler.utils.info
 
 open class Module {
     var enabled = false
         set(value) {
-            if (value) {
+            if (value && !field) {
                 EventManager.register(this)
-                this.onEnable()
-                info("Enabled ${this.javaClass.simpleName}")
-            } else {
+                onEnable()
+                info("Enabled ${javaClass.simpleName}")
+            } else if (!value && field) {
                 EventManager.unregister(this)
-                this.onDisable()
-                info("Disabled ${this.javaClass.simpleName}")
+                onDisable()
+                info("Disabled ${javaClass.simpleName}")
             }
 
             field = value

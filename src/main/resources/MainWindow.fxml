@@ -3,13 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -17,8 +17,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import org.controlsfx.control.StatusBar?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
-<AnchorPane fx:id="root" prefHeight="359.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ayataka.marinetooler.gui.MainWindow">
+<AnchorPane fx:id="root" prefHeight="359.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ayataka.marinetooler.gui.MainWindow">
    <children>
       <TabPane prefHeight="329.0" prefWidth="596.0" style="-fx-tab-min-width: 70;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -91,9 +92,10 @@
                                  <children>
                                     <CheckBox fx:id="colorChat" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="カラーチャット" />
                                     <Label layoutX="40.0" layoutY="60.0" />
-                                    <ColorPicker fx:id="colorChatColor" layoutX="126.0" layoutY="10.0" prefHeight="25.0" prefWidth="42.0" />
-                                    <CheckBox fx:id="chatGhost" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" text="チャットゴースト" />
-                                    <CheckBox fx:id="ngBypass" layoutX="14.0" layoutY="66.0" mnemonicParsing="false" selected="true" text="NG回避" />
+                                    <ColorPicker fx:id="colorChatColor" disable="true" layoutX="33.0" layoutY="39.0" prefHeight="25.0" prefWidth="42.0" />
+                                    <CheckBox fx:id="chatGhost" layoutX="14.0" layoutY="75.0" mnemonicParsing="false" text="チャットゴースト" />
+                                    <CheckBox fx:id="ngBypass" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" selected="true" text="NG回避" />
+                                    <CheckBox fx:id="colorChatRainbow" disable="true" layoutX="91.0" layoutY="43.0" mnemonicParsing="false" text="虹色" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -104,8 +106,12 @@
                                  <children>
                                     <CheckBox fx:id="autoGoodPigg" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="自動グッピグ" />
                                     <Button fx:id="skipTutorial" layoutX="14.0" layoutY="213.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="チュートリアルをスキップ" />
-                                    <Button layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="釣りP増殖" />
+                                    <Button fx:id="freeGacha" layoutX="14.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="147.0" text="無料ガチャ" />
                                     <CheckBox fx:id="actionGhost" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="アクションゴースト" />
+                                    <CheckBox fx:id="instantDonate" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" text="ワンクリック寄付" />
+                                    <CheckBox fx:id="gumiPoint" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" text="グミポイント増殖" />
+                                    <CheckBox fx:id="preventAreaEntering" layoutX="14.0" layoutY="89.0" mnemonicParsing="false" prefWidth="93.0" text="強制送還回避" />
+                                    <Spinner fx:id="gumiAmount" disable="true" editable="true" layoutX="14.0" layoutY="139.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -117,12 +123,12 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="278.0" prefWidth="165.0" text="釣り">
+                        <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="111.0" prefWidth="165.0" text="釣り">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="180.0">
                                  <children>
-                                    <CheckBox fx:id="useMakie" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="まきえを使う" />
-                                    <ToggleButton fx:id="fishMacroButton" layoutX="20.0" layoutY="213.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="スタート" />
+                                    <CheckBox fx:id="autoUoUo" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="自動うおうお" />
+                                    <Button fx:id="fishMacroButton" layoutX="15.0" layoutY="46.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="133.0" text="スタート" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -140,39 +146,49 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="アクション">
+            <Tab text="パケット">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="actionList" layoutX="14.0" layoutY="14.0" prefHeight="273.0" prefWidth="567.0">
-                           <contextMenu>
-                              <ContextMenu>
-                                <items>
-                                  <MenuItem fx:id="runAction" mnemonicParsing="false" text="実行" />
-                                    <MenuItem fx:id="copyAction" mnemonicParsing="false" text="コピー" />
-                                    <MenuItem fx:id="delAction" mnemonicParsing="false" text="削除" />
-                                </items>
-                              </ContextMenu>
-                           </contextMenu>
-                        </ListView>
+                        <TableView fx:id="packetTable" layoutX="14.0" layoutY="40.0" prefHeight="251.0" prefWidth="568.0">
+                          <columns>
+                              <TableColumn fx:id="serverCol" editable="false" prefWidth="57.0" sortable="false" text="Server" />
+                            <TableColumn fx:id="idCol" editable="false" prefWidth="150.0" sortable="false" text="ID" />
+                            <TableColumn fx:id="dataCol" editable="false" prefWidth="345.0" sortable="false" text="Data" />
+                          </columns>
+                        </TableView>
+                        <ToggleSwitch fx:id="recordButton" layoutX="14.0" layoutY="11.0" prefHeight="20.0" prefWidth="29.0" />
+                        <Label layoutX="55.0" layoutY="11.0" text="記録" />
+                        <CheckBox fx:id="recordSendCheckBox" layoutX="95.0" layoutY="11.0" mnemonicParsing="false" selected="true" text="Send" />
+                        <CheckBox fx:id="recordRecvCheckBox" layoutX="151.0" layoutY="11.0" mnemonicParsing="false" text="Recv" />
+                        <Button fx:id="packetClearButton" layoutX="508.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="クリア" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="過去エリア">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="areaList" layoutX="14.0" layoutY="47.0" prefHeight="204.0" prefWidth="570.0" />
+                        <TextField fx:id="areaSearchTextField" layoutX="404.0" layoutY="14.0" prefHeight="25.0" prefWidth="179.0" promptText="検索..." />
+                        <Button fx:id="areaJumpButton" layoutX="477.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Go" />
+                        <Label layoutX="14.0" layoutY="264.0" text="おでかけを開いてから実行してください。" />
                      </children></AnchorPane>
                </content>
             </Tab>
             <Tab text="ショップ">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-            <Tab text="エリアエディット">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="284.0" layoutY="142.0" text="WIP" />
+                     </children></AnchorPane>
                </content>
             </Tab>
             <Tab text="ログ">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="logBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="243.0" prefWidth="567.0" text="" />
+                        <TextArea fx:id="logBox" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="243.0" prefWidth="567.0" />
                         <TextField fx:id="command" layoutX="14.0" layoutY="261.0" prefHeight="25.0" prefWidth="567.0" promptText="Command..." />
                      </children>
                   </AnchorPane>

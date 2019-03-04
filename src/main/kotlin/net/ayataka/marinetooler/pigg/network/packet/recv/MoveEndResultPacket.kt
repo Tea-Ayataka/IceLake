@@ -13,22 +13,25 @@ class MoveEndResultPacket : Packet() {
     var x: Short = 0
     var y: Short = 0
     var z: Short = 0
-    var dir: Byte = 0
+    var direction: Byte = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.usercode = buffer.readString(16)
-        this.x = buffer.readShort()
-        this.y = buffer.readShort()
-        this.z = buffer.readShort()
-        this.dir = buffer.readByte()
+        usercode = buffer.readString(16)
+        x = buffer.readShort()
+        y = buffer.readShort()
+        z = buffer.readShort()
+        direction = buffer.readByte()
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawString(this.usercode)
-        buffer.writeRawShort(this.x)
-        buffer.writeRawShort(this.y)
-        buffer.writeRawShort(this.z)
-        buffer.writeRawByte(this.dir)
+        buffer.writeRawString(usercode)
+                .writeShort(x, y, z)
+                .writeByte(direction)
+
         return buffer
+    }
+
+    override fun toString(): String {
+        return "MoveEndResultPacket(server=$server, packetId=$packetId, usercode='$usercode', x=$x, y=$y, z=$z, direction=$direction)"
     }
 }

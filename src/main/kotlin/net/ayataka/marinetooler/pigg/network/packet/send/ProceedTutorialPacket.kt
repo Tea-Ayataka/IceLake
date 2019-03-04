@@ -1,7 +1,6 @@
 package net.ayataka.marinetooler.pigg.network.packet.send
 
 import net.ayataka.marinetooler.pigg.network.ServerType
-import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.id.InfoPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
@@ -14,13 +13,13 @@ class ProceedTutorialPacket : Packet() {
     var step = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.step = buffer.readInt()
+        step = buffer.readInt()
 
-        info(" STEP ID IS ${this.step}")
+        info(" STEP ID IS ${step}")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeRawInt(this.step)
+        buffer.writeInt(step)
         return buffer
     }
 }

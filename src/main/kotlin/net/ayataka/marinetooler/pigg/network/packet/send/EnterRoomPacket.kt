@@ -4,9 +4,7 @@ import net.ayataka.marinetooler.pigg.network.ServerType
 import net.ayataka.marinetooler.pigg.network.id.ChatPacketID
 import net.ayataka.marinetooler.pigg.network.packet.ByteBuilder
 import net.ayataka.marinetooler.pigg.network.packet.Packet
-import net.ayataka.marinetooler.utils.dump
-import net.ayataka.marinetooler.utils.info
-import net.ayataka.marinetooler.utils.toHexString
+import net.ayataka.marinetooler.utils.trace
 
 class EnterRoomPacket : Packet() {
     override val server = ServerType.CHAT
@@ -19,17 +17,19 @@ class EnterRoomPacket : Packet() {
     var fromMove = 0
 
     override fun readFrom(buffer: ByteBuilder) {
-        this.category = buffer.readString()
-        this.code = buffer.readString()
-        this.queue = buffer.readBoolean()
-        this.fromMove = buffer.readInt()
+        category = buffer.readString()
+        code = buffer.readString()
+        queue = buffer.readBoolean()
+        fromMove = buffer.readInt()
+
+        trace("EnterRoomPacket category: $category, code: $code, queue: $queue, fromMove: $fromMove")
     }
 
     override fun writeTo(buffer: ByteBuilder): ByteBuilder? {
-        buffer.writeString(this.category)
-        buffer.writeString(this.code)
-        buffer.writeBoolean(this.queue)
-        buffer.writeRawInt(this.fromMove)
+        buffer.writeString(category)
+        buffer.writeString(code)
+        buffer.writeBoolean(queue)
+        buffer.writeInt(fromMove)
         buffer.writeDoubleTimeStamp()
         return buffer
     }
