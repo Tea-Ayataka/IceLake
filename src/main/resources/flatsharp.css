@@ -1,0 +1,41 @@
+.root {
+    -fx-mark-color: white;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+}
+
+.choice-box {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-text-inner-color: white;
+}
+
+.choice-box > .label {
+    -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: white;
+    -fx-border-radius: 1px;
+}
+
+.context-menu .menu-item > .label {
+    -fx-text-fill: white;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: white;
+}
